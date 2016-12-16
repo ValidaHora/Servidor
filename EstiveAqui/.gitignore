@@ -1,0 +1,9 @@
+/.settings/
+/.classpath
+/.project
+/WebContent/META-INF/
+/WebContent/WEB-INF/classes/
+/WebContent/
+/Teste.json
+/LancaHorasEstiveAqui.json
+/RetornoLancaHorasEstiveAqui.json
