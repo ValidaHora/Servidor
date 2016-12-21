@@ -4,10 +4,10 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.DadosGerenciaisInVO;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public abstract class ServletParametrosGerencia extends ServletParametros
+public abstract class ServletParametrosGerencia extends ServletParametros0
 {
 
   public ServletParametrosGerencia(HttpServletRequest request, String acao, DadosGerenciaisInVO dadosGerenciaisInVo) throws IOException, ServletParametrosException

@@ -91,8 +91,8 @@ public enum ChaveJSON
   HLX("HLX"),
   /** Identidificação do Dispositivo */
   DI("DI"),
-//  /** Identificador do AppUsuario */
-//  IA("IA"),
+  /** Identificador do AppUsuario */
+  IA("IA"),
   /** Id interno do AppUsuario */
   IU("IU"),
   /** Identificação do Lançamento */

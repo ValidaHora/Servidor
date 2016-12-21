@@ -2,11 +2,11 @@ package estiveaqui.appusuario.cadastra;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 import estiveaqui.vo.DadosInVO;
 
-public class CadastraAppUsuarioParametrosSrvlt extends ServletParametros
+public class CadastraAppUsuarioParametrosSrvlt extends ServletParametros0
 {
   private CadastraAppUsuarioInVO cadastraAppUsuarioInVO = (CadastraAppUsuarioInVO)dadosInVo;
 

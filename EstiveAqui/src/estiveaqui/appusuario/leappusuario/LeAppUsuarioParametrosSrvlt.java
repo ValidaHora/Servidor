@@ -2,10 +2,10 @@ package estiveaqui.appusuario.leappusuario;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class LeAppUsuarioParametrosSrvlt extends ServletParametros
+public class LeAppUsuarioParametrosSrvlt extends ServletParametros0
 {
   private LeAppUsuarioInVO leAppUsuarioInVO = (LeAppUsuarioInVO)dadosInVo;
   
@@ -23,7 +23,7 @@ public class LeAppUsuarioParametrosSrvlt extends ServletParametros
   public LeAppUsuarioInVO getParametros() throws ServletParametrosException
   {
     leAppUsuarioInVO.setTz(getTimeZone(false));
-    leAppUsuarioInVO.setIdentificacaoApp(getIdentificacaoApp(true));
+    leAppUsuarioInVO.setIdentificacaoApp(getIdentificacaoApp0(true));
     
     return leAppUsuarioInVO;
   }

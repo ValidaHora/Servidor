@@ -4,7 +4,7 @@ import estiveaqui.Util;
 import estiveaqui.dados.ChaveJSON;
 import estiveaqui.dados.JsonMsgRetorno;
 import estiveaqui.dados.JsonResposta;
-import estiveaqui.dados.MapeiaDadosOld;
+import estiveaqui.dados.MapeiaDados;
 import estiveaqui.vo.DadosInVO;
 import estiveaqui.vo.DadosOutVO;
 
@@ -18,12 +18,12 @@ public class LancaHoraJson extends JsonResposta
     LancaHoraInVO lancaHoraInVO = (LancaHoraInVO) dadosInVo;
     LancaHoraOutVO lancaHoraOutVO = (LancaHoraOutVO) dadosOutVo;
 
-    jsonMsg.put(ChaveJSON.AU0, lancaHoraOutVO.getAppUsuarioMO().getApelido());
-    jsonMsg.put(ChaveJSON.IA0, lancaHoraOutVO.getAppUsuarioMO().getIdentificador());
-    jsonMsg.put(ChaveJSON.CD0, lancaHoraInVO.getCodigo());
-    jsonMsg.putOld(ChaveJSON.LN0, MapeiaDadosOld.mapeiaLancamento(lancaHoraOutVO.getLancamentoMO())); 
-    jsonMsg.put(ChaveJSON.HL0, lancaHoraOutVO.getLancamentoMO().getHrLancamento());
-    jsonMsg.put(ChaveJSON.TZ0, Util.toStringTimeZone(lancaHoraOutVO.getLancamentoMO().getTzPassClock()));
+    jsonMsg.put(ChaveJSON.AU, lancaHoraOutVO.getAppUsuarioMO().getApelido());
+    jsonMsg.put(ChaveJSON.IA, lancaHoraOutVO.getAppUsuarioMO().getIdentificador());
+    jsonMsg.put(ChaveJSON.CD, lancaHoraInVO.getCodigo());
+    jsonMsg.put(ChaveJSON.LN, MapeiaDados.mapeiaLancamento(lancaHoraOutVO.getLancamentoMO())); 
+    jsonMsg.put(ChaveJSON.HL, lancaHoraOutVO.getLancamentoMO().getHrLancamento());
+    jsonMsg.put(ChaveJSON.TZ, Util.toStringTimeZone(lancaHoraOutVO.getLancamentoMO().getTzPassClock()));
 
     return jsonMsg;
   }

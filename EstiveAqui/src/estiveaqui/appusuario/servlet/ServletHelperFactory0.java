@@ -3,27 +3,33 @@ package estiveaqui.appusuario.servlet;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.appusuario.RegraNegocioAppUsuario;
+import estiveaqui.appusuario.cadastra.CadastraAppUsuario;
+import estiveaqui.appusuario.cadastra.CadastraAppUsuarioParametrosSrvlt;
+import estiveaqui.appusuario.cadastra.CadastraAppusuarioJson;
 import estiveaqui.appusuario.lancahora.LancaHora;
+import estiveaqui.appusuario.lancahora.LancaHora0;
 import estiveaqui.appusuario.lancahora.LancaHoraJson;
-import estiveaqui.appusuario.lancahora.LancaHoraParametrosSrvlt;
+import estiveaqui.appusuario.lancahora.LancaHoraJson0;
+import estiveaqui.appusuario.lancahora.LancaHoraParametrosSrvlt0;
+import estiveaqui.appusuario.lancahoras.LancaHoras;
+import estiveaqui.appusuario.lancahoras.LancaHorasJson;
+import estiveaqui.appusuario.lancahoras.LancaHorasParametrosSrvlt0;
+import estiveaqui.appusuario.leappusuario.LeAppUsuario;
+import estiveaqui.appusuario.leappusuario.LeAppUsuarioJson;
+import estiveaqui.appusuario.leappusuario.LeAppUsuarioParametrosSrvlt;
+import estiveaqui.appusuario.lesementes.LeSementes;
+import estiveaqui.appusuario.lesementes.LeSementesJson;
+import estiveaqui.appusuario.lesementes.LeSementesParametrosSrvlt;
 import estiveaqui.dados.JsonResposta;
 import estiveaqui.servlet.ServletHelperFactoryException;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-/**
- * Classe criada para automatizar a criação e facilitar a manutenção das chamadas das Servlets e as açÃµes
- * a serem tomadas.<BR>
- * Esta classe amarra os parâmetros recebidos pela servlet com a ação a ser tomada. Em seguida, amarra
- * o retorno da ação tomada e monta uma string Json para retorno ao chamador da servlet.
- * 
- * @author Haroldo
- *
- */
-public class ServletHelperFactory
+@Deprecated
+public class ServletHelperFactory0
 {
   private String                 operacao;
-  private ServletParametros      servletParametros;
+  private ServletParametros0      servletParametros;
   private RegraNegocioAppUsuario regraNegocioAppUsuario;
   private JsonResposta           jsonResposta;
 
@@ -33,7 +39,8 @@ public class ServletHelperFactory
    * @return
    * @throws ServletHelperFactoryException
    */
-  public ServletParametros getInstanceServletParametros() throws ServletHelperFactoryException
+  @Deprecated
+  public ServletParametros0 getInstanceServletParametros() throws ServletHelperFactoryException
   {
     return servletParametros;
   }
@@ -44,6 +51,7 @@ public class ServletHelperFactory
    * @return
    * @throws ServletHelperFactoryException
    */
+  @Deprecated
   public RegraNegocioAppUsuario getInstanceRegraNegocioUsuario() throws ServletHelperFactoryException
   {
     return regraNegocioAppUsuario;
@@ -55,6 +63,7 @@ public class ServletHelperFactory
    * @return
    * @throws ServletHelperFactoryException
    */
+  @Deprecated
   public JsonResposta getInstanceJsonResposta() throws ServletHelperFactoryException
   {
     return jsonResposta;
@@ -65,6 +74,7 @@ public class ServletHelperFactory
    * 
    * @return
    */
+  @Deprecated
   public String getOperacao()
   {
     return operacao;
@@ -82,7 +92,8 @@ public class ServletHelperFactory
    * @throws IOException
    * @throws ServletParametrosException 
    */
-  public ServletHelperFactory(HttpServletRequest request) throws ServletHelperFactoryException, IOException, ServletParametrosException
+  @Deprecated
+  public ServletHelperFactory0(HttpServletRequest request) throws ServletHelperFactoryException, IOException, ServletParametrosException
   {
     operacao = request.getRequestURI();
     int pos = operacao.indexOf('/', 1);
@@ -95,29 +106,44 @@ public class ServletHelperFactory
 
     switch (operacao)
     {
-//      case "/AppUsuario/Cadastra1":
-//        servletParametros = new CadastraAppUsuarioParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new CadastraAppUsuario();
-//        jsonResposta = new CadastraAppusuarioJson();
-//        break;
+      case "/AppUsuario/Cadastra":
+      case "/CadastraAppUsuario":
+        servletParametros = new CadastraAppUsuarioParametrosSrvlt(request);
+        regraNegocioAppUsuario = new CadastraAppUsuario();
+        jsonResposta = new CadastraAppusuarioJson();
+        break;
 
+      case "/AppUsuario/LancaHora":
+      case "/LancaHora":
+        servletParametros = new LancaHoraParametrosSrvlt0(request);
+        regraNegocioAppUsuario = new LancaHora0();
+        jsonResposta = new LancaHoraJson0();
+        break;
+        
       case "/AppUsuario/LancaHora1":
-        servletParametros = new LancaHoraParametrosSrvlt(request);
+        servletParametros = new LancaHoraParametrosSrvlt0(request);
         regraNegocioAppUsuario = new LancaHora();
         jsonResposta = new LancaHoraJson();
         break;
         
-//      case "/AppUsuario/LeInfos1":
-//        servletParametros = new LeAppUsuarioParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new LeAppUsuario();
-//        jsonResposta = new LeAppUsuarioJson();
-//        break;
+      case "/AppUsuario/LancaHoras":
+        servletParametros = new LancaHorasParametrosSrvlt0(request);
+        regraNegocioAppUsuario = new LancaHoras();
+        jsonResposta = new LancaHorasJson();
+        break;
         
-//      case "/AppUsuario/GetSementes1":
-//        servletParametros = new LeSementesParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new LeSementes();
-//        jsonResposta = new LeSementesJson();
-//        break;
+      case "/AppUsuario/LeInfos":
+      case "/LeAppUsuario":
+        servletParametros = new LeAppUsuarioParametrosSrvlt(request);
+        regraNegocioAppUsuario = new LeAppUsuario();
+        jsonResposta = new LeAppUsuarioJson();
+        break;
+        
+      case "/AppUsuario/GetSementes":
+        servletParametros = new LeSementesParametrosSrvlt(request);
+        regraNegocioAppUsuario = new LeSementes();
+        jsonResposta = new LeSementesJson();
+        break;
         
       default:
         throw new ServletHelperFactoryException(operacao);

@@ -37,7 +37,7 @@ import estiveaqui.appgestor.relatorio.GeraRelatorioParametrosSrvlt;
 import estiveaqui.dados.JsonResposta;
 import estiveaqui.dados.JsonRespostaNula;
 import estiveaqui.servlet.ServletHelperFactoryException;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
 /**
@@ -54,14 +54,14 @@ public class ServletHelperFactory
   private static final Logger log = LogManager.getLogger();
 
   private String             operacao;
-  private ServletParametros  servletParametros;
+  private ServletParametros0  servletParametros;
   private RegraNegocioGestor regraNegocioGestor;
   private JsonResposta       jsonResposta;
 
   /**
    * Método onde as novas funcionalidades são incluídas para amarrar a entrada, com a ação e com a saída.<BR>
    * Para usar este método, é necessário:<BR>
-   * <LI>Incluir um opção <B>case</B> no <B>switch()</B></LI> <LI>Ler os parâmetros instanciando uma classe que extende {@link estiveaqui.servlet.ServletParametros}</LI> <LI>Tratar
+   * <LI>Incluir um opção <B>case</B> no <B>switch()</B></LI> <LI>Ler os parâmetros instanciando uma classe que extende {@link estiveaqui.servlet.ServletParametros0}</LI> <LI>Tratar
    * as regras de negócio instanciando uma classe que extende {@link estiveaqui.appgestor.RegraNegocioGestor}</LI> <LI>E montar a resposta da servlet em JSon instanciando uma
    * classe que extende {@link estiveaqui.dados.JsonResposta}</LI>
    * 
@@ -170,7 +170,7 @@ public class ServletHelperFactory
    * @return
    * @throws ServletHelperFactoryException
    */
-  public ServletParametros getInstanceServletParametros() throws ServletHelperFactoryException
+  public ServletParametros0 getInstanceServletParametros() throws ServletHelperFactoryException
   {
     return servletParametros;
   }

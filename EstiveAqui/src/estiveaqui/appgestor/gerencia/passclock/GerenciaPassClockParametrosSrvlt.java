@@ -19,10 +19,10 @@ public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia
   @Override
   public GerenciaPassClockInVO getParametros() throws ServletParametrosException
   {
-    gerenciaPassClockInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
+    gerenciaPassClockInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
     gerenciaPassClockInVO.setTz(getTimeZone(false));
 //    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock(getAcao().equals("DIS") || getAcao().equals("UPD")));
-    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock( !getAcao().equals("CAV")));
+    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock0( !getAcao().equals("CAV")));
     gerenciaPassClockInVO.setApelido(getApelido(getAcao().equals("UPD") || getAcao().equals("CAV")));
     gerenciaPassClockInVO.setCodPassClock(getCodigoPassClock(getAcao().equals("CAD")));
     gerenciaPassClockInVO.setHashCode(getHashCode(getAcao().equals("CAD")));

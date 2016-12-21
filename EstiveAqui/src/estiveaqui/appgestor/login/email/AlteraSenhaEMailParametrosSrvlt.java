@@ -3,10 +3,10 @@ package estiveaqui.appgestor.login.email;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.CodigoErro;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class AlteraSenhaEMailParametrosSrvlt extends ServletParametros
+public class AlteraSenhaEMailParametrosSrvlt extends ServletParametros0
 {
   private String paramSenhaAntiga = "SENHAANTIGA";
   private String paramCodRecuperaSenha = "CODRECUPERASENHA";
@@ -35,7 +35,7 @@ public class AlteraSenhaEMailParametrosSrvlt extends ServletParametros
       throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, "Use apenas um dos parâmetro ''{0}'' ou ''{1}'' em ''{2}''", 
                                             paramSenhaAntiga, paramCodRecuperaSenha, acao);
     
-    srvltInVo.setIdentificadorAppGestor(getIdentificacaoApp(srvltInVo.getSenhaAntiga() != null));
+    srvltInVo.setIdentificadorAppGestor(getIdentificacaoApp0(srvltInVo.getSenhaAntiga() != null));
 
     return srvltInVo;
   }

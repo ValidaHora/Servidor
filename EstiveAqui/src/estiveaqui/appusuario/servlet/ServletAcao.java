@@ -24,8 +24,7 @@ import estiveaqui.vo.DadosOutVO;
 /**
  * Implementa de forma padronizada as açÃµes do AppUsuario.
  */
-@WebServlet(urlPatterns = { "/AppUsuario/Cadastra", "/AppUsuario/LancaHora", "/AppUsuario/LeInfos", "/AppUsuario/LancaHoras", "/AppUsuario/GetSementes", 
-                            "/CadastraAppUsuario", "/LancaHora", "/LeAppUsuario" })
+@WebServlet(urlPatterns = { "/AppUsuario/Cadastra1", "/AppUsuario/LancaHora1", "/AppUsuario/LeInfos1", "/AppUsuario/LancaHoras1", "/AppUsuario/GetSementes1"})
 public class ServletAcao extends ServletEstiveAqui
 {
   private static final long   serialVersionUID = -5513094264945496209L;

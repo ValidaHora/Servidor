@@ -16,13 +16,6 @@ import estiveaqui.Versao;
 import estiveaqui.sql.mo.LancamentoMO;
 import estiveaqui.vo.DadosInVO;
 
-/**
- * Interpreta e transforma de forma padronizada os parâmetros recebidos pelo ValidaHora
- * na requisição HTTP.
- * 
- * @author Haroldo
- *
- */
 public abstract class ServletParametros
 {
   private static final Logger           log                      = LogManager.getLogger();
@@ -75,20 +68,6 @@ public abstract class ServletParametros
     log.debug("IP chamador = {}", ip);
   }
 
-//  /**
-//   * Busca os parâmetros de um mapa Map<String, String[]>.
-//   * 
-//   * @param params
-//   *          - Mapa de Strings de onde os parâmetros serão lidos.
-//   * @param acao
-//   *          - Ação que está sendo tomada.
-//   */
-//  public ServletParametros(Map<String, String[]> params, String acao, DadosInVO dadosInVo)
-//  {
-//    this.params = params;
-//    this.acao = acao;
-//  }
-//
   /**
    * Retorna o valor de um parâmetro HTTP.
    * Se não houver parâmetro ou se houver mais de um parâmetro, retorna null.
@@ -99,9 +78,10 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected String getParametro(String nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
+  protected String getParametro(NomeParametroServlet nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
   {
-    String[] valores = params.get(nomeParametro);
+    System.out.println(nomeParametro);
+    String[] valores = params.get(nomeParametro.toString());
     if (valores == null || valores.length != 1)
     {
       if (obrigatorio)
@@ -121,7 +101,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected List<String> getParametros(String nomeParametro, boolean obrigatorio) throws ServletParametrosException
+  protected List<String> getParametros(NomeParametroServlet nomeParametro, boolean obrigatorio) throws ServletParametrosException
   {
     String[] valores = params.get(nomeParametro);
     if (valores == null)
@@ -143,7 +123,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected int getParametroInt(String nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
+  protected int getParametroInt(NomeParametroServlet nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
   {
     return (int)getParametroLong(nomeParametro, obrigatorio, podeLogar);
   }
@@ -156,7 +136,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected long getParametroLong(String nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
+  protected long getParametroLong(NomeParametroServlet nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
   {
     String val = getParametro(nomeParametro, obrigatorio, podeLogar);
     if (val == null)
@@ -183,7 +163,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected float getParametroFloat(String nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
+  protected float getParametroFloat(NomeParametroServlet nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
   {
     String val = getParametro(nomeParametro, obrigatorio, podeLogar);
     if (val == null)
@@ -213,7 +193,8 @@ public abstract class ServletParametros
    */
   private final Versao getVersao() throws ServletParametrosException
   {
-    String param = "V";
+    NomeParametroServlet param = NomeParametroServlet.Versao;
+    
     String versao = getParametro(param, true, true);
 
     Versao v = new Versao(versao);
@@ -226,7 +207,7 @@ public abstract class ServletParametros
   /**
    * Busca e retorna o parâmetro do número de identificação do app.
    * 
-   * IDAPP=<IdentificacaoApp> - Número de identificação do app.
+   * ID=<IdentificacaoApp> - Número de identificação do app.
    * 
    * @param obrigatorio
    * @return
@@ -234,7 +215,7 @@ public abstract class ServletParametros
    */
   protected String getIdentificacaoApp(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("IDAPP", obrigatorio, false);
+    return getParametro(NomeParametroServlet.IdentificacaoApp, obrigatorio, false);
   }
 
   /**
@@ -249,7 +230,7 @@ public abstract class ServletParametros
    */
   protected String getIdCliente(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("CLI", obrigatorio, true);
+    return getParametro(NomeParametroServlet.Cliente, obrigatorio, true);
   }
 
   /**
@@ -264,7 +245,7 @@ public abstract class ServletParametros
    */
   protected String getSenhaCliente(boolean obrigatorio) throws ServletParametrosException
   {
-    String param = "SEN";
+    NomeParametroServlet param = NomeParametroServlet.Senha;
     String val = getParametro(param, obrigatorio, false);
 
     return val;
@@ -284,9 +265,9 @@ public abstract class ServletParametros
    * @return - O fuso horário no formato DateTimeZone
    * @throws ServletParametrosException
    */
-  protected DateTimeZone getTimeZone(boolean obrigatorio) throws ServletParametrosException
+  protected DateTimeZone getTimeZonePassClock(boolean obrigatorio) throws ServletParametrosException
   {
-    String param = "TZ";
+    NomeParametroServlet param = NomeParametroServlet.TimeZone;
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
       return null;
@@ -316,7 +297,7 @@ public abstract class ServletParametros
   /**
    * Busca e retorna o parâmetro número de identificação do PassClock.
    * 
-   * NUMPASSCLOCK=<NúmeroPassClock> - Número de identificação do PassClock.
+   * PC=<NúmeroPassClock> - Número de identificação do PassClock.
    * 
    * @param obrigatorio
    *          - Informa se o parâmetro é ou não obrigatório.
@@ -325,7 +306,7 @@ public abstract class ServletParametros
    */
   protected String getNumeroPassClock(boolean obrigatorio) throws ServletParametrosException
   {
-    String param = "NUMPASSCLOCK";
+    NomeParametroServlet param = NomeParametroServlet.NumeroPassClock;
     String val = getParametro(param, obrigatorio, true);
 
     return val;
@@ -343,7 +324,7 @@ public abstract class ServletParametros
    */
   protected String getCodigoPassClock(boolean obrigatorio) throws ServletParametrosException
   {
-    String param = "CODIGO";
+    NomeParametroServlet param = NomeParametroServlet.Codigo;
     String val = getParametro(param, obrigatorio, false);
     if (val == null)
       return null;
@@ -366,21 +347,6 @@ public abstract class ServletParametros
   /**
    * Busca e retorna o parâmetro do código de ativação de AppUsuario.
    * 
-   * HC=<HashCode> - Código que identifica o lançamento em ValidaHora.
-   * 
-   * @param obrigatorio
-   *          - Informa se o parâmetro é ou não obrigatório.
-   * @return
-   * @throws ServletParametrosException
-   */
-  protected String getHashCode(boolean obrigatorio) throws ServletParametrosException
-  {
-    return getParametro("HASHCODE", obrigatorio, true);
-  }
-
-  /**
-   * Busca e retorna o parâmetro do código de ativação de AppUsuario.
-   * 
    * NOTA=<Observação do usuário> - Uma nota ou observação do usuário que lançou a hora, relativo ao lançamento da hora.
    * 
    * @param obrigatorio
@@ -390,7 +356,7 @@ public abstract class ServletParametros
    */
   protected String getNota(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("NOTA", obrigatorio, true);
+    return getParametro(NomeParametroServlet.Nota, obrigatorio, true);
   }
 
   /**
@@ -405,7 +371,7 @@ public abstract class ServletParametros
    */
   protected String getCodigoAtivacao(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("CODATIVACAO", obrigatorio, true);
+    return getParametro(NomeParametroServlet.CodigoAtivacao, obrigatorio, true);
   }
 
   /**
@@ -426,7 +392,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getParametroHoraSegundos(String param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getParametroHoraSegundos(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -459,7 +425,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getParametroHora(String param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getParametroHora(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -490,7 +456,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getData(String param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getData(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -507,36 +473,6 @@ public abstract class ServletParametros
   }
 
   /**
-   * Busca e retorna o parâmetro que contém a tolerância em minutos para atraso ou adiantamento da hora do PassClock.
-   * 
-   * @param obrigatorio
-   * @return
-   * @throws ServletParametrosException
-   */
-  protected int getToleranciaHr(boolean obrigatorio) throws ServletParametrosException
-  {
-    String param = "TOL";
-    String val = getParametro(param, obrigatorio, true);
-    if (val == null)
-      return 0;
-
-    int toleranciaHr = 0;
-    try
-    {
-      toleranciaHr = Integer.parseInt(val);
-    }
-    catch (NumberFormatException e)
-    {
-      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, "99", val);
-    }
-
-    if (toleranciaHr < 0)
-      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_VALORINVALIDO, param, acao, val);
-
-    return toleranciaHr;
-  }
-
-  /**
    * Busca e retorna o identificador do dispositivo.
    *
    * DSP=<IdDispositivo> - Identificação do dispositivo. Um IMEI ou outra identificação qualquer.
@@ -548,7 +484,7 @@ public abstract class ServletParametros
    */
   protected String getDispositivo(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("IDDISPOSITIVO", obrigatorio, true);
+    return getParametro(NomeParametroServlet.IdDispositivo, obrigatorio, true);
   }
 
   /**
@@ -562,7 +498,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected float getLatLongitude(String param, int max, boolean obrigatorio) throws ServletParametrosException
+  protected float getLatLongitude(NomeParametroServlet param, int max, boolean obrigatorio) throws ServletParametrosException
   {
     float val = getParametroFloat(param, obrigatorio, true);
     if (val == 0)
@@ -592,7 +528,7 @@ public abstract class ServletParametros
    */
   protected float getLatitude(boolean obrigatorio) throws ServletParametrosException
   {
-    return getLatLongitude("LATITUDE", 90, obrigatorio);
+    return getLatLongitude(NomeParametroServlet.Latitude, 90, obrigatorio);
   }
 
   /**
@@ -608,7 +544,7 @@ public abstract class ServletParametros
    */
   protected float getLongitude(boolean obrigatorio) throws ServletParametrosException
   {
-    return getLatLongitude("LONGITUDE", 180, obrigatorio);
+    return getLatLongitude(NomeParametroServlet.Longitude, 180, obrigatorio);
   }
 
   /**
@@ -619,30 +555,4 @@ public abstract class ServletParametros
    */
   public abstract DadosInVO getParametros() throws ServletParametrosException;
 
-//  public static void main(String[] args)
-//  {
-//    Map<String, String[]> params = new java.util.HashMap<String, String[]>();
-//
-//    params.put("V", new String[] { "1.0.0" });
-//    params.put("TZ", new String[] { "-0300" });
-//    params.put("DSP", new String[] { "TESTETESTETESTE"});
-//    params.put("NPC", new String[] { "79718823456" });
-//    params.put("COD", new String[] { "123456" });
-//    params.put("HDG", new String[] { "20160720194810"});
-//    params.put("HEN", new String[] { "20160720194850"});
-//    params.put("LAT", new String[] { "a20"});
-//    params.put("LON", new String[] { "10"});
-//    ParametrosServlet srvl = new ParametrosServlet(params, "Acao");
-//
-//    try
-//    {
-//      CalculaHoraVO calcHoraVO = srvl.getCalculaHora();
-//      System.out.println("abc");
-//    }
-//    catch (ServletParametrosException e)
-//    {
-//      e.printStackTrace();
-//      System.out.println("Erro: " + e.getMessage());
-//    }
-//  }
 }

@@ -2,10 +2,10 @@ package estiveaqui.appgestor.ledados;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class LeDadosParametrosSrvlt extends ServletParametros
+public class LeDadosParametrosSrvlt extends ServletParametros0
 {
   private LeDadosInVO leDadosInVO = (LeDadosInVO)dadosInVo;
 
@@ -23,7 +23,7 @@ public class LeDadosParametrosSrvlt extends ServletParametros
   @Override
   public LeDadosInVO getParametros() throws ServletParametrosException  
   {
-    leDadosInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
+    leDadosInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
     leDadosInVO.setIdUltimoLancamento(getUltimoIdLancamento(true));
 
     return leDadosInVO;

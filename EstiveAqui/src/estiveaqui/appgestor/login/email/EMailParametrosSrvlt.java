@@ -2,10 +2,10 @@ package estiveaqui.appgestor.login.email;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class EMailParametrosSrvlt extends ServletParametros
+public class EMailParametrosSrvlt extends ServletParametros0
 {
   private LoginEMailInVO srvltInVo = (LoginEMailInVO)dadosInVo;
 

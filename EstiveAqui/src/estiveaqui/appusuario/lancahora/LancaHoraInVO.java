@@ -9,6 +9,7 @@ public class LancaHoraInVO extends DadosAppUsuarioInVO
   private DateTimeZone tzPassClock = null;
   private String numPassClock = "";
   private String codigo = "";
+  @Deprecated
   private String hashCode = "";
   private String nota = "";
   private DateTime horaCalculada = null;
@@ -38,11 +39,13 @@ public class LancaHoraInVO extends DadosAppUsuarioInVO
     this.codigo = codigo;
   }
 
+  @Deprecated
   public String getHashCode()
   {
     return hashCode;
   }
 
+  @Deprecated
   public void setHashCode(String hashCode)
   {
     this.hashCode = hashCode;

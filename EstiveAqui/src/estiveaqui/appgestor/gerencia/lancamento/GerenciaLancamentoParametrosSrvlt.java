@@ -19,7 +19,7 @@ public class GerenciaLancamentoParametrosSrvlt extends ServletParametrosGerencia
   @Override
   public GerenciaLancamentoInVO getParametros() throws ServletParametrosException
   {
-    gerenciaLancamentoInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
+    gerenciaLancamentoInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
     gerenciaLancamentoInVO.setTz(getTimeZone(true));
     gerenciaLancamentoInVO.setIdLancamento(getIdLancamento(getAcao().equals("DIS") || getAcao().equals("ENA")));
     gerenciaLancamentoInVO.setHoraManual(getHoraManual(getAcao().equals("CAD"), gerenciaLancamentoInVO.getTz()));

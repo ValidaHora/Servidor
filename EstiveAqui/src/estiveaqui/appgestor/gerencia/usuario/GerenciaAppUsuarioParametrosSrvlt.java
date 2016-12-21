@@ -18,7 +18,7 @@ public class GerenciaAppUsuarioParametrosSrvlt extends ServletParametrosGerencia
   @Override
   public DadosAppGestorInVO getParametros() throws ServletParametrosException
   {
-    gerenciaAppUsuarioInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
+    gerenciaAppUsuarioInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
     gerenciaAppUsuarioInVO.setTz(getTimeZone(true));
     gerenciaAppUsuarioInVO.setIdAppUsuario(getIdAppUsuario(getAcao().equals("DIS") || getAcao().equals("ENA") || getAcao().equals("UPD")));
     gerenciaAppUsuarioInVO.setIdIntegracao(getIdIntegracao(false));
