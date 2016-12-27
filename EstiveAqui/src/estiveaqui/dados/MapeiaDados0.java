@@ -3,6 +3,7 @@ package estiveaqui.dados;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import org.joda.time.DateTimeZone;
 import estiveaqui.Util;
 import estiveaqui.sql.mo.AppGestorMO;
 import estiveaqui.sql.mo.AppUsuarioMO;
@@ -11,12 +12,13 @@ import estiveaqui.sql.mo.PassClockMO;
 import estiveaqui.sql.mo.RelatorioMO;
 
 /**
- * Mapeia os dados para troca de informaçÃµes entre o servidor e os apps.
+ * Mapeia os dados para troca de informações entre o servidor e os apps.
  * 
  * @author Haroldo
  *
  */
-public class MapeiaDadosOld
+@Deprecated
+public class MapeiaDados0
 {
   /**
    * Mapeia o gestor para um Mapa <Chave, Valor>
@@ -24,6 +26,7 @@ public class MapeiaDadosOld
    * @param appGestorMO
    * @return
    */
+  @Deprecated
   public static Map<String, String> mapeiaGestor(AppGestorMO appGestorMO)
   {
     Map<String, String> dado = new HashMap<String, String>();
@@ -41,6 +44,7 @@ public class MapeiaDadosOld
    * @param appUsuariosMO
    * @return
    */
+  @Deprecated
   public static ArrayList<Map<String, String>> mapeiaUsuarios(ArrayList<AppUsuarioMO> appUsuariosMO)
   {
     if (appUsuariosMO == null)
@@ -60,6 +64,7 @@ public class MapeiaDadosOld
    * @param appUsuario
    * @return
    */
+  @Deprecated
   public static Map<String, String> mapeiaUsuario(AppUsuarioMO appUsuarioMO)
   {
     Map<String, String> dado = new HashMap<String, String>();
@@ -78,6 +83,7 @@ public class MapeiaDadosOld
    * @param lancamentosMO
    * @return
    */
+  @Deprecated
   public static ArrayList<Map<String, String>> mapeiaLancamentos(ArrayList<LancamentoMO> lancamentosMO)
   {
     if (lancamentosMO == null)
@@ -103,24 +109,29 @@ public class MapeiaDadosOld
   {
     Map<String, String> dado = new HashMap<String, String>();
 
-    dado.put("ID", "" + lancamentoMO.getIdLancamento());
+    dado.put("IL", "" + lancamentoMO.getIdLancamento());
     dado.put("ST", "" + lancamentoMO.getStatus());
-    dado.put("HL", "" + Util.formataDataTransmissao(lancamentoMO.getHrLancamento()));
+    dado.put("HL", "" + Util.formataDataTransmissaoSemSegundos(lancamentoMO.getHrLancamento()));
     dado.put("HD", "" + Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrDigitacao()));
     dado.put("HE", "" + Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrEnvio()));
     dado.put("TZ", Util.toStringTimeZone(lancamentoMO.getTzPassClock()));
     dado.put("PC", "" + lancamentoMO.getNumPassClock());
-    dado.put("HC", lancamentoMO.getHashCode());
-    dado.put("PA", lancamentoMO.getApelidoPassClock());
-    dado.put("AP", lancamentoMO.getAppUsuarioMO().getApelido());
+//    dado.put("HC", lancamentoMO.getHashCode());
+    dado.put("AP", lancamentoMO.getApelidoPassClock());
+    dado.put("AU", lancamentoMO.getAppUsuarioMO().getApelido());
     dado.put("IU", "" + lancamentoMO.getAppUsuarioMO().getIdAppUsuario());
     String codigoLancado = lancamentoMO.getCodPassClock();
     dado.put("CD", (codigoLancado == null ? "" : codigoLancado));
     String disp = lancamentoMO.getIdDispositivo();
     dado.put("DI", (disp == null ? "Manual" : disp));
-    dado.put("LAT", "" + lancamentoMO.getLatitude());
-    dado.put("LON", "" + lancamentoMO.getLongitude());
-    
+    dado.put("LA", "" + lancamentoMO.getLatitude());
+    dado.put("LO", "" + lancamentoMO.getLongitude());
+
+    DateTimeZone tz = lancamentoMO.getTzPassClock();
+    dado.put("HLX", Util.formataDataTransmissaoSemSegundosTzLocal(lancamentoMO.getHrLancamento(), tz));
+    dado.put("HDX", Util.formataDataTransmissaoSemSegundosTzLocal(lancamentoMO.getHrDigitacao(), tz));
+    dado.put("HEX", Util.formataDataTransmissaoSemSegundosTzLocal(lancamentoMO.getHrEnvio().withZone(tz), tz));
+
     return dado;
   }
 
@@ -129,6 +140,7 @@ public class MapeiaDadosOld
    * @param appPassClockGestorMO
    * @return
    */
+  @Deprecated
   public static ArrayList<Map<String, String>> mapeiaPassClocks(ArrayList<PassClockMO> passClocksMO)
   {
 
@@ -145,6 +157,7 @@ public class MapeiaDadosOld
    * @param passClockMO
    * @return
    */
+  @Deprecated
   public static Map<String, String> mapeiaPassClock(PassClockMO passClockMO)
   {
     Map<String, String> dado = new HashMap<String, String>();
@@ -163,6 +176,7 @@ public class MapeiaDadosOld
    * @param relatoriosMO
    * @return
    */
+  @Deprecated
   public static ArrayList<Map<String, String>> mapeiaRelatorios(ArrayList<RelatorioMO> relatoriosMO)
   {
     if (relatoriosMO == null)
@@ -173,7 +187,7 @@ public class MapeiaDadosOld
     {
       Map<String, String> dado = new HashMap<String, String>();
       
-      dado.put("Mes", "" + Util.fmtAM.print(relatorioMO.getMes()));
+      dado.put("Mes", "" + Util.parseDataMesAno(""+relatorioMO.getMes()));
       dado.put("NomeArquivo", relatorioMO.getNomeArquivo());
       
       relatorioLista.add(dado);

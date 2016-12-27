@@ -21,6 +21,7 @@ public class RegraDeNegocio
    * @throws RegraDeNegocioException 
    * @throws SQLException 
    */
+  @Deprecated
   protected void validaCodigoLancado(ConexaoDB connDB, String numPassClock, String codigo, String hashCode, DateTime hora) throws RegraDeNegocioException, SQLException
   {
     //  Valida o checksum do hashcode.
@@ -47,6 +48,7 @@ public class RegraDeNegocio
    * @param hashCode - Hash code a ser validado
    * @throws RegraDeNegocioException - Se não passar pela validação
    */
+  @Deprecated
   protected void validaCheckSum(String hashCode) throws RegraDeNegocioException
   {
     //  Valida o checksum do hashcode.
@@ -60,6 +62,7 @@ public class RegraDeNegocio
    * @param hashCode
    * @return
    */
+  @Deprecated
   private String calculaCheckSum(String hashCode)
   {
     return SegUtil.calculaCheckSum(hashCode);

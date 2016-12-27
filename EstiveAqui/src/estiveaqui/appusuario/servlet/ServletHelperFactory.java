@@ -3,16 +3,28 @@ package estiveaqui.appusuario.servlet;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.appusuario.RegraNegocioAppUsuario;
+import estiveaqui.appusuario.cadastra.CadastraAppUsuario;
+import estiveaqui.appusuario.cadastra.CadastraAppUsuarioParametrosSrvlt;
+import estiveaqui.appusuario.cadastra.CadastraAppusuarioJson;
 import estiveaqui.appusuario.lancahora.LancaHora;
 import estiveaqui.appusuario.lancahora.LancaHoraJson;
 import estiveaqui.appusuario.lancahora.LancaHoraParametrosSrvlt;
+import estiveaqui.appusuario.lancahoras.LancaHoras;
+import estiveaqui.appusuario.lancahoras.LancaHorasJson;
+import estiveaqui.appusuario.lancahoras.LancaHorasParametrosSrvlt;
+import estiveaqui.appusuario.leappusuario.LeAppUsuario;
+import estiveaqui.appusuario.leappusuario.LeAppUsuarioJson;
+import estiveaqui.appusuario.leappusuario.LeAppUsuarioParametrosSrvlt;
+import estiveaqui.appusuario.lesementes.LeSementes;
+import estiveaqui.appusuario.lesementes.LeSementesJson;
+import estiveaqui.appusuario.lesementes.LeSementesParametrosSrvlt;
 import estiveaqui.dados.JsonResposta;
 import estiveaqui.servlet.ServletHelperFactoryException;
 import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 
 /**
- * Classe criada para automatizar a criação e facilitar a manutenção das chamadas das Servlets e as açÃµes
+ * Classe criada para automatizar a criação e facilitar a manutenção das chamadas das Servlets e as ações
  * a serem tomadas.<BR>
  * Esta classe amarra os parâmetros recebidos pela servlet com a ação a ser tomada. Em seguida, amarra
  * o retorno da ação tomada e monta uma string Json para retorno ao chamador da servlet.
@@ -95,11 +107,11 @@ public class ServletHelperFactory
 
     switch (operacao)
     {
-//      case "/AppUsuario/Cadastra1":
-//        servletParametros = new CadastraAppUsuarioParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new CadastraAppUsuario();
-//        jsonResposta = new CadastraAppusuarioJson();
-//        break;
+      case "/AppUsuario/Cadastra1":
+        servletParametros = new CadastraAppUsuarioParametrosSrvlt(request);
+        regraNegocioAppUsuario = new CadastraAppUsuario();
+        jsonResposta = new CadastraAppusuarioJson();
+        break;
 
       case "/AppUsuario/LancaHora1":
         servletParametros = new LancaHoraParametrosSrvlt(request);
@@ -107,17 +119,23 @@ public class ServletHelperFactory
         jsonResposta = new LancaHoraJson();
         break;
         
-//      case "/AppUsuario/LeInfos1":
-//        servletParametros = new LeAppUsuarioParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new LeAppUsuario();
-//        jsonResposta = new LeAppUsuarioJson();
-//        break;
+      case "/AppUsuario/LancaHoras1":
+        servletParametros = new LancaHorasParametrosSrvlt(request);
+        regraNegocioAppUsuario = new LancaHoras();
+        jsonResposta = new LancaHorasJson();
+        break;
+
+      case "/AppUsuario/LeInfos1":
+        servletParametros = new LeAppUsuarioParametrosSrvlt(request);
+        regraNegocioAppUsuario = new LeAppUsuario();
+        jsonResposta = new LeAppUsuarioJson();
+        break;
         
-//      case "/AppUsuario/GetSementes1":
-//        servletParametros = new LeSementesParametrosSrvlt(request);
-//        regraNegocioAppUsuario = new LeSementes();
-//        jsonResposta = new LeSementesJson();
-//        break;
+      case "/AppUsuario/GetSementes1":
+        servletParametros = new LeSementesParametrosSrvlt(request);
+        regraNegocioAppUsuario = new LeSementes();
+        jsonResposta = new LeSementesJson();
+        break;
         
       default:
         throw new ServletHelperFactoryException(operacao);

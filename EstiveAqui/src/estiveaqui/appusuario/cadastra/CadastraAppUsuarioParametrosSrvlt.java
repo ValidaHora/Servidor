@@ -2,11 +2,11 @@ package estiveaqui.appusuario.cadastra;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 import estiveaqui.vo.DadosInVO;
 
-public class CadastraAppUsuarioParametrosSrvlt extends ServletParametros0
+public class CadastraAppUsuarioParametrosSrvlt extends ServletParametros
 {
   private CadastraAppUsuarioInVO cadastraAppUsuarioInVO = (CadastraAppUsuarioInVO)dadosInVo;
 
@@ -18,7 +18,6 @@ public class CadastraAppUsuarioParametrosSrvlt extends ServletParametros0
   @Override
   public DadosInVO getParametros() throws ServletParametrosException
   {
-    cadastraAppUsuarioInVO.setTz(getTimeZone(false));
     cadastraAppUsuarioInVO.setCodAtivacao(getCodigoAtivacao(true));
 
     return cadastraAppUsuarioInVO;

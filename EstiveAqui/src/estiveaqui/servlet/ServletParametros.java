@@ -9,9 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import estiveaqui.CodigoErro;
+import estiveaqui.Util;
 import estiveaqui.Versao;
 import estiveaqui.sql.mo.LancamentoMO;
 import estiveaqui.vo.DadosInVO;
@@ -26,13 +25,6 @@ public abstract class ServletParametros
   private Map<String, String[]>         params                   = null;
   protected String                      acao                     = "";
   protected DadosInVO dadosInVo;
-
-  private static final String           FORMATOHORA              = "yyyyMMddHHmm";
-  public static final DateTimeFormatter FMTHORA                  = DateTimeFormat.forPattern(FORMATOHORA);
-  private static final String           FORMATOHORASEGUNDOS      = "yyyyMMddHHmmSS";
-  public static final DateTimeFormatter FMTHORATRANSMISSAO       = DateTimeFormat.forPattern(FORMATOHORASEGUNDOS);
-  private static final String           FORMATODATA              = "yyyyMMdd";
-  public static final DateTimeFormatter FMTDATATRANSMISSAO       = DateTimeFormat.forPattern(FORMATODATA);
 
   /**
    * Busca os parâmetros de um request de HTTP.
@@ -58,7 +50,7 @@ public abstract class ServletParametros
     String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
     ip = (ip != null ? ip : request.getRemoteAddr());
     
-    //  Inicializa os valores padrÃµes ou obrigatórios de todas as chamadas.
+    //  Inicializa os valores padrões ou obrigatórios de todas as chamadas.
     dadosInVo.setIp(ip);
     dadosInVo.setServidor(servidor);
     dadosInVo.setVersao(getVersao());
@@ -80,7 +72,6 @@ public abstract class ServletParametros
    */
   protected String getParametro(NomeParametroServlet nomeParametro, boolean obrigatorio, boolean podeLogar) throws ServletParametrosException
   {
-    System.out.println(nomeParametro);
     String[] valores = params.get(nomeParametro.toString());
     if (valores == null || valores.length != 1)
     {
@@ -213,42 +204,9 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected String getIdentificacaoApp(boolean obrigatorio) throws ServletParametrosException
+  protected String getIdentificacaoAppUsuario(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro(NomeParametroServlet.IdentificacaoApp, obrigatorio, false);
-  }
-
-  /**
-   * Busca e retorna o parâmetro do número de identificação do cliente.
-   * 
-   * CLI=<NúmeroCliente> - Número de identificação do cliente.
-   * 
-   * @param obrigatorio
-   *          - Informa se o parâmetro é ou não obrigatório.
-   * @return
-   * @throws ServletParametrosException
-   */
-  protected String getIdCliente(boolean obrigatorio) throws ServletParametrosException
-  {
-    return getParametro(NomeParametroServlet.Cliente, obrigatorio, true);
-  }
-
-  /**
-   * Busca e retorna o parâmetro do número de identificação do cliente.
-   * 
-   * SEN=<SenhaCliente> - Senha do cliente.
-   * 
-   * @param obrigatorio
-   *          - Informa se o parâmetro é ou não obrigatório.
-   * @return
-   * @throws ServletParametrosException
-   */
-  protected String getSenhaCliente(boolean obrigatorio) throws ServletParametrosException
-  {
-    NomeParametroServlet param = NomeParametroServlet.Senha;
-    String val = getParametro(param, obrigatorio, false);
-
-    return val;
+    return getParametro(NomeParametroServlet.IdentificacaoAppUsuario, obrigatorio, false);
   }
 
   /**
@@ -392,7 +350,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getParametroHoraSegundos(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getParametroHoraSegundos(NomeParametroServlet param, boolean obrigatorio) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -400,11 +358,11 @@ public abstract class ServletParametros
 
     try
     {
-      return FMTHORATRANSMISSAO.parseDateTime(val).withZone(tz);
+      return Util.parseDataTransmissaoComSegundos(val);
     }
     catch (UnsupportedOperationException | IllegalArgumentException e)
     {
-      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, FORMATOHORASEGUNDOS, val);
+      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, Util.padraoDataTransmissaoComSegundos(), val);
     }
   }
 
@@ -425,7 +383,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getParametroHora(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getParametroHora(NomeParametroServlet param, boolean obrigatorio) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -433,11 +391,11 @@ public abstract class ServletParametros
 
     try
     {
-      return FMTHORA.parseDateTime(val).withZone(tz);
+      return Util.parseDataTransmissaoComSegundos(val);
     }
     catch (UnsupportedOperationException | IllegalArgumentException e)
     {
-      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, FORMATOHORA, val);
+      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, Util.padraoDataTransmissaoSemSegundos(), val);
     }
   }
 
@@ -456,7 +414,7 @@ public abstract class ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getData(NomeParametroServlet param, boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getData(NomeParametroServlet param, boolean obrigatorio) throws ServletParametrosException
   {
     String val = getParametro(param, obrigatorio, true);
     if (val == null)
@@ -464,11 +422,11 @@ public abstract class ServletParametros
 
     try
     {
-      return FMTDATATRANSMISSAO.parseDateTime(val).withZone(tz);
+      return Util.parseDataMesAnoDia(val);
     }
     catch (UnsupportedOperationException | IllegalArgumentException e)
     {
-      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, FORMATODATA, val);
+      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, HTTPPARM_FORMATOINVALIDO, param, acao, Util.padraoDataMesAnoDia(), val);
     }
   }
 

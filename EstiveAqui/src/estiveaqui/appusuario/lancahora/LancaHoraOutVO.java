@@ -16,6 +16,4 @@ public class LancaHoraOutVO extends DadosAppUsuarioOutVO
   {
     this.lancamentoMO = lancamentoMO;
   }
-
-
 }

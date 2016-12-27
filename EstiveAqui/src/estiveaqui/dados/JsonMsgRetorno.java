@@ -16,8 +16,7 @@ public class JsonMsgRetorno
   private static final Logger log = LogManager.getLogger();
 
   private JSONObject jPrincipal = new JSONObject();
-  private JSONArray  jMsgsErro0 = new JSONArray();
-  private JSONObject jMsgErro  = new JSONObject();
+  private JSONObject jMsgErro   = new JSONObject();
 
   /**
    * Cria o objeto JSON que controla a montagem da mensagem de resposta ao App.
@@ -38,28 +37,23 @@ public class JsonMsgRetorno
    * @param texto
    *          - Mensagem de erro.
    */
-
-  public void addMsgErro(int codigo, String texto, String textoDetalhado)
+  public void putMsgErro(int codigo, String texto, String textoDetalhado)
   {
-    log.info("addMensagem: ({}, {})", new Object[]{codigo , texto});
+    log.info("addMensagem: ({}, {})", new Object[] { codigo, texto });
 
-    JSONObject jMsgErro0 = new JSONObject();
-    jMsgErro0.put(ChaveJSON.CE0.toString(), codigo);
-    jMsgErro0.put(ChaveJSON.ME0.toString(), texto);
     jMsgErro.put(ChaveJSON.CE.toString(), codigo);
     jMsgErro.put(ChaveJSON.DE.toString(), texto);
     jMsgErro.put(ChaveJSON.LG.toString(), textoDetalhado);
-    jMsgsErro0.put(jMsgErro0);
   }
 
-  public void addMsgErro(CodigoErro cod, Throwable t)
+  public void putMsgErro(CodigoErro cod, Throwable t)
   {
-    addMsgErro(cod.getCodigoErro(), cod.getDescricao(), t.getMessage());
+    putMsgErro(cod.getCodigoErro(), cod.getDescricao(), t.getMessage());
   }
 
-  public void addMsgErro(EstiveAquiException e)
+  public void putMsgErro(EstiveAquiException e)
   {
-    addMsgErro(e.getCodigoErro(), e);
+    putMsgErro(e.getCodigoErro(), e);
   }
 
   /**
@@ -68,12 +62,11 @@ public class JsonMsgRetorno
    * @param descricao
    * @param info
    */
-
   public void put(ChaveJSON descricao, Object info)
   {
     jPrincipal.put(descricao.toString(), info);
   }
-  
+
   /**
    * 
    * @param descricao
@@ -84,7 +77,7 @@ public class JsonMsgRetorno
   {
     jPrincipal.put(descricao.toString(), valor);
   }
-  
+
   /**
    * Inclui uma data para ser montada em formato JSON com formatação padrão de data.
    * 
@@ -102,26 +95,13 @@ public class JsonMsgRetorno
    * @param lista
    * @param registro
    */
-
   public void put(ChaveJSON lista, Map<ChaveJSON, Object> registro)
   {
     if (registro == null)
       return;
-    
+
     jPrincipal.put(lista.toString(), registro);
   }
-  
-  @Deprecated
-
-  public void putOld(ChaveJSON lista, Map<String, String> registro)
-  {
-    if (registro == null)
-      return;
-    
-    jPrincipal.put(lista.toString(), registro);
-  }
-
-
 
   /**
    * Adiciona uma lista de pares de definição, valor (key, value) para ser montada posteriormente
@@ -130,7 +110,6 @@ public class JsonMsgRetorno
    * @param definicao
    * @param info
    */
-
   public void put(ChaveJSON lista, ArrayList<Map<ChaveJSON, Object>> registros)
   {
     if (registros == null)
@@ -141,16 +120,10 @@ public class JsonMsgRetorno
     {
       jDados.put(registro);
     }
-    
+
     jPrincipal.put(lista.toString(), jDados);
   }
-  
-  @Deprecated
-  public void putOld(ChaveJSON lista, ArrayList<Map<String, String>> registros)
-  {
-    put(lista, registros);
-  }
-  
+
   /**
    * Retorna as mensagens incluídas na validação num formato Json.
    * 
@@ -167,12 +140,9 @@ public class JsonMsgRetorno
    * 
    * @return
    */
-
   public String getJsonMsg(DateTime hrLancada)
   {
     boolean ok = jMsgErro.length() == 0;
-    jPrincipal.put(ChaveJSON.OK0.toString(), ok);
-    jPrincipal.put(ChaveJSON.MES0.toString(), jMsgsErro0);
     jPrincipal.put(ChaveJSON.OK.toString(), ok);
     if (!ok)
       jPrincipal.put(ChaveJSON.ME.toString(), jMsgErro);
@@ -186,10 +156,10 @@ public class JsonMsgRetorno
    * Valida se foram incluídas mensagens de erro.
    * 
    * @return true - Com mensagens de erro incluídas
-   *          false - Sem mensagens de erro.
+   *         false - Sem mensagens de erro.
    */
   public boolean haMensagensErro()
   {
-    return jMsgsErro0.length() > 0;
+    return jMsgErro.length() > 0;
   }
 }

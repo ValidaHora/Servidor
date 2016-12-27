@@ -40,7 +40,7 @@ public class CadastraComEMail extends RegraNegocioGestor
       UtilEMail.validaRegrasParaSenha(loginEMailInVO.getSenha());
           
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 

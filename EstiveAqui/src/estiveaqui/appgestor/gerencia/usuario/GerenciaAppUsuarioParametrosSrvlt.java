@@ -3,10 +3,10 @@ package estiveaqui.appgestor.gerencia.usuario;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.appgestor.DadosAppGestorInVO;
-import estiveaqui.appgestor.servlet.ServletParametrosGerencia;
+import estiveaqui.appgestor.servlet.ServletParametrosGerencia0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class GerenciaAppUsuarioParametrosSrvlt extends ServletParametrosGerencia
+public class GerenciaAppUsuarioParametrosSrvlt extends ServletParametrosGerencia0
 {
   private GerenciaAppUsuarioInVO gerenciaAppUsuarioInVO = (GerenciaAppUsuarioInVO)dadosInVo;
   
@@ -18,8 +18,7 @@ public class GerenciaAppUsuarioParametrosSrvlt extends ServletParametrosGerencia
   @Override
   public DadosAppGestorInVO getParametros() throws ServletParametrosException
   {
-    gerenciaAppUsuarioInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
-    gerenciaAppUsuarioInVO.setTz(getTimeZone(true));
+    gerenciaAppUsuarioInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
     gerenciaAppUsuarioInVO.setIdAppUsuario(getIdAppUsuario(getAcao().equals("DIS") || getAcao().equals("ENA") || getAcao().equals("UPD")));
     gerenciaAppUsuarioInVO.setIdIntegracao(getIdIntegracao(false));
     gerenciaAppUsuarioInVO.setApelido(getApelido(getAcao().equals("CAD")));

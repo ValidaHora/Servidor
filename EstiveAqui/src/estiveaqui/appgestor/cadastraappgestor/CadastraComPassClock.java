@@ -51,7 +51,7 @@ public class CadastraComPassClock extends RegraNegocioGestor
       Versao.validaVersao(cadastraComPassClockInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
 
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 
@@ -97,7 +97,7 @@ public class CadastraComPassClock extends RegraNegocioGestor
       connDB.getConn().commit();
       
       //
-      //  Monta as informaçÃµes para serem retornadas.
+      //  Monta as informações para serem retornadas.
       ///////////////////////////////////////////////////////////////////////////
       
       //  Retorna AppGestorMO

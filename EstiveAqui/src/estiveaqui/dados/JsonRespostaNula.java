@@ -4,7 +4,7 @@ import estiveaqui.vo.DadosInVO;
 import estiveaqui.vo.DadosOutVO;
 
 /**
- * Use esta classe quando não existe nenhuma resposta para ser retornada além das informaçÃµes padrão.
+ * Use esta classe quando não existe nenhuma resposta para ser retornada além das informações padrão.
  * 
  * @author Haroldo
  *

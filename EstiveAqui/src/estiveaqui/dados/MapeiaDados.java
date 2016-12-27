@@ -2,9 +2,10 @@ package estiveaqui.dados;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import estiveaqui.EstiveAquiException;
 import estiveaqui.Util;
 import estiveaqui.sql.mo.AppGestorMO;
 import estiveaqui.sql.mo.AppUsuarioMO;
@@ -14,7 +15,7 @@ import estiveaqui.sql.mo.RelatorioMO;
 import estiveaqui.sql.mo.externo.TokenMO;
 
 /**
- * Mapeia os dados para troca de informaçÃµes entre o servidor e os apps.
+ * Mapeia os dados para troca de informações entre o servidor e os apps.
  * 
  * @author Haroldo
  *
@@ -44,12 +45,12 @@ public class MapeiaDados
    * @param appUsuariosMO
    * @return
    */
-  public static ArrayList<Map<ChaveJSON, Object>> mapeiaAppUsuarios(ArrayList<AppUsuarioMO> appUsuariosMO)
+  public static List<Map<ChaveJSON, Object>> mapeiaAppUsuarios(List<AppUsuarioMO> appUsuariosMO)
   {
     if (appUsuariosMO == null)
       return null;
     
-    ArrayList<Map<ChaveJSON, Object>> appUsuariosLista = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> appUsuariosLista = new ArrayList<Map<ChaveJSON, Object>>();
     for (AppUsuarioMO appUsuarioMO : appUsuariosMO)
     {
       appUsuariosLista.add(mapeiaAppUsuario(appUsuarioMO));
@@ -82,12 +83,12 @@ public class MapeiaDados
    * @param lancamentosMO
    * @return
    */
-  public static ArrayList<Map<ChaveJSON, Object>> mapeiaLancamentos(ArrayList<LancamentoMO> lancamentosMO)
+  public static List<Map<ChaveJSON, Object>> mapeiaLancamentos(List<LancamentoMO> lancamentosMO)
   {
     if (lancamentosMO == null)
       return null;
     
-    ArrayList<Map<ChaveJSON, Object>> lancamentosLista = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> lancamentosLista = new ArrayList<Map<ChaveJSON, Object>>();
     for(LancamentoMO lancamentoMO : lancamentosMO)
     {
       lancamentosLista.add(mapeiaLancamento(lancamentoMO));
@@ -108,23 +109,16 @@ public class MapeiaDados
 
     dado.put(ChaveJSON.IL, lancamentoMO.getIdLancamento());
     dado.put(ChaveJSON.ST, lancamentoMO.getStatus());
-    dado.put(ChaveJSON.HL, Util.formataDataTransmissao(lancamentoMO.getHrLancamento()));
+    dado.put(ChaveJSON.HL, Util.formataDataTransmissaoSemSegundos(lancamentoMO.getHrLancamento()));
     dado.put(ChaveJSON.HD, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrDigitacao()));
     dado.put(ChaveJSON.HE, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrEnvio()));
-    DateTimeZone tz = lancamentoMO.getTzPassClock();
-    dado.put(ChaveJSON.HLX, Util.formataDataTransmissao(lancamentoMO.getHrLancamento().withZone(tz)));
-    dado.put(ChaveJSON.HDX, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrDigitacao().withZone(tz)));
-    dado.put(ChaveJSON.HEX, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrEnvio().withZone(tz)));
     dado.put(ChaveJSON.TZ, Util.toStringTimeZone(lancamentoMO.getTzPassClock()));
     dado.put(ChaveJSON.PC, "" + lancamentoMO.getNumPassClock());
-//    dado.put(ChaveJSON.HC, lancamentoMO.getHashCode());
     dado.put(ChaveJSON.AP, lancamentoMO.getApelidoPassClock());
     dado.put(ChaveJSON.AU, lancamentoMO.getAppUsuarioMO().getApelido());
     dado.put(ChaveJSON.CD, lancamentoMO.getCodPassClock());
-    String disp = lancamentoMO.getIdDispositivo();
-    dado.put(ChaveJSON.DI, (disp == null ? "Manual" : disp));
-    String nota = lancamentoMO.getNota();
-    dado.put(ChaveJSON.NT, (nota == null ? "" : nota));
+    dado.put(ChaveJSON.DI, lancamentoMO.getIdDispositivo());
+    dado.put(ChaveJSON.NT, lancamentoMO.getNota());
     dado.put(ChaveJSON.LA, lancamentoMO.getLatitude());
     dado.put(ChaveJSON.LO, lancamentoMO.getLongitude());
     
@@ -136,10 +130,10 @@ public class MapeiaDados
    * @param appPassClockGestorMO
    * @return
    */
-  public static ArrayList<Map<ChaveJSON, Object>> mapeiaPassClocks(ArrayList<PassClockMO> passClocksMO)
+  public static List<Map<ChaveJSON, Object>> mapeiaPassClocks(List<PassClockMO> passClocksMO)
   {
 
-    ArrayList<Map<ChaveJSON, Object>> appPassClockGestorLista = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> appPassClockGestorLista = new ArrayList<Map<ChaveJSON, Object>>();
     for (PassClockMO passClockMO : passClocksMO)
       appPassClockGestorLista.add(mapeiaPassClock(passClockMO));
 
@@ -170,12 +164,12 @@ public class MapeiaDados
    * @param tokenMO
    * @return
    */
-  public static ArrayList<Map<ChaveJSON, Object>> mapeiaSementesToken(ArrayList<TokenMO> tokensMO)
+  public static List<Map<ChaveJSON, Object>> mapeiaSementesToken(List<TokenMO> tokensMO)
   {
     if (tokensMO == null)
       return null;
     
-    ArrayList<Map<ChaveJSON, Object>> sementesLista = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> sementesLista = new ArrayList<Map<ChaveJSON, Object>>();
     for(TokenMO tokenMO : tokensMO)
     {
       sementesLista.add(mapeiaSementeToken(tokenMO));
@@ -202,17 +196,17 @@ public class MapeiaDados
 
   
   /**
-   * Monta o ArrayList de map padrão para transforma em Json.
+   * Monta o List de map padrão para transforma em Json.
    * 
    * @param relatoriosMO
    * @return
    */
-  public static ArrayList<Map<ChaveJSON, Object>> mapeiaRelatorios(ArrayList<RelatorioMO> relatoriosMO)
+  public static List<Map<ChaveJSON, Object>> mapeiaRelatorios(List<RelatorioMO> relatoriosMO)
   {
     if (relatoriosMO == null)
       return null;
     
-    ArrayList<Map<ChaveJSON, Object>> relatorioLista = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> relatorioLista = new ArrayList<Map<ChaveJSON, Object>>();
     for(RelatorioMO relatorioMO : relatoriosMO)
     {
       Map<ChaveJSON, Object> dado = new HashMap<ChaveJSON, Object>();
@@ -224,5 +218,21 @@ public class MapeiaDados
     }
 
     return relatorioLista;
+  }
+  
+  /**
+   * Mapeia uma exceção.
+   * 
+   * @param rne
+   * @return
+   */
+  public static Map<ChaveJSON, Object> mapeiaExcecao(EstiveAquiException rne)
+  {
+    Map<ChaveJSON, Object> dado = new HashMap<ChaveJSON, Object>();
+    dado.put(ChaveJSON.CE, rne.getCodigoErro().getCodigoErro());
+    dado.put(ChaveJSON.ME, rne.getCodigoErro().getDescricao());
+    dado.put(ChaveJSON.LG, rne.getMessage());
+
+    return dado;
   }
 }

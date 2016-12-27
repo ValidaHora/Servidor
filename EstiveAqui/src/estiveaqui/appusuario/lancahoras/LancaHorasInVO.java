@@ -1,16 +1,16 @@
 package estiveaqui.appusuario.lancahoras;
 
-import java.util.ArrayList;
+import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import estiveaqui.appusuario.DadosAppUsuarioInVO;
 
 public class LancaHorasInVO extends DadosAppUsuarioInVO
 {
-  private DateTimeZone               tz;
-  private DateTime                   horaEnviada;
-  private String                     idDispositivo;
-  private ArrayList<HoraEnviadaVO> horasEnviadas;
+  private DateTimeZone        tz;
+  private DateTime            horaEnviada;
+  private String              idDispositivo;
+  private List<HoraEnviadaVO> horasEnviadas;
 
   public DateTimeZone getTz()
   {
@@ -42,12 +42,12 @@ public class LancaHorasInVO extends DadosAppUsuarioInVO
     this.idDispositivo = idDispositivo;
   }
 
-  public ArrayList<HoraEnviadaVO> getHorasEnviadas()
+  public List<HoraEnviadaVO> getHorasEnviadas()
   {
     return horasEnviadas;
   }
 
-  public void setHorasEnviadas(ArrayList<HoraEnviadaVO> horasEnviadas)
+  public void setHorasEnviadas(List<HoraEnviadaVO> horasEnviadas)
   {
     this.horasEnviadas = horasEnviadas;
   }

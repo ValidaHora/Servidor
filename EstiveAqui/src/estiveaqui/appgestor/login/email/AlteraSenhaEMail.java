@@ -45,7 +45,7 @@ public class AlteraSenhaEMail extends RegraNegocioGestor
       UtilEMail.validaRegrasParaSenha(alteraSenhaEMailInVO.getSenhaNova());
 
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 

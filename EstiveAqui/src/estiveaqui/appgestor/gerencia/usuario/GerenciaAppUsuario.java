@@ -42,7 +42,7 @@ public class GerenciaAppUsuario extends RegraNegocioGestor
       Versao.validaVersao(gerenciaAppUsuarioInVo, new Versao(1, 0, 0), new Versao(1, 0, 0));
 
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 
@@ -139,7 +139,7 @@ public class GerenciaAppUsuario extends RegraNegocioGestor
   {
     AppUsuarioDB appUsuarioDb = new AppUsuarioDB(connDB);
 
-    //  ValidaçÃµes.
+    //  Validações.
     validaAppUsuario(appUsuarioDb, idAppGestor, gerenciaAppUsuarioInVo);
     
     //  Prepara inserir usuário.
@@ -182,7 +182,7 @@ public class GerenciaAppUsuario extends RegraNegocioGestor
     if (appUsuarioMO == null)
       throw new RegraDeNegocioException(CodigoErro.ERRO_INTERNO, "AppUsuario não encontrado");
 
-    //  ValidaçÃµes.
+    //  Validações.
     validaAppUsuario(appUsuarioDb, idAppGestor, gerenciaAppUsuarioInVo);
     
     //  Atualia o MO.

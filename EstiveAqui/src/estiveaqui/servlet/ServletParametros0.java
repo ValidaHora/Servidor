@@ -67,7 +67,7 @@ public abstract class ServletParametros0
     String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
     ip = (ip != null ? ip : request.getRemoteAddr());
     
-    //  Inicializa os valores padrÃµes ou obrigatórios de todas as chamadas.
+    //  Inicializa os valores padrões ou obrigatórios de todas as chamadas.
     dadosInVo.setIp(ip);
     dadosInVo.setServidor(servidor);
     dadosInVo.setVersao(getVersao());

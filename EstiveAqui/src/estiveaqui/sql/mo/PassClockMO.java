@@ -1,5 +1,7 @@
 package estiveaqui.sql.mo;
 
+import org.joda.time.DateTimeZone;
+
 
 public class PassClockMO implements MO
 {
@@ -8,6 +10,7 @@ public class PassClockMO implements MO
   private String apelido            = null;
   private int    idAppGestor        = 0;
   private int    status             = STATUS_HABILITADO;
+  private DateTimeZone  tz          = null;
   private String senhaCadastro      = "";
   private String codAtivacaoVirtual = "";
 
@@ -23,11 +26,6 @@ public class PassClockMO implements MO
   public static final int COD_ALGORITMO_VIRTUAL = 3;
   public static final int COD_ALGORITMO_TESTE = 1000;
   
-//  public PassClockMO(int idPassClock)
-//  {
-//    this.idPassClock = idPassClock;
-//  }
-
   /**
    * Para encontrar PassClocks em um ArrayList. 
    */
@@ -49,7 +47,7 @@ public class PassClockMO implements MO
   {
     return this.numPassClock.hashCode();
   }
-  
+
   public int getIdPassClock()
   {
     return idPassClock;
@@ -100,6 +98,16 @@ public class PassClockMO implements MO
     this.status = status;
   }
 
+  public DateTimeZone getTz()
+  {
+    return tz;
+  }
+
+  public void setTz(DateTimeZone tz)
+  {
+    this.tz = tz;
+  }
+
   public String getSenhaCadastro()
   {
     return senhaCadastro;
@@ -119,5 +127,4 @@ public class PassClockMO implements MO
   {
     this.codAtivacaoVirtual = codAtivacaoVirtual;
   }
-
 }

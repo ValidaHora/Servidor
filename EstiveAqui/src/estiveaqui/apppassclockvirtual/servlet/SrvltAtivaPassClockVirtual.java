@@ -45,7 +45,7 @@ public class SrvltAtivaPassClockVirtual extends ServletEstiveAqui implements Ser
       AtivaPassClockVirtualInVO ativaPassClockVirtualInVO =  srvParam.getParametros();
 
       //
-      //  Lê e valida as informaçÃµes do usuário
+      //  Lê e valida as informações do usuário
       AtivaPassClockVirtual ativaPassClockVirtual = new AtivaPassClockVirtual();
       AtivaPassClockVirtualOutVO ativaPassClockVirtualOutVO = ativaPassClockVirtual.cadastra(ativaPassClockVirtualInVO);
      

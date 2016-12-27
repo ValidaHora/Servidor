@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import estiveaqui.Util;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.dados.ChaveJSON;
+import estiveaqui.servlet.NomeParametroServlet;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 import estiveaqui.vo.DadosInVO;
 
-public class LancaHorasParametrosSrvlt extends ServletParametros0
+public class LancaHorasParametrosSrvlt extends ServletParametros
 {
   private LancaHorasInVO lancaHoraInVO = (LancaHorasInVO) dadosInVo;
 
@@ -25,7 +26,7 @@ public class LancaHorasParametrosSrvlt extends ServletParametros0
   @Override
   public DadosInVO getParametros() throws ServletParametrosException
   {
-    lancaHoraInVO.setIdentificacaoApp(getIdentificacaoApp0(true));
+    lancaHoraInVO.setIdentificacaoAppUsuario(getIdentificacaoAppUsuario(true));
     lancaHoraInVO.setHoraEnviada(getHoraEnviada(true));
     lancaHoraInVO.setIdDispositivo(getDispositivo(false));
     lancaHoraInVO.setHorasEnviadas(getHorasEnviadas(true));
@@ -43,7 +44,7 @@ public class LancaHorasParametrosSrvlt extends ServletParametros0
    */
   protected DateTime getHoraEnviada(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHoraSegundos("HREN", obrigatorio, DateTimeZone.UTC);
+    return getParametroHoraSegundos(NomeParametroServlet.HoraEnviada, obrigatorio);
   }
 
   /**
@@ -55,7 +56,8 @@ public class LancaHorasParametrosSrvlt extends ServletParametros0
    */
   protected ArrayList<HoraEnviadaVO> getHorasEnviadas(boolean obrigatorio) throws ServletParametrosException
   {
-    String sHorasEnviadas = getParametro("LANCS", obrigatorio, true);
+    String sHorasEnviadas = getParametro(NomeParametroServlet.Lancamentos, obrigatorio, true);
+
     JSONTokener tokener = new JSONTokener(sHorasEnviadas);
     JSONArray jsonHorasEnviadas = new JSONArray(tokener);
 
@@ -65,27 +67,17 @@ public class LancaHorasParametrosSrvlt extends ServletParametros0
       JSONObject jsonHoraEnviada = jsonHorasEnviadas.getJSONObject(i);
 
       HoraEnviadaVO horaEnviadaVo = new HoraEnviadaVO();
-      horaEnviadaVo.setIdLancamento(jsonHoraEnviada.getInt("IL"));
-      horaEnviadaVo.setNumeroPassClock(jsonHoraEnviada.getString("PC"));
-      horaEnviadaVo.setCodigoPassClock(jsonHoraEnviada.getString("CD"));
-      horaEnviadaVo.setNota(jsonHoraEnviada.getString("NT"));
-      horaEnviadaVo.setHashCode(jsonHoraEnviada.getString("HC"));
-      horaEnviadaVo.setHrLancada(Util.parseHora(jsonHoraEnviada.getString("HL")));
-      horaEnviadaVo.setHrDigitacao(Util.parseHoraSegundos(jsonHoraEnviada.getString("HD")));
-      horaEnviadaVo.setLatitude((float) jsonHoraEnviada.getDouble("LA"));
-      horaEnviadaVo.setLongitude((float) jsonHoraEnviada.getDouble("LO"));
+      horaEnviadaVo.setContadorLancamento(jsonHoraEnviada.getInt(ChaveJSON.CL.toString()));
+      horaEnviadaVo.setNumeroPassClock(jsonHoraEnviada.getString(ChaveJSON.PC.toString()));
+      horaEnviadaVo.setCodigoPassClock(jsonHoraEnviada.getString(ChaveJSON.CD.toString()));
+      if (!jsonHoraEnviada.isNull(ChaveJSON.NT.toString()))
+        horaEnviadaVo.setNota(jsonHoraEnviada.getString(ChaveJSON.NT.toString()));
+      horaEnviadaVo.setHrDigitacao(Util.parseDataTransmissaoComSegundos(jsonHoraEnviada.getString(ChaveJSON.HD.toString())));
+      horaEnviadaVo.setLatitude((float) jsonHoraEnviada.getDouble(ChaveJSON.LA.toString()));
+      horaEnviadaVo.setLongitude((float) jsonHoraEnviada.getDouble(ChaveJSON.LO.toString()));
 
       horasEnviadas.add(horaEnviadaVo);
     }
-    
-//    private String   numeroPassClock;
-//    private String   codigoPassClock;
-//    private String   nota;
-//    private DateTime hrLancada;
-//    private DateTime hrDigitacao;
-//    private String   hashCode;
-//    private float    latitude;
-//    private float    longitude;
     
     return horasEnviadas;
   }

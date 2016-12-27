@@ -1,6 +1,5 @@
 package estiveaqui;
 
-import java.time.format.DateTimeParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -15,29 +14,28 @@ public class Util
 
   /**
    * Formata para transmissão com o App. Formato Ano, Mês, Dia, Hora (24h), Minutos e segundos (AAAAMMDDHHmm).<BR>
-   * Use com o método <b>print()</b>.
    */
-  private static final DateTimeFormatter  FMT_TRANSMISSAO_DATA_SS = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+  private static final String             PADRAO_TRANSMISSAO_DATA_SS = "yyyyMMddHHmmss";
+  private static final DateTimeFormatter  FMT_TRANSMISSAO_DATA_SS = DateTimeFormat.forPattern(PADRAO_TRANSMISSAO_DATA_SS).withZoneUTC();
   /**
    * Formata para transmissão com o App. Formato Ano, Mês, Dia, Hora (24h), Minutos e segundos (AAAAMMDDHHmm).<BR>
-   * Use com o método <b>print()</b>.
    */
-  private static final DateTimeFormatter  FMT_TRANSMISSAO_DATA    = DateTimeFormat.forPattern("yyyyMMddHHmm");
+  private static final String             PADRAO_TRANSMISSAO_DATA = "yyyyMMddHHmm";
+  private static final DateTimeFormatter  FMT_TRANSMISSAO_DATA    = DateTimeFormat.forPattern(PADRAO_TRANSMISSAO_DATA).withZoneUTC();
   /**
    * Formata para formato Ano, Mês, Dia, Hora (24h), Minutos e Fuso horário (AAAAMMDDHHmmZ).<BR>
-   * Use com o método <b>print()</b>.
    */
-  private static final DateTimeFormatter  fmtTZ                   = DateTimeFormat.forPattern("yyyyMMddHHmmZ");
+  private static final String             PADRAO_TZ                = "yyyyMMddHHmmZ";
+  private static final DateTimeFormatter  FMT_TZ                   = DateTimeFormat.forPattern(PADRAO_TZ).withZoneUTC();
   /**
    * Formata para o foramto Ano, Mês e Dia (AAAAMMDD).<BR>
-   * Use com o método <b>print()</b>.
    */
-  private static final DateTimeFormatter  fmtAMD                  = DateTimeFormat.forPattern("yyyyMMdd");
+  private static final String             PADRAO_AMD               = "yyyyMMdd";
+  private static final DateTimeFormatter  FMT_AMD                  = DateTimeFormat.forPattern(PADRAO_AMD).withZoneUTC();
   /**
    * Formata para o foramto Ano e Mês (AAAAMM).<BR>
-   * Use com o método <b>print()</b>.
    */
-  public static final DateTimeFormatter fmtAM  = DateTimeFormat.forPattern("yyyyMM");
+  private static final DateTimeFormatter FMT_AM  = DateTimeFormat.forPattern("yyyyMM").withZoneUTC();
   private static final DateTimeFormatter DTZF = DateTimeFormat.forPattern("Z");
   
   /**
@@ -61,7 +59,7 @@ public class Util
    * @param dt
    * @return
    */
-  public static String formataDataTransmissao(DateTime dt)
+  public static String formataDataTransmissaoSemSegundos(DateTime dt)
   {
     return formataData(dt, FMT_TRANSMISSAO_DATA);
   }
@@ -71,19 +69,26 @@ public class Util
     return formataData(dt, FMT_TRANSMISSAO_DATA_SS);
   }
   
+  @Deprecated
+  public static String formataDataTransmissaoSemSegundosTzLocal(DateTime dt, DateTimeZone tz)
+  {
+    DateTimeFormatter fmt = DateTimeFormat.forPattern(PADRAO_TRANSMISSAO_DATA_SS).withZone(tz);
+    return formataData(dt, fmt);
+  }
+
   public static String formataDataComTZ(DateTime dt)
   {
-    return formataData(dt, fmtTZ);
+    return formataData(dt, FMT_TZ);
   }
   
   public static String formataDataMesAno(DateTime dt)
   {
-    return formataData(dt, fmtAM);
+    return formataData(dt, FMT_AM);
   }
 
   public static String formataDataMesAnoDia(DateTime dt)
   {
-    return formataData(dt, fmtAMD);
+    return formataData(dt, FMT_AMD);
   }
 
   /**
@@ -128,21 +133,14 @@ public class Util
     return 0;
   }
 
-  /**
-   * Faz o parser de uma data no formato padrão interno do EstiveAqui.
-   * 
-   * @param data
-   * @return A data no formato DateTime ou
-   *          o valor nulo.
-   */
-  public static DateTime parseDate(String data)
+  public static DateTime parseData(String data, DateTimeFormatter formato)
   {
     if (data == null)
       return null;
     
     try
     {
-      return FMT_TRANSMISSAO_DATA_SS.parseDateTime(data);
+      return formato.parseDateTime(data);
     }
     catch (UnsupportedOperationException | IllegalArgumentException e)
     {
@@ -152,23 +150,27 @@ public class Util
     return null;
   }
 
+  
   /**
-   * Transforma e valida a hora.
+   * Faz o parser de uma data no formato padrão interno do EstiveAqui.
    * 
-   * @param hora - Em String.
-   * @return - No formado DateTime do Joda.
+   * @param data
+   * @return A data no formato DateTime ou
+   *          o valor nulo.
    */
-  public static DateTime parseHoraSegundos(String hora)
+  public static DateTime parseDataTransmissaoComSegundos(String data)
   {
-    try
-    {
-      return Util.FMT_TRANSMISSAO_DATA_SS.parseDateTime(hora);
-    }
-    catch (DateTimeParseException | IllegalArgumentException de)
-    {
-      log.debug("Erro no parser de hora", de);
-      return null;
-    }
+    return parseData(data, FMT_TRANSMISSAO_DATA_SS);
+  }
+
+  /**
+   * Retorna o formato usado para o parser e a formatação da data de transmissão.
+   * 
+   * @return
+   */
+  static public String padraoDataTransmissaoComSegundos()
+  {
+    return PADRAO_TRANSMISSAO_DATA_SS;
   }
 
   /**
@@ -177,17 +179,54 @@ public class Util
    * @param hora
    * @return
    */
-  public static DateTime parseHora(String hora)
+  public static DateTime parseDataTransmissaoSemSegundos(String hora)
   {
-    try
-    {
-      return Util.FMT_TRANSMISSAO_DATA.parseDateTime(hora);
-    }
-    catch (DateTimeParseException | IllegalArgumentException de)
-    {
-      log.debug("Erro no parser de hora", de);
-      return null;
-    }
+    return parseData(hora, FMT_TRANSMISSAO_DATA);
+  }
+
+  /**
+   * Retorna o formato usado para o parser e a formatação da data de transmissão.
+   * 
+   * @return
+   */
+  static public String padraoDataTransmissaoSemSegundos()
+  {
+    return PADRAO_TRANSMISSAO_DATA;
+  }
+
+  /**
+   * Retorna o formato usado para o parser e a formatação da data de transmissão.
+   * 
+   * @return
+   */
+  static public String padraoDataHora()
+  {
+    return PADRAO_TRANSMISSAO_DATA_SS;
+  }
+
+  /**
+   * 
+   * @param hora
+   * @return
+   */
+  public static DateTime parseDataMesAno(String hora)
+  {
+    return parseData(hora, FMT_AM);
+  }
+
+  /**
+   * 
+   * @param hora
+   * @return
+   */
+  public static DateTime parseDataMesAnoDia(String hora)
+  {
+    return parseData(hora, FMT_AMD);
+  }
+
+  static public String padraoDataMesAnoDia()
+  {
+    return PADRAO_AMD;
   }
 
   /**

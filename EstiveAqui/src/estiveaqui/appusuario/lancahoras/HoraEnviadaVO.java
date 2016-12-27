@@ -10,24 +10,27 @@ import org.joda.time.DateTime;
  */
 public class HoraEnviadaVO
 {
-  private int      idLancamento;
+  private int      contadorLancamento;
   private String   numeroPassClock;
   private String   codigoPassClock;
   private String   nota;
+  @Deprecated
   private DateTime hrLancada;
   private DateTime hrDigitacao;
+  @Deprecated
   private String   hashCode;
   private float    latitude;
   private float    longitude;
+  private boolean  validaHora = true;
 
-  public int getIdLancamento()
+  public int getContadorLancamento()
   {
-    return idLancamento;
+    return contadorLancamento;
   }
 
-  public void setIdLancamento(int idLancamento)
+  public void setContadorLancamento(int contadorLancamento)
   {
-    this.idLancamento = idLancamento;
+    this.contadorLancamento = contadorLancamento;
   }
 
   public String getNumeroPassClock()
@@ -60,11 +63,13 @@ public class HoraEnviadaVO
     this.nota = nota;
   }
 
+  @Deprecated
   public DateTime getHrLancada()
   {
     return hrLancada;
   }
 
+  @Deprecated
   public void setHrLancada(DateTime hrLancada)
   {
     this.hrLancada = hrLancada;
@@ -80,11 +85,13 @@ public class HoraEnviadaVO
     this.hrDigitacao = hrDigitacao;
   }
 
+  @Deprecated
   public String getHashCode()
   {
     return hashCode;
   }
 
+  @Deprecated
   public void setHashCode(String hashCode)
   {
     this.hashCode = hashCode;
@@ -108,5 +115,20 @@ public class HoraEnviadaVO
   public void setLongitude(float longitude)
   {
     this.longitude = longitude;
+  }
+
+  /**
+   * Define se chama ou não o servidor ValidaHora.
+   * 
+   * @return
+   */
+  public boolean isValidaHora()
+  {
+    return validaHora;
+  }
+
+  public void setValidaHora(boolean validaHora)
+  {
+    this.validaHora = validaHora;
   }
 }

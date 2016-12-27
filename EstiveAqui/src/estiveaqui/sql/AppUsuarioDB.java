@@ -7,12 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import estiveaqui.Util;
 import estiveaqui.sql.mo.AppUsuarioMO;
 
 public class AppUsuarioDB extends SqlDB
 {
   static final String SELECT = "APUS.IdAppUsuario, APUS.IdAppGestor, APUS.Apelido, APUS.Identificador, "
-                + "APUS.IdIntegracao, APUS.CodAtivacao, APUS.Status, APUS.MaxLancamentosDia "; 
+                + " APUS.TimeZone, APUS.IdIntegracao, APUS.CodAtivacao, APUS.Status, APUS.MaxLancamentosDia "; 
 
   public AppUsuarioDB(ConexaoDB conn)
   {
@@ -288,6 +289,7 @@ public class AppUsuarioDB extends SqlDB
     appUsuarioMO.setIdAppUsuario(rs.getInt("IdAppUsuario"));
     appUsuarioMO.setIdAppGestor(rs.getInt("IdAppGestor"));
     appUsuarioMO.setIdentificador(rs.getString("Identificador"));
+    appUsuarioMO.setTz(Util.parseTimeZone(rs.getString("TimeZone")));
     appUsuarioMO.setIdIntegracao(rs.getString("IdIntegracao"));
     appUsuarioMO.setCodAtivacao(rs.getString("CodAtivacao"));
     appUsuarioMO.setApelido(rs.getString("Apelido"));

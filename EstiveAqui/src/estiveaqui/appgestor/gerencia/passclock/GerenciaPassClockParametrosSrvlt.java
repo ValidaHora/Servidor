@@ -4,10 +4,10 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import estiveaqui.appgestor.servlet.ServletParametrosGerencia;
+import estiveaqui.appgestor.servlet.ServletParametrosGerencia0;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia
+public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia0
 {
   private GerenciaPassClockInVO gerenciaPassClockInVO = (GerenciaPassClockInVO)dadosInVo;
 
@@ -25,7 +25,6 @@ public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia
     gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock0( !getAcao().equals("CAV")));
     gerenciaPassClockInVO.setApelido(getApelido(getAcao().equals("UPD") || getAcao().equals("CAV")));
     gerenciaPassClockInVO.setCodPassClock(getCodigoPassClock(getAcao().equals("CAD")));
-    gerenciaPassClockInVO.setHashCode(getHashCode(getAcao().equals("CAD")));
 //    gerenciaPassClockInVO.setHoraCalculada(getHoraCalculada(getAcao().equals("CAD"), gerenciaPassClockInVO.getTz()));
     gerenciaPassClockInVO.setHoraEnviada(getHoraEnviada(getAcao().equals("CAD"), gerenciaPassClockInVO.getTz()));
     

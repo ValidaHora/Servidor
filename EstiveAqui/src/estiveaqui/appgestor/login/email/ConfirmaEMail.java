@@ -21,7 +21,7 @@ public class ConfirmaEMail
     try
     {
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 

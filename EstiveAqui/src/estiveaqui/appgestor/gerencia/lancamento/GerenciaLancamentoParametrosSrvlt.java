@@ -3,11 +3,11 @@ package estiveaqui.appgestor.gerencia.lancamento;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import estiveaqui.appgestor.servlet.ServletParametrosGerencia;
+import estiveaqui.appgestor.servlet.ServletParametrosGerencia0;
+import estiveaqui.servlet.NomeParametroServlet;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class GerenciaLancamentoParametrosSrvlt extends ServletParametrosGerencia
+public class GerenciaLancamentoParametrosSrvlt extends ServletParametrosGerencia0
 {
   private GerenciaLancamentoInVO gerenciaLancamentoInVO = (GerenciaLancamentoInVO)dadosInVo;
 
@@ -19,10 +19,10 @@ public class GerenciaLancamentoParametrosSrvlt extends ServletParametrosGerencia
   @Override
   public GerenciaLancamentoInVO getParametros() throws ServletParametrosException
   {
-    gerenciaLancamentoInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
-    gerenciaLancamentoInVO.setTz(getTimeZone(true));
+    gerenciaLancamentoInVO.setIdentificadorAppGestor(getIdentificacaoApp(true));
+    gerenciaLancamentoInVO.setTz(getTimeZonePassClock(true));
     gerenciaLancamentoInVO.setIdLancamento(getIdLancamento(getAcao().equals("DIS") || getAcao().equals("ENA")));
-    gerenciaLancamentoInVO.setHoraManual(getHoraManual(getAcao().equals("CAD"), gerenciaLancamentoInVO.getTz()));
+    gerenciaLancamentoInVO.setHoraManual(getHoraManual(getAcao().equals("CAD")));
     gerenciaLancamentoInVO.setIdAppUsuario(getIdAppUsuario(getAcao().equals("CAD")));
     gerenciaLancamentoInVO.setNota(getNota(false));
     
@@ -31,16 +31,16 @@ public class GerenciaLancamentoParametrosSrvlt extends ServletParametrosGerencia
   
   private long getIdLancamento(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroLong("IDLANCAMENTO", obrigatorio, true);
+    return getParametroLong(NomeParametroServlet.IdUltimoLancamento, obrigatorio, true);
   }
 
-  private DateTime getHoraManual(boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  private DateTime getHoraManual(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHora("HORAMANUAL", obrigatorio, tz);
+    return getParametroHora(NomeParametroServlet.HoraManual, obrigatorio);
   }
 
   private int getIdAppUsuario(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroInt("IDAPPUSUARIO", obrigatorio, true);
+    return getParametroInt(NomeParametroServlet.IdentificacaoAppGestor, obrigatorio, true);
   }
 }

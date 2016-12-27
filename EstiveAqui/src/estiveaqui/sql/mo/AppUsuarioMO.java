@@ -1,11 +1,14 @@
 package estiveaqui.sql.mo;
 
+import org.joda.time.DateTimeZone;
+
 public class AppUsuarioMO implements MO
 {
   private int    idAppUsuario         = 0;
   private int    idAppGestor          = 0;
   private String apelido              = "";
   private String identificador        = null;
+  private DateTimeZone  tz            = null;
   private String idIntegracao         = null;
   private String codAtivacao          = null;
   private int    status               = STATUS_HABILITADO;
@@ -14,72 +17,54 @@ public class AppUsuarioMO implements MO
   public static final int STATUS_HABILITADO   = 0;
   public static final int STATUS_DESABILITADO = 1;
 
-  /**
-   * @return the idAppUsuario
-   */
   public int getIdAppUsuario()
   {
     return idAppUsuario;
   }
 
-  /**
-   * @param idAppUsuario
-   *          the idAppUsuario to set
-   */
   public void setIdAppUsuario(int idAppUsuario)
   {
     this.idAppUsuario = idAppUsuario;
   }
 
-  /**
-   * @return the idAppGestor
-   */
   public int getIdAppGestor()
   {
     return idAppGestor;
   }
 
-  /**
-   * @param idAppGestor
-   *          the idAppGestor to set
-   */
   public void setIdAppGestor(int idAppGestor)
   {
     this.idAppGestor = idAppGestor;
   }
 
-  /**
-   * @return the apelido
-   */
   public String getApelido()
   {
     return apelido;
   }
 
-  /**
-   * @param apelido
-   *          the apelido to set
-   */
   public void setApelido(String apelido)
   {
-    this.apelido = (apelido == null ? "" : apelido);
+    this.apelido = apelido;
   }
 
-  /**
-   * @return the identificador
-   */
   public String getIdentificador()
   {
     return identificador;
   }
 
-  /**
-   * @param identificador
-   *          the identificador to set
-   */
   public void setIdentificador(String identificador)
   {
     this.identificador = identificador;
+  }
+
+  public DateTimeZone getTz()
+  {
+    return tz;
+  }
+
+  public void setTz(DateTimeZone tz)
+  {
+    this.tz = tz;
   }
 
   public String getIdIntegracao()
@@ -92,55 +77,33 @@ public class AppUsuarioMO implements MO
     this.idIntegracao = idIntegracao;
   }
 
-  /**
-   * @return the codAtivacao
-   */
   public String getCodAtivacao()
   {
     return codAtivacao;
   }
 
-  /**
-   * @param codAtivacao
-   *          the codAtivacao to set
-   */
   public void setCodAtivacao(String codAtivacao)
   {
     this.codAtivacao = codAtivacao;
   }
 
-  /**
-   * @return the status
-   */
   public int getStatus()
   {
     return status;
   }
 
-  /**
-   * @param status
-   *          the status to set
-   */
   public void setStatus(int status)
   {
     this.status = status;
   }
 
-  /**
-   * @return the maxLancamentosPorDia
-   */
   public int getMaxLancamentosPorDia()
   {
     return maxLancamentosPorDia;
   }
 
-  /**
-   * @param maxLancamentosPorDia
-   *          the maxLancamentosPorDia to set
-   */
   public void setMaxLancamentosPorDia(int maxLancamentosPorDia)
   {
     this.maxLancamentosPorDia = maxLancamentosPorDia;
   }
-
 }

@@ -43,7 +43,7 @@ public class Versao
   }
 
   /**
-   * Faz a comparação padrão das versÃµes que são aceitas por este servidor a partir da versão que o App está
+   * Faz a comparação padrão das versões que são aceitas por este servidor a partir da versão que o App está
    * pretendendo chamar.
    * 
    * @param dadosInVo App e com versão que espera conversar.

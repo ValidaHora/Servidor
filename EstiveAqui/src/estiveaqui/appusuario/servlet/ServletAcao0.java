@@ -11,12 +11,12 @@ import estiveaqui.CodigoErro;
 import estiveaqui.EstiveAquiException;
 import estiveaqui.RegraDeNegocioException;
 import estiveaqui.appusuario.RegraNegocioAppUsuario;
-import estiveaqui.dados.JsonMsgRetorno;
-import estiveaqui.dados.JsonResposta;
+import estiveaqui.dados.JsonMsgRetorno0;
+import estiveaqui.dados.JsonResposta0;
 import estiveaqui.http.HTTPValidaHora;
 import estiveaqui.servlet.ServletEstiveAqui;
 import estiveaqui.servlet.ServletHelperFactoryException;
-import estiveaqui.servlet.ServletParametros;
+import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 import estiveaqui.vo.DadosInVO;
 import estiveaqui.vo.DadosOutVO;
@@ -37,17 +37,17 @@ public class ServletAcao0 extends ServletEstiveAqui
     response.setCharacterEncoding("UTF-8");
 
     //  Para montagem da mensagem de resposta.
-    JsonMsgRetorno jsonMsg = new JsonMsgRetorno("ServletAcao");
-    ServletHelperFactory hf = null;
+    JsonMsgRetorno0 jsonMsg = new JsonMsgRetorno0("ServletAcao");
+    ServletHelperFactory0 hf = null;
 
     try
     {
       //  Instancia a construtora das calsses ServletParametros, RegraNegocioGestor e JsonResposta.
-      hf = new ServletHelperFactory(request);
-      JsonResposta jsonResposta = hf.getInstanceJsonResposta();
+      hf = new ServletHelperFactory0(request);
+      JsonResposta0 jsonResposta = hf.getInstanceJsonResposta();
       
       //  Interpreta parâmetros.
-      ServletParametros servletParametros = hf.getInstanceServletParametros();
+      ServletParametros0 servletParametros = hf.getInstanceServletParametros();
       DadosInVO dadosInVO =  servletParametros.getParametros();
       
       //  Executa as regras de negócio.

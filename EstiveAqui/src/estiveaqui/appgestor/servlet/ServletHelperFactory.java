@@ -41,7 +41,7 @@ import estiveaqui.servlet.ServletParametros0;
 import estiveaqui.servlet.ServletParametrosException;
 
 /**
- * Classe criada para automatizar a criação e facilitar a manutenção das chamadas das Servlets e as açÃµes
+ * Classe criada para automatizar a criação e facilitar a manutenção das chamadas das Servlets e as ações
  * a serem tomadas.<BR>
  * Esta classe amarra os parâmetros recebidos pela servlet com a ação a ser tomada. Em seguida, amarra
  * o retorno da ação tomada e monta uma string Json para retorno ao chamador da servlet.

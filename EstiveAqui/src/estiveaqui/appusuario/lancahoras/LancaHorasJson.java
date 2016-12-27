@@ -2,8 +2,10 @@ package estiveaqui.appusuario.lancahoras;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import estiveaqui.RegraDeNegocioException;
+import estiveaqui.EstiveAquiException;
+import estiveaqui.Util;
 import estiveaqui.dados.ChaveJSON;
 import estiveaqui.dados.JsonMsgRetorno;
 import estiveaqui.dados.JsonResposta;
@@ -20,18 +22,19 @@ public class LancaHorasJson extends JsonResposta
 //    LancaHorasInVO lancaHorasInVO = (LancaHorasInVO) dadosInVo;
     LancaHorasOutVO lancaHorasOutVO = (LancaHorasOutVO) dadosOutVo;
 
-    ArrayList<Map<ChaveJSON, Object>> mapLancamentos = new ArrayList<Map<ChaveJSON, Object>>();
+    List<Map<ChaveJSON, Object>> mapLancamentos = new ArrayList<Map<ChaveJSON, Object>>();
 
-    for (LancamentoVO lancamentoOutVo : lancaHorasOutVO.getLancamentos())
+    for (LancaHoraOutVO lancaHoraOutVo : lancaHorasOutVO.getLancamentos())
     {
       Map<ChaveJSON, Object> mapLancamento = new HashMap<ChaveJSON, Object>();
       mapLancamentos.add(mapLancamento);
       
-      mapLancamento.put(ChaveJSON.IL, lancamentoOutVo.getIdLancamento());
-      mapLancamento.put(ChaveJSON.OK, lancamentoOutVo.getExcecao() == null);
-      if (lancamentoOutVo.getExcecao() != null)
+      mapLancamento.put(ChaveJSON.CL, lancaHoraOutVo.getContadorLancamento());
+      mapLancamento.put(ChaveJSON.OK, lancaHoraOutVo.getExcecao() == null);
+      mapLancamento.put(ChaveJSON.HL, Util.formataDataTransmissaoSemSegundos(lancaHoraOutVo.getHrLancada()));
+      if (lancaHoraOutVo.getExcecao() != null)
       {
-        RegraDeNegocioException excecao = lancamentoOutVo.getExcecao();
+        EstiveAquiException excecao = lancaHoraOutVo.getExcecao();
         Map<ChaveJSON, Object> mapErro = new HashMap<ChaveJSON, Object>();
         mapErro.put(ChaveJSON.CE, excecao.getCodigoErro().getCodigoErro());
         mapErro.put(ChaveJSON.ME, excecao.getCodigoErro().getDescricao());
@@ -45,5 +48,4 @@ public class LancaHorasJson extends JsonResposta
     
     return jsonMsg;
   }
-
 }

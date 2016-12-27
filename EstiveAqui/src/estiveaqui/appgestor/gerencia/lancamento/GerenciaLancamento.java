@@ -44,7 +44,7 @@ public class GerenciaLancamento extends RegraNegocioGestor
       Versao.validaVersao(gerenciaLancamentoInVo, new Versao(1, 0, 0), new Versao(1, 0, 0));
 
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 

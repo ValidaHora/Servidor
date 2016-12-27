@@ -71,27 +71,27 @@ public class ServletAcao extends ServletEstiveAqui
     }
     catch (ServletHelperFactoryException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (ServletParametrosException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (RegraDeNegocioException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (EstiveAquiException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (Throwable t)
     {
-      jsonMsg.addMsgErro(CodigoErro.ERRO_INTERNO, t);
+      jsonMsg.putMsgErro(CodigoErro.ERRO_INTERNO, t);
       log.fatal(t.getMessage());
       t.printStackTrace();
     }

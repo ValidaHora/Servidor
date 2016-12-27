@@ -17,8 +17,6 @@ public class CadastraAppusuarioJson extends JsonResposta
     CadastraAppUsuarioOutVO cadastraAppUsuarioOutVO = (CadastraAppUsuarioOutVO)dadosOutVo;
 
     jsonMsg.put(ChaveJSON.AU, cadastraAppUsuarioOutVO.getAppUsuarioMO().getApelido());
-    jsonMsg.put(ChaveJSON.AU0, cadastraAppUsuarioOutVO.getAppUsuarioMO().getApelido());
-    jsonMsg.put(ChaveJSON.IA0, cadastraAppUsuarioOutVO.getAppUsuarioMO().getIdentificador());
 
     return jsonMsg;
   }

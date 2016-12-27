@@ -11,7 +11,7 @@ public class DadosAppUsuarioInVO extends DadosInVO
     return identificacaoApp;
   }
 
-  public void setIdentificacaoApp(String identificacaoApp)
+  public void setIdentificacaoAppUsuario(String identificacaoApp)
   {
     this.identificacaoApp = identificacaoApp;
   }

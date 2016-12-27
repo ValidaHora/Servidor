@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import estiveaqui.Util;
@@ -16,6 +19,8 @@ import estiveaqui.sql.mo.LancamentoMO;
 
 public class LancamentoDB extends SqlDB
 {
+  private static final Logger log = LogManager.getLogger();
+  
   static final String SELECT =  
              " LANC.IdLancamento, LANC.Status, LANC.IdAppUsuario, LANC.NumPassClock, LANC.ApelidoPassClock, LANC.CodPassClock, "
         +    " LANC.HashCode, LANC.TzCliente, LANC.HrLancamento, LANC.HrPassClock, LANC.HrServidor, LANC.HrDigitacao, LANC.HrEnvio, "
@@ -96,6 +101,24 @@ public class LancamentoDB extends SqlDB
     return lancamentoMO;
   }
 
+  public List<LancamentoMO> insereLancamentos(List<LancamentoMO> lancamentosMO) //throws SQLException
+  {
+    List<LancamentoMO> lancamentosRetornoMO = new ArrayList<LancamentoMO>();
+    for (LancamentoMO lancamentoMO : lancamentosMO)
+    {
+      try
+      {
+        lancamentosRetornoMO.add(insereRegistro(lancamentoMO));
+      }
+      catch (SQLException e)
+      {
+        log.warn("Erro durante inserção de vários lançamentos: {0}", e.getMessage());
+      }
+    }
+    
+    return lancamentosRetornoMO;
+  }
+
   /**
    * Retorna os códigos de um usuário foram lançados no dia definido por <b>dia</b>.
    * 
@@ -131,7 +154,7 @@ public class LancamentoDB extends SqlDB
     ArrayList<String> codigos = new ArrayList<String>();
     while (rs.next())
     {
-      // Preenche o objeto codigos com as informaçÃµes da tabela.
+      // Preenche o objeto codigos com as informações da tabela.
       codigos.add(rs.getString("CodPassClock"));
     }
 
@@ -290,6 +313,7 @@ public class LancamentoDB extends SqlDB
         + " WHERE LANC.IdAppUsuario = APUS.IdAppUsuario "
         + "   AND LANC.NumPassClock = ? "
         + "   AND LANC.HrLancamento >= ? AND LANC.HrLancamento < ? "
+        + "   AND LANC.Status != " + LancamentoMO.STATUS_ENVIADO_VALIDAHORA;
           ;
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setString(1, numPassClock);
@@ -310,7 +334,7 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosGestorHoje(int idAppGestor, DateTimeZone tz) throws SQLException
+  public List<LancamentoMO> leLancamentosGestorHoje(int idAppGestor, DateTimeZone tz) throws SQLException
   {
     DateTime dtHoje = DateTime.now().withZone(tz);
     return leLancamentosGestorPeriodo(idAppGestor, dtHoje, dtHoje);
@@ -332,7 +356,8 @@ public class LancamentoDB extends SqlDB
         + " FROM lancamento LANC, appusuario APUS "
         + " WHERE APUS.IdAppUsuario = ? "
         + "   AND LANC.HrLancamento >= ? AND LANC.HrLancamento < ? "
-        + "   AND LANC.IdAppUsuario = APUS.IdAppUsuario ";
+        + "   AND LANC.IdAppUsuario = APUS.IdAppUsuario "
+        + "   AND LANC.Status != " + LancamentoMO.STATUS_ENVIADO_VALIDAHORA;
 
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setInt(1, idAppUsuario);

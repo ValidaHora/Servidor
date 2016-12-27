@@ -8,13 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import estiveaqui.Util;
 import estiveaqui.sql.mo.PassClockMO;
 
 public class PassClockDB extends SqlDB
 {
   public static final String SELECT = 
       "PACL.IdPassClock, PACL.NumPassClock, PACL.Apelido, PACL.IdAppGestor, "
-    + " PACL.StatusPassClock, PACL.SenhaCadastro, PACL.CodAtivacaoVirtual ";
+    + " PACL.TimeZone, PACL.StatusPassClock, PACL.SenhaCadastro, PACL.CodAtivacaoVirtual ";
 
   public PassClockDB(ConexaoDB conn)
   {
@@ -101,7 +102,7 @@ public class PassClockDB extends SqlDB
    * 
    * @param numPassClock
    *          - Número do PassClock.
-   * @return O objeto PassClockMO com as informaçÃµes encontradas.
+   * @return O objeto PassClockMO com as informações encontradas.
    * @throws SQLException
    */
   public PassClockMO buscaPorNumeroPassClock(String numPassClock) throws SQLException
@@ -346,7 +347,7 @@ public class PassClockDB extends SqlDB
    */
   private PassClockMO preencheResultSet(ResultSet rs) throws SQLException
   {
-    // Preenche o objeto PassClockMO com as informaçÃµes da tabela.
+    // Preenche o objeto PassClockMO com as informações da tabela.
     int idPassClock = rs.getInt("IdPassClock");
     PassClockMO passClockMO = new PassClockMO();
     passClockMO.setIdPassClock(idPassClock);
@@ -356,6 +357,7 @@ public class PassClockDB extends SqlDB
     passClockMO.setStatus(rs.getInt("StatusPassClock"));
     passClockMO.setSenhaCadastro(rs.getString("SenhaCadastro"));
     passClockMO.setCodAtivacaoVirtual(rs.getString("CodAtivacaoVirtual"));
+    passClockMO.setTz(Util.parseTimeZone(rs.getString("TimeZone")));
 
     //
     // Retorna o PassClock lido.

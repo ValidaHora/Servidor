@@ -25,7 +25,7 @@ public class LancaHoraParametrosSrvlt0 extends ServletParametros0
   public DadosInVO getParametros() throws ServletParametrosException
   {
     lancaHoraInVO.setTzPassClock(getTimeZone(true));
-    lancaHoraInVO.setIdentificacaoApp(getIdentificacaoApp0(true));
+    lancaHoraInVO.setIdentificacaoAppUsuario(getIdentificacaoApp0(true));
     lancaHoraInVO.setNumPassClock(getNumeroPassClock0(true));
     lancaHoraInVO.setCodigo(getCodigoPassClock(true));
     lancaHoraInVO.setHashCode(getHashCode(true));

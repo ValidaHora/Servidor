@@ -3,7 +3,6 @@ package estiveaqui.appusuario.lancahora;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import estiveaqui.servlet.NomeParametroServlet;
 import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
@@ -21,14 +20,11 @@ public class LancaHoraParametrosSrvlt extends ServletParametros
   @Override
   public DadosInVO getParametros() throws ServletParametrosException
   {
-    lancaHoraInVO.setIdentificacaoApp(getIdentificacaoApp(true));
+    lancaHoraInVO.setIdentificacaoAppUsuario(getIdentificacaoAppUsuario(true));
     lancaHoraInVO.setNumPassClock(getNumeroPassClock(true));
     lancaHoraInVO.setCodigo(getCodigoPassClock(true));
-    lancaHoraInVO.setNota(getNota(false));
-    lancaHoraInVO.setTzPassClock(getTimeZonePassClock(true));
-    lancaHoraInVO.setHoraCalculada(getHoraLancada(true, lancaHoraInVO.getTzPassClock()));
-    lancaHoraInVO.setHoraDigitada(getHoraDigitada(true, lancaHoraInVO.getTzPassClock()));
-    lancaHoraInVO.setHoraEnviada(getHoraEnviada(true, lancaHoraInVO.getTzPassClock()));
+    lancaHoraInVO.setHoraDigitada(getHoraDigitada(true));
+    lancaHoraInVO.setHoraEnviada(getHoraEnviada(true));
     lancaHoraInVO.setIdDispositivo(getDispositivo(false));
     lancaHoraInVO.setLatitude(getLatitude(true));
     lancaHoraInVO.setLongitude(getLongitude(true));
@@ -53,9 +49,9 @@ public class LancaHoraParametrosSrvlt extends ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getHoraLancada(boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getHoraLancada(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHora(NomeParametroServlet.HoraLancada, obrigatorio, tz);
+    return getParametroHora(NomeParametroServlet.HoraLancada, obrigatorio);
   }
 
   /**
@@ -75,9 +71,9 @@ public class LancaHoraParametrosSrvlt extends ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getHoraDigitada(boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getHoraDigitada(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHoraSegundos(NomeParametroServlet.HoraDigitada, obrigatorio, tz);
+    return getParametroHoraSegundos(NomeParametroServlet.HoraDigitada, obrigatorio);
   }
 
   /**
@@ -97,8 +93,8 @@ public class LancaHoraParametrosSrvlt extends ServletParametros
    * @return
    * @throws ServletParametrosException
    */
-  protected DateTime getHoraEnviada(boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  protected DateTime getHoraEnviada(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHoraSegundos(NomeParametroServlet.HoraEnviada, obrigatorio, DateTimeZone.UTC);
+    return getParametroHoraSegundos(NomeParametroServlet.HoraEnviada, obrigatorio);
   }
 }

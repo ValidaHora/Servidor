@@ -4,12 +4,12 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.DadosGerenciaisInVO;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.NomeParametroServlet;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 
-public abstract class ServletParametrosGerencia extends ServletParametros0
+public abstract class ServletParametrosGerencia extends ServletParametros
 {
-
   public ServletParametrosGerencia(HttpServletRequest request, String acao, DadosGerenciaisInVO dadosGerenciaisInVo) throws IOException, ServletParametrosException
   {
     super(request, acao, dadosGerenciaisInVo);
@@ -37,7 +37,7 @@ public abstract class ServletParametrosGerencia extends ServletParametros0
    */
   protected String getAcao() throws ServletParametrosException
   {
-    return getParametro("ACAO", true, true);
+    return getParametro(NomeParametroServlet.Acao, true, true);
   }
 
 }

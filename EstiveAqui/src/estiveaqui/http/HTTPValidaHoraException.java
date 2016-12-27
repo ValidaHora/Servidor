@@ -16,4 +16,9 @@ public class HTTPValidaHoraException extends EstiveAquiException
     super(codigoErro, mensagem, params);
   }
 
+  public HTTPValidaHoraException(CodigoErro codigoErro)
+  {
+    super(codigoErro);
+  }
+
 }

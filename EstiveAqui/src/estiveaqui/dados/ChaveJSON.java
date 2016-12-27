@@ -34,10 +34,10 @@ public enum ChaveJSON
   AU0("Apelido"),
   /** Identificador do AppUsuario */
   @Deprecated
-  IA0("IdentificadorAppUsuario"),
+  IA0("Identificador"),
   /** Código Lançado */
   @Deprecated
-  CD0("ChaveJSON"),
+  CD0("Codigo"),
   /** Lançamento */
   @Deprecated
   LN0("Lancamento"),
@@ -60,17 +60,19 @@ public enum ChaveJSON
   AP("AP"),
   /** Código de ativação AppUsuario */
   CA("CA"),
+  /** Contador do lançamento */
+  CL("CL"),
   /** Código Lançado */
   CD("CD"),
   /** Código de recuperação de senha */
   CS("CS"),
   /** Código de ativação virtual */
   CV("CV"),
-  /** E-mail validado */
+  /** Existe historico */
   EH("EH"),
   /** Erro - Objeto que inclui código de erro e mensagem de erro. */
   ER("ER"),
-  /** Existe historico */
+  /** E-mail validado */
   EV("EV"),
   /** Hash Code */
   HC("HC"),
@@ -80,6 +82,8 @@ public enum ChaveJSON
   HE("HE"),
   /** Hora Lançada */
   HL("HL"),
+  /** Hora Lançada Manualmente pelo gestor */
+  HM("HM"),
   /** Hora Digitada com TZ */
   @Deprecated
   HDX("HDX"),
@@ -144,6 +148,22 @@ public enum ChaveJSON
   SM("SM"),
   /** Sementes do token */
   SMS("SMS"),
+  
+  /* Não usados como Chave JSON, mas como parâmetros das Servlets. */
+  /* Colocados aqui para serem validados pelo compilador */
+  /** Senha - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  SE("SE"),
+  /** E-Mail - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  EM("EM"),
+  /** Senha Nova - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  SN("SN"),
+  /** Código de validação de e-mail - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  VE("VE"),
+  /** Id do último lançamento - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  UL("UL"),
+  
+  /** Ação de uma servlet gerencial - Não usado como chave JSON! Apenas como parâmetro de servlet */
+  ACAO("ACAO"),
   ;
 
   private String codigo;

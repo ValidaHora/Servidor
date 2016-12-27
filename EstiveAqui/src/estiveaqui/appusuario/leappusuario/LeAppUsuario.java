@@ -41,7 +41,7 @@ public class LeAppUsuario extends RegraNegocioAppUsuario
       Versao.validaVersao(leAppUsuarioInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
-      //  ValidaçÃµes com acesso ao BD.
+      //  Validações com acesso ao BD.
       ///////////////////////////////////////////////////////////////////////////
       connDB = new ConexaoDB("jdbc/EstiveAqui");
 

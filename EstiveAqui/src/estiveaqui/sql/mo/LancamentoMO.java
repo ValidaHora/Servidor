@@ -10,11 +10,12 @@ public class LancamentoMO implements MO
   private long         idLancamento     = 0;
   private int          status           = STATUS_HABILITADO;
   private AppUsuarioMO appUsuarioMO     = new AppUsuarioMO();
+  private int          lancadoPor       = LANCADO_POR_USUARIO;
   private String       numPassClock     = "";
   private String       apelidoPassClock = "";
   private String       codPassClock     = null;
   private String       hashCode         = null;
-  private String       nota             = "";
+  private String       nota             = null;
   private DateTimeZone tzPassClock      = DateTimeZone.UTC;
   private DateTime     hrLancamento     = null;
   private DateTime     hrPassClock      = null;
@@ -30,6 +31,7 @@ public class LancamentoMO implements MO
 
   public static final int STATUS_HABILITADO   = 0;
   public static final int STATUS_DESABILITADO = 1;
+  public static final int STATUS_ENVIADO_VALIDAHORA = 2;
   
   public static final int SEM_SUPORTE         = 1000;
   public static final int NAO_HABILITADO      = 2000;
@@ -38,6 +40,10 @@ public class LancamentoMO implements MO
   public static final int INFO_NAO_RECEBIDA   = 5000;
   public static final int VALOR_INVALIDO      = 6000;
   public static final int LANCAMENTO_MANUAL   = 7000;
+  
+  public static final int LANCADO_POR_USUARIO = 0;
+  public static final int LANCADO_POR_GESTOR  = 1;
+  
 
   public long getIdLancamento()
   {
@@ -57,6 +63,16 @@ public class LancamentoMO implements MO
   public void setAppUsuarioMO(AppUsuarioMO appUsuarioMO)
   {
     this.appUsuarioMO = appUsuarioMO;
+  }
+
+  public int getLancadoPor()
+  {
+    return lancadoPor;
+  }
+
+  public void setLancadoPor(int lancadoPor)
+  {
+    this.lancadoPor = lancadoPor;
   }
 
   public int getStatus()

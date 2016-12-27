@@ -22,7 +22,7 @@ import estiveaqui.vo.DadosInVO;
 import estiveaqui.vo.DadosOutVO;
 
 /**
- * Implementa de forma padronizada as açÃµes do AppUsuario.
+ * Implementa de forma padronizada as ações do AppUsuario.
  */
 @WebServlet(urlPatterns = { "/AppUsuario/Cadastra1", "/AppUsuario/LancaHora1", "/AppUsuario/LeInfos1", "/AppUsuario/LancaHoras1", "/AppUsuario/GetSementes1"})
 public class ServletAcao extends ServletEstiveAqui
@@ -58,27 +58,27 @@ public class ServletAcao extends ServletEstiveAqui
     }
     catch (ServletHelperFactoryException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (ServletParametrosException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (RegraDeNegocioException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (EstiveAquiException e)
     {
-      jsonMsg.addMsgErro(e);
+      jsonMsg.putMsgErro(e);
       log.error(e.getMessage());
     }
     catch (Throwable t)
     {
-      jsonMsg.addMsgErro(CodigoErro.ERRO_INTERNO, t);
+      jsonMsg.putMsgErro(CodigoErro.ERRO_INTERNO, t);
       log.fatal(t.getMessage());
       t.printStackTrace();
     }

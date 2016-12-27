@@ -119,7 +119,7 @@ public class LancamentosExcel implements Lancamentos
   }
 
   /**
-   * Para inicialização das posiçÃµes default, evitando o lançamento de exceção. <BR>
+   * Para inicialização das posições default, evitando o lançamento de exceção. <BR>
    * Retorna uma posição, em caso de entrada correta, ou a posição "A0" em caso de entrada incorreta.
    * 
    * @param posicao
