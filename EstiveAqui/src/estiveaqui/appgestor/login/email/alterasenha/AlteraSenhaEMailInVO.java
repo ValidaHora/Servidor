@@ -1,4 +1,4 @@
-package estiveaqui.appgestor.login.email;
+package estiveaqui.appgestor.login.email.alterasenha;
 
 import estiveaqui.appgestor.DadosAppGestorInVO;
 

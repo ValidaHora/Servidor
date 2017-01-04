@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import org.joda.time.DateTime;
 import estiveaqui.Util;
 import estiveaqui.sql.mo.RelatorioMO;
@@ -55,7 +56,7 @@ public class RelatorioDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<RelatorioMO> leRelatoriosGestor(int idAppGestor) throws SQLException
+  public List<RelatorioMO> leRelatoriosGestor(int idAppGestor) throws SQLException
   {
     String query = "SELECT " + SELECT
         +           " FROM estiveaqui.relatorio  "
@@ -71,9 +72,9 @@ public class RelatorioDB extends SqlDB
     ResultSet rs = stmt.executeQuery();
 
     /*
-     * Le nome dos registros. e guarda no ArrayList.
+     * Le nome dos registros. e guarda no List.
      */
-    ArrayList<RelatorioMO> relatoriosMO = new ArrayList<RelatorioMO>();
+    List<RelatorioMO> relatoriosMO = new ArrayList<RelatorioMO>();
     while (rs.next())
     {
       relatoriosMO.add(preencheResultSet(rs));

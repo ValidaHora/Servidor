@@ -196,7 +196,7 @@ public abstract class ServletParametros
   }
 
   /**
-   * Busca e retorna o parâmetro do número de identificação do app.
+   * Busca e retorna o parâmetro do número de identificação do appUsuario.
    * 
    * ID=<IdentificacaoApp> - Número de identificação do app.
    * 
@@ -391,7 +391,7 @@ public abstract class ServletParametros
 
     try
     {
-      return Util.parseDataTransmissaoComSegundos(val);
+      return Util.parseDataTransmissaoSemSegundos(val);
     }
     catch (UnsupportedOperationException | IllegalArgumentException e)
     {

@@ -34,7 +34,7 @@ public class CadastraComEMail extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(loginEMailInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(loginEMailInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //  Verifica se a senha é válida.
       UtilEMail.validaRegrasParaSenha(loginEMailInVO.getSenha());

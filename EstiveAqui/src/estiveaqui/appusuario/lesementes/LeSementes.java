@@ -2,7 +2,7 @@ package estiveaqui.appusuario.lesementes;
 
 import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -57,10 +57,10 @@ public class LeSementes extends RegraNegocioAppUsuario
       
       //  Encontra os PassClocks utilizados por este usuário. Cadastrados pelo gestor!
       PassClockDB passClockDb = new PassClockDB(connDB);
-      ArrayList<PassClockMO> passClocksMO = passClockDb.leRegistrosGestor(appUsuarioMO.getIdAppGestor());
+      List<PassClockMO> passClocksMO = passClockDb.leRegistrosGestor(appUsuarioMO.getIdAppGestor());
 
       //  Busca as sementes no ValidaHora
-      ArrayList<TokenMO> tokensMO = HTTPValidaHora.buscaSementes(passClocksMO);
+      List<TokenMO> tokensMO = HTTPValidaHora.buscaSementes(passClocksMO);
       leSementesOutVO.setTokensMO(tokensMO);
     }
     catch (SQLException e)

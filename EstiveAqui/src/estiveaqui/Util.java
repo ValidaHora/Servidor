@@ -36,7 +36,7 @@ public class Util
    * Formata para o foramto Ano e Mês (AAAAMM).<BR>
    */
   private static final DateTimeFormatter FMT_AM  = DateTimeFormat.forPattern("yyyyMM").withZoneUTC();
-  private static final DateTimeFormatter DTZF = DateTimeFormat.forPattern("Z");
+//  private static final DateTimeFormatter DTZF = DateTimeFormat.forPattern("Z");
   
   /**
    * Formata uma data passando o formato desejado.
@@ -54,7 +54,8 @@ public class Util
   }
   
   /**
-   * Formata a data de transmissão.
+   * Transforma uma data para o formato de transmissão sem os segundos.<BR>
+   * A data de transmissão tem o formato AAAAMMDDHHmm no GMT-0.
    * 
    * @param dt
    * @return
@@ -64,6 +65,13 @@ public class Util
     return formataData(dt, FMT_TRANSMISSAO_DATA);
   }
   
+  /**
+   * Transforma uma data para o formato de transmissão com segundos.<BR>
+   * A data de transmissão tem o formato AAAAMMDDHHmmSS no GMT-0.
+   * 
+   * @param dt
+   * @return
+   */
   public static String formataDataTransmissaoComSegundos(DateTime dt)
   {
     return formataData(dt, FMT_TRANSMISSAO_DATA_SS);
@@ -76,16 +84,80 @@ public class Util
     return formataData(dt, fmt);
   }
 
-  public static String formataDataComTZ(DateTime dt)
+  /**
+   * Formata uma data no formato yyyyMMddHHmmZ
+   * 
+   * @param dt
+   * @param tz
+   * @return
+   */
+  public static String formataDataComTZ(DateTime dt, DateTimeZone tz)
   {
-    return formataData(dt, FMT_TZ);
+    return formataData(dt.withZone(tz), FMT_TZ);
   }
   
+  /**
+   * Formata um fuso horário no formato +HHMM.
+   * 
+   * @param tz
+   * @return
+   */
+  public static String formataTZ(DateTimeZone tz)
+  {
+    return formataTZ(tz, DateTime.now());
+  }
+  
+  /**
+   * Transforma um DateTimeZone para o formato +HHMM.
+   * 
+   * @param tz
+   * @param hora
+   * @return
+   */
+  public static String formataTZ(DateTimeZone tz, DateTime hora)
+  {
+    if (tz == null || hora == null)
+      return null;
+    
+    int offset = tz.getOffset(hora.getMillis())/1000;
+    String sTz = "-";
+    if (offset > 0)
+      sTz = "+";
+    else
+      offset = -offset;
+    sTz += String.format("%02d%02d", offset/3600, offset%60);
+    return sTz;
+  }
+  
+  /**
+   * Formata o DateTimeZone para o formato canônico. Ex.: America/Sao_Paulo.
+   * 
+   * @param tz
+   * @return
+   */
+  public static String formataTZCanonico(DateTimeZone tz)
+  {
+    return tz.getID();
+  }
+
+  
+  /**
+   * Formata uma data para o formato AAAAMM.
+   *  
+   * @param dt
+   * @return
+   */
   public static String formataDataMesAno(DateTime dt)
   {
     return formataData(dt, FMT_AM);
   }
 
+  /**
+   * Formata uma data para o formado AAAAMMDD.
+   * 
+   * @param dt
+   * @return
+   */
   public static String formataDataMesAnoDia(DateTime dt)
   {
     return formataData(dt, FMT_AMD);
@@ -229,17 +301,17 @@ public class Util
     return PADRAO_AMD;
   }
 
-  /**
-   * Transforma o fuso horário no formato org.joda.time.DateTimeZone para o formato em String 
-   * SHHMM, onde S é o sinal (+ ou -), HH a hora entre 00 e 23 e MM os minutos entre 00 e 59.
-   * 
-   * @param tz - Data no formato org.joda.time.DateTimeZone
-   * @return String representando o fuso horário.
-   */
-  public static String toStringTimeZone(DateTimeZone tz)
-  {
-    return DTZF.withZone(tz).print(DateTime.now());
-  }
+//  /**
+//   * Transforma o fuso horário no formato org.joda.time.DateTimeZone para o formato em String 
+//   * SHHMM, onde S é o sinal (+ ou -), HH a hora entre 00 e 23 e MM os minutos entre 00 e 59.
+//   * 
+//   * @param tz - Data no formato org.joda.time.DateTimeZone
+//   * @return String representando o fuso horário.
+//   */
+//  public static String toStringTimeZone(DateTimeZone tz)
+//  {
+//    return DTZF.withZone(tz).print(DateTime.now());
+//  }
 
   /**
    * Transforma o fuso horário no formato String para o formato org.joda.time.DateTimeZone.
@@ -250,9 +322,9 @@ public class Util
    */
   public static DateTimeZone parseTimeZone(String sTz)
   {
-    if (sTz.length() != 5)
+    if (sTz == null)
       return null;
-    
+
     return DateTimeZone.forID(sTz);
   }
   
@@ -264,6 +336,9 @@ public class Util
    */
   public static DateTimeZone defineTimeZone(String sTz)
   {
+    if (sTz == null)
+      return null;
+    
     int hrTz = Util.parseInt(sTz.substring(0, 3));
     int minTz = Util.parseInt(sTz.substring(3, 5));
     
@@ -279,6 +354,9 @@ public class Util
    */
   public static int difMinutos(DateTime dt1, DateTime dt2)
   {
+    if (dt1 == null || dt2 == null)
+      return 0;
+    
     return (int) ((dt1.getMillis() - dt2.getMillis()) / (1000 * 60));
   }
 
@@ -306,6 +384,8 @@ public class Util
    */
   static public int paraMesAno(DateTime dt)
   {
+    if (dt == null)
+      return 0;
     return dt.getYear() * 100 + dt.getMonthOfYear();
   }
 
@@ -329,4 +409,44 @@ public class Util
     return nomeRelatorio;
   }
 
+
+  public static void main(String[] args)
+  {
+    try
+    {
+      DateTimeZone tz = DateTimeZone.UTC;
+
+      tz = DateTimeZone.forID("UTC");
+      tz = DateTimeZone.forID("America/Los_Angeles");
+      System.out.println(tz.getShortName(0));
+      System.out.println(formataTZCanonico(tz));
+      System.out.println(DateTime.now().withZone(tz));
+//      System.out.println(toStringTimeZone(tz));
+//      System.out.println(tz.getOffset(DateTime.now().getMillis()));
+      System.out.println("");
+      tz = DateTimeZone.forID("America/Sao_Paulo");
+      System.out.println(formataTZCanonico(tz));
+      System.out.println(tz.getShortName(DateTime.now().getMillis()));
+      System.out.println(formataTZ(tz, DateTime.now().minusMonths(4)));
+      System.out.println(formataTZ(tz));
+      System.out.println(DateTime.now().withZone(tz));
+//      System.out.println(toStringTimeZone(tz));
+//      System.out.println(tz.getStandardOffset(DateTime.now().getMillis()));
+      System.out.println("");
+      tz = DateTimeZone.forID("Asia/Tokyo");
+      System.out.println(formataTZCanonico(tz));
+      System.out.println(tz.getShortName(DateTime.now().getMillis()));
+      System.out.println(formataTZ(tz, DateTime.now()));
+      System.out.println(DateTime.now().withZone(tz).withZone(tz).withZone(DateTimeZone.UTC));
+      System.out.println(DateTime.now().withZone(tz));
+//      System.out.println(toStringTimeZone(tz));
+//      System.out.println(tz.getStandardOffset(DateTime.now().getMillis()));
+      System.out.println("");
+    }
+    catch (IllegalArgumentException e)
+    {
+
+    }
+  }
 }
+

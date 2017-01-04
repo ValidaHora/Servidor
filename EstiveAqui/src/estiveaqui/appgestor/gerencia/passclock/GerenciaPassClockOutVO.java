@@ -1,13 +1,13 @@
 package estiveaqui.appgestor.gerencia.passclock;
 
-import java.util.ArrayList;
+import java.util.List;
 import estiveaqui.sql.mo.PassClockMO;
 import estiveaqui.vo.DadosOutVO;
 
 public class GerenciaPassClockOutVO implements DadosOutVO
 {
   private PassClockMO passClockMO = null;
-  private ArrayList<PassClockMO> passClocksMO = null;
+  private List<PassClockMO> passClocksMO = null;
 
   public PassClockMO getPassClockMO()
   {
@@ -19,12 +19,12 @@ public class GerenciaPassClockOutVO implements DadosOutVO
     this.passClockMO = passClockMO;
   }
 
-  public ArrayList<PassClockMO> getPassClocksMO()
+  public List <PassClockMO> getPassClocksMO()
   {
     return passClocksMO;
   }
 
-  public void setPassClocksMO(ArrayList<PassClockMO> passClocksMO)
+  public void setPassClocksMO(List<PassClockMO> passClocksMO)
   {
     this.passClocksMO = passClocksMO;
   }

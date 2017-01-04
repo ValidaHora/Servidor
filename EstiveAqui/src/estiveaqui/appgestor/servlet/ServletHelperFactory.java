@@ -22,22 +22,22 @@ import estiveaqui.appgestor.gerencia.usuario.GerenciaAppUsuarioParametrosSrvlt;
 import estiveaqui.appgestor.ledados.LeDados;
 import estiveaqui.appgestor.ledados.LeDadosJson;
 import estiveaqui.appgestor.ledados.LeDadosParametrosSrvlt;
-import estiveaqui.appgestor.login.email.AlteraSenhaEMail;
-import estiveaqui.appgestor.login.email.AlteraSenhaEMailParametrosSrvlt;
 import estiveaqui.appgestor.login.email.CadastraComEMail;
 import estiveaqui.appgestor.login.email.EMailParametrosSrvlt;
 import estiveaqui.appgestor.login.email.EnviaConfirmaEMail;
 import estiveaqui.appgestor.login.email.LoginComEMail;
 import estiveaqui.appgestor.login.email.LoginComEMailJson;
-import estiveaqui.appgestor.login.email.RecuperaSenhaEMail;
-import estiveaqui.appgestor.login.email.RecuperaSenhaEMailParametrosSrvlt;
+import estiveaqui.appgestor.login.email.alterasenha.AlteraSenhaEMail;
+import estiveaqui.appgestor.login.email.alterasenha.AlteraSenhaEMailParametrosSrvlt;
+import estiveaqui.appgestor.login.email.recuperasenha.RecuperaSenhaEMail;
+import estiveaqui.appgestor.login.email.recuperasenha.RecuperaSenhaEMailParametrosSrvlt;
 import estiveaqui.appgestor.relatorio.GeraRelatorio;
 import estiveaqui.appgestor.relatorio.GeraRelatorioJson;
 import estiveaqui.appgestor.relatorio.GeraRelatorioParametrosSrvlt;
 import estiveaqui.dados.JsonResposta;
 import estiveaqui.dados.JsonRespostaNula;
 import estiveaqui.servlet.ServletHelperFactoryException;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 
 /**
@@ -54,7 +54,7 @@ public class ServletHelperFactory
   private static final Logger log = LogManager.getLogger();
 
   private String             operacao;
-  private ServletParametros0  servletParametros;
+  private ServletParametros  servletParametros;
   private RegraNegocioGestor regraNegocioGestor;
   private JsonResposta       jsonResposta;
 
@@ -81,77 +81,74 @@ public class ServletHelperFactory
     
     switch (operacao)
     {
-      case "/AppGestor/LeDados":
-      case "/LeDados":
+      case "/AppGestor/LeDados1":
         servletParametros = new LeDadosParametrosSrvlt(request);
         regraNegocioGestor = new LeDados();
         jsonResposta = new LeDadosJson();
         break;
 
-      case "/AppGestor/CadastraComEMail":
+      case "/AppGestor/CadastraComEMail1":
         servletParametros = new EMailParametrosSrvlt(request, "Cadastra com e-mail");
         regraNegocioGestor = new CadastraComEMail();
         jsonResposta = new LoginComEMailJson("CadastraComEMail");
         break;
 
-      case "/AppGestor/LoginComEMail":
+      case "/AppGestor/LoginComEMail1":
         servletParametros = new EMailParametrosSrvlt(request, "Login com e-mail");
         regraNegocioGestor = new LoginComEMail();
         jsonResposta = new LoginComEMailJson("LoginComEMail");
         break;
      
-      case "/AppGestor/AlteraSenhaEMail":
+      case "/AppGestor/AlteraSenhaEMail1":
         servletParametros = new AlteraSenhaEMailParametrosSrvlt(request);
         regraNegocioGestor = new AlteraSenhaEMail();
         jsonResposta = new JsonRespostaNula("AlteraSenhaEMail");
         break;
         
-      case "/AppGestor/EnviaConfirmaEMail":
+      case "/AppGestor/EnviaConfirmaEMail1":
         servletParametros = new AppGestorParametrosSrvlt(request, "EnviaConfirmaEMail", new DadosAppGestorInVO());
         regraNegocioGestor = new EnviaConfirmaEMail();
         jsonResposta = new JsonRespostaNula("EnviaConfirmaEMail");
         break;
         
-      case "/AppGestor/RecuperaSenha":
+      case "/AppGestor/RecuperaSenha1":
         servletParametros = new RecuperaSenhaEMailParametrosSrvlt(request);
         regraNegocioGestor = new RecuperaSenhaEMail();
         jsonResposta = new JsonRespostaNula("RecuperaSenhaEMail");
         break;
 
-//      case "/AppGestor/LeLancamentosPeriodo":
-//      case "/LeLancamentosPeriodo":
+//      case "/AppGestor/LeLancamentosPeriodo1":
+//      case "/LeLancamentosPeriodo1":
 //        servletParametros = new LeLancamentosPeriodoParametrosSrvlt(request);
 //        regraNegocioGestor = new LeLancamentosPeriodo();
 //        jsonResposta = new LeLancamentosPeriodoJson();
 //        break;
 //
-      case "/AppGestor/CadastraComPassClock":
-      case "/CadastraComPassClock":
+      case "/AppGestor/CadastraComPassClock1":
         servletParametros = new CadastraComPassClockParametrosSrvlt(request);
         regraNegocioGestor = new CadastraComPassClock();
         jsonResposta = new CadastraComPassClockJson();
         break;
 
-      case "/AppGestor/GeraRelatorio":
-      case "/GeraRelatorio":
+      case "/AppGestor/GeraRelatorio1":
         servletParametros = new GeraRelatorioParametrosSrvlt(request);
         regraNegocioGestor = new GeraRelatorio();
         jsonResposta = new GeraRelatorioJson();
         break;
 
-      case "/AppGestor/Gerencia/PassClock":
+      case "/AppGestor/Gerencia/PassClock1":
         servletParametros = new GerenciaPassClockParametrosSrvlt(request);
         regraNegocioGestor = new GerenciaPassClock();
         jsonResposta = new GerenciaPassClockJson();
         break;
 
-      case "/AppGestor/Gerencia/Lancamento":
+      case "/AppGestor/Gerencia/Lancamento1":
         servletParametros = new GerenciaLancamentoParametrosSrvlt(request);
         regraNegocioGestor = new GerenciaLancamento();
         jsonResposta = new GerenciaLancamentoJson();
         break;
 
-      case "/AppGestor/Gerencia/AppUsuario":
+      case "/AppGestor/Gerencia/AppUsuario1":
         servletParametros = new GerenciaAppUsuarioParametrosSrvlt(request);
         regraNegocioGestor = new GerenciaAppUsuario();
         jsonResposta = new GerenciaAppUsuarioJson();
@@ -170,7 +167,7 @@ public class ServletHelperFactory
    * @return
    * @throws ServletHelperFactoryException
    */
-  public ServletParametros0 getInstanceServletParametros() throws ServletHelperFactoryException
+  public ServletParametros getInstanceServletParametros() throws ServletHelperFactoryException
   {
     return servletParametros;
   }

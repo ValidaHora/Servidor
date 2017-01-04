@@ -1,5 +1,6 @@
 package estiveaqui.appgestor.gerencia.passclock;
 
+import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
@@ -11,8 +12,9 @@ import estiveaqui.Versao;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.DadosGerenciaisInVO;
 import estiveaqui.appgestor.RegraNegocioGestor;
+import estiveaqui.http.HTTPValidaHora;
+import estiveaqui.http.HTTPValidaHoraException;
 import estiveaqui.servidor.util.GeraChaves;
-import haroldo.util.sql.ConexaoDB;
 import estiveaqui.sql.PassClockDB;
 import estiveaqui.sql.mo.AppGestorMO;
 import estiveaqui.sql.mo.PassClockMO;
@@ -56,9 +58,6 @@ public class GerenciaPassClock extends RegraNegocioGestor
       log.debug("Gerenciando PassClock com a ação \"{}\"", gerenciaPassClockInVo.getAcao());
       switch (gerenciaPassClockInVo.getAcao())
       {
-        //  TODO: Criar
-        case "CAD1":
-          break;
         //  Cadastra um PassClock físico.
         case "CAD":
           gerenciaPassClockOutVo = cadastraFisico(connDB, gerenciaPassClockInVo);
@@ -135,7 +134,7 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @throws SQLException
    * @throws RegraDeNegocioException
    */
-  private PassClockMO gerenciaPassClock(ConexaoDB connDB, int idAppGestor, String numPassClock) throws SQLException, RegraDeNegocioException
+  public static PassClockMO gerenciaPassClock(ConexaoDB connDB, int idAppGestor, String numPassClock) throws SQLException, RegraDeNegocioException
   {
     //  Se o numPassClock não foi passado. Não há validação.
     if (numPassClock == null || numPassClock.isEmpty())
@@ -168,7 +167,7 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @throws SQLException
    * @throws RegraDeNegocioException
    */
-  private GerenciaPassClockOutVO cadastraVirtual(ConexaoDB connDB, int idAppGestor) throws SQLException, RegraDeNegocioException
+  GerenciaPassClockOutVO cadastraVirtual(ConexaoDB connDB, int idAppGestor) throws SQLException, RegraDeNegocioException
   {
     GerenciaPassClockOutVO gerenciaPassClockOutVo = new GerenciaPassClockOutVO();
     PassClockDB passClockDb = new PassClockDB(connDB);
@@ -197,7 +196,7 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @throws SQLException
    * @throws RegraDeNegocioException
    */
-  private GerenciaPassClockOutVO desabilita(ConexaoDB connDB, PassClockMO passClockMO) throws SQLException, RegraDeNegocioException
+  GerenciaPassClockOutVO desabilita(ConexaoDB connDB, PassClockMO passClockMO) throws SQLException, RegraDeNegocioException
   {
     return defineStatus(connDB, passClockMO, PassClockMO.STATUS_DESABILITADO);
   }
@@ -211,7 +210,7 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @throws SQLException
    * @throws RegraDeNegocioException
    */
-  private GerenciaPassClockOutVO habilita(ConexaoDB connDB, PassClockMO passClockMO) throws SQLException, RegraDeNegocioException
+  GerenciaPassClockOutVO habilita(ConexaoDB connDB, PassClockMO passClockMO) throws SQLException, RegraDeNegocioException
   {
     if (passClockMO.getCodAtivacaoVirtual() != null)
       throw new RegraDeNegocioException(CodigoErro.PASSCLOCK_DESABILITADO, "PassClocks virtuais são habilitados pelos usuários");
@@ -261,7 +260,7 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @throws SQLException
    * @throws RegraDeNegocioException
    */
-  private GerenciaPassClockOutVO atualizaApelido(ConexaoDB connDB, PassClockMO passClockMO, String apelido) throws SQLException, RegraDeNegocioException
+  GerenciaPassClockOutVO atualizaApelido(ConexaoDB connDB, PassClockMO passClockMO, String apelido) throws SQLException, RegraDeNegocioException
   {
     GerenciaPassClockOutVO gerenciaPassClockOutVo = new GerenciaPassClockOutVO();
     PassClockDB passClockDb = new PassClockDB(connDB);
@@ -286,14 +285,12 @@ public class GerenciaPassClock extends RegraNegocioGestor
    * @return
    * @throws RegraDeNegocioException
    * @throws SQLException
+   * @throws HTTPValidaHoraException 
    */
   private GerenciaPassClockOutVO cadastraFisico(ConexaoDB connDB, GerenciaPassClockInVO gerenciaPassClockInVo)
       throws RegraDeNegocioException, SQLException
   {
     GerenciaPassClockOutVO gerenciaPassClockOutVo = new GerenciaPassClockOutVO();
-
-    //  Valida se o hashcode é válido.
-    validaCheckSum(gerenciaPassClockInVo.getHashCode());
 
     //  Encontra o gestor associado a este PassClock.
     AppGestorMO appGestorMO = validaGestor(connDB, gerenciaPassClockInVo);
@@ -303,14 +300,23 @@ public class GerenciaPassClock extends RegraNegocioGestor
     PassClockMO passClockMo = passClockDb.buscaPorNumeroPassClock(gerenciaPassClockInVo.getNumPassClock());
     if (passClockMo != null)
       throw new RegraDeNegocioException(CodigoErro.PASSCLOCK_JA_EXISTE);
+
+    try
+    {
+      HTTPValidaHora.validaCodigo(gerenciaPassClockInVo);
+    }
+    catch (HTTPValidaHoraException e)
+    {
+      throw new RegraDeNegocioException(CodigoErro.CODIGO_INVALIDO, e.getMessage());
+    }
     
     //  Prepara o registro do PassClock.
-    passClockMo = new PassClockMO();
     passClockMo = new PassClockMO();
     passClockMo.setNumPassClock(gerenciaPassClockInVo.getNumPassClock());
     passClockMo.setApelido(gerenciaPassClockInVo.getApelido());
     passClockMo.setSenhaCadastro(GeraChaves.senhaPassClock());
     passClockMo.setIdAppGestor(appGestorMO.getIdAppGestor());
+    passClockMo.setTz(gerenciaPassClockInVo.getTz());
     
     //  Inclui o PassClock físico no BD.
     passClockDb.insereRegistro(passClockMo);

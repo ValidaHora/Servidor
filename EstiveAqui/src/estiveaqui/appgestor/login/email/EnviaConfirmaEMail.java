@@ -36,7 +36,7 @@ public class EnviaConfirmaEMail extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(enviaConfirmaEMailInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(enviaConfirmaEMailInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.

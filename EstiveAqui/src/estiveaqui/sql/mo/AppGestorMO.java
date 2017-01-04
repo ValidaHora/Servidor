@@ -11,6 +11,7 @@ public class AppGestorMO implements MO
   private long            idUltimoLancamentoRelatorio = 0;
   private String          email                       = "";
   private String          senha                       = "";
+  private DateTime        dataCadastramento;
   private int             senhaVencida                = 1;
   private String          codValidacaoEMail           = null;
   private String          codRecuperaSenha             = null;
@@ -87,6 +88,16 @@ public class AppGestorMO implements MO
   public void setSenha(String senha)
   {
     this.senha = senha;
+  }
+
+  public DateTime getDataCadastramento()
+  {
+    return dataCadastramento;
+  }
+
+  public void setDataCadastramento(DateTime dataCadastramento)
+  {
+    this.dataCadastramento = dataCadastramento;
   }
 
   public int getSenhaVencida()

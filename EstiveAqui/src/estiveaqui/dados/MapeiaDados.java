@@ -112,7 +112,7 @@ public class MapeiaDados
     dado.put(ChaveJSON.HL, Util.formataDataTransmissaoSemSegundos(lancamentoMO.getHrLancamento()));
     dado.put(ChaveJSON.HD, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrDigitacao()));
     dado.put(ChaveJSON.HE, Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrEnvio()));
-    dado.put(ChaveJSON.TZ, Util.toStringTimeZone(lancamentoMO.getTzPassClock()));
+    dado.put(ChaveJSON.TZ, Util.formataTZ(lancamentoMO.getTzPassClock(), lancamentoMO.getHrLancamento()));
     dado.put(ChaveJSON.PC, "" + lancamentoMO.getNumPassClock());
     dado.put(ChaveJSON.AP, lancamentoMO.getApelidoPassClock());
     dado.put(ChaveJSON.AU, lancamentoMO.getAppUsuarioMO().getApelido());

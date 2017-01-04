@@ -9,7 +9,6 @@ import estiveaqui.appusuario.cadastra.CadastraAppusuarioJson0;
 import estiveaqui.appusuario.lancahora.LancaHora0;
 import estiveaqui.appusuario.lancahora.LancaHoraJson0;
 import estiveaqui.appusuario.lancahora.LancaHoraParametrosSrvlt0;
-import estiveaqui.appusuario.lancahoras.LancaHoras;
 import estiveaqui.appusuario.lancahoras.LancaHoras0;
 import estiveaqui.appusuario.lancahoras.LancaHorasJson0;
 import estiveaqui.appusuario.lancahoras.LancaHorasParametrosSrvlt0;

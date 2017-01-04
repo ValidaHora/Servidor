@@ -13,7 +13,7 @@ public class AppGestorDB extends SqlDB
 {
   public static final String SELECT = 
       " APGS.IDAPPGESTOR, APGS.IDENTIFICADOR, APGS.STATUS, APGS.IDPARCEIRO, APGS.IDLANCAMENTOULTREL, APGS.EMAIL, APGS.SENHA,"
-    + " APGS.SENHAVENCIDA, APGS.CODVALIDACAOEMAIL, APGS.CODRECUPERASENHA, APGS.DTCODRECUPERASENHA ";
+    + " APGS.DTCADASTRAMENTO, APGS.SENHAVENCIDA, APGS.CODVALIDACAOEMAIL, APGS.CODRECUPERASENHA, APGS.DTCODRECUPERASENHA ";
 
   public AppGestorDB(ConexaoDB conn)
   {
@@ -339,6 +339,7 @@ public class AppGestorDB extends SqlDB
     appGestorMO.setIdUltimoLancamentoRelatorio(rs.getLong("IDLANCAMENTOULTREL"));
     appGestorMO.setEmail(rs.getString("EMAIL"));
     appGestorMO.setSenha(rs.getString("SENHA"));
+    appGestorMO.setDataCadastramento(SqlUtil.fromSqlDate(rs.getDate("DTCADASTRAMENTO")));
     appGestorMO.setSenhaVencida(rs.getInt("SENHAVENCIDA"));
     appGestorMO.setCodValidacaoEMail(rs.getString("CODVALIDACAOEMAIL"));
     appGestorMO.setCodRecuperaSenha(rs.getString("CODRECUPERASENHA"));

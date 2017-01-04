@@ -1,7 +1,8 @@
 package estiveaqui.appgestor.gerencia.usuario;
 
+import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,6 @@ import estiveaqui.appgestor.DadosGerenciaisInVO;
 import estiveaqui.appgestor.RegraNegocioGestor;
 import estiveaqui.servidor.util.GeraChaves;
 import estiveaqui.sql.AppUsuarioDB;
-import haroldo.util.sql.ConexaoDB;
 import estiveaqui.sql.mo.AppGestorMO;
 import estiveaqui.sql.mo.AppUsuarioMO;
 import estiveaqui.vo.DadosInVO;
@@ -39,7 +39,7 @@ public class GerenciaAppUsuario extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(gerenciaAppUsuarioInVo, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(gerenciaAppUsuarioInVo, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.
@@ -238,7 +238,7 @@ public class GerenciaAppUsuario extends RegraNegocioGestor
   private void validaAppUsuario(AppUsuarioDB appUsuarioDb, int idAppGestor, GerenciaAppUsuarioInVO gerenciaAppUsuarioInVo) throws RegraDeNegocioException, SQLException
   {
     //  Busca os appusuarios do gestor.
-    ArrayList<AppUsuarioMO> appUsuariosMO = appUsuarioDb.leRegistrosGestor(idAppGestor);
+    List<AppUsuarioMO> appUsuariosMO = appUsuarioDb.leRegistrosGestor(idAppGestor);
 
     //  Valida AppUsuario.
     for (AppUsuarioMO appUsuarioMO : appUsuariosMO)

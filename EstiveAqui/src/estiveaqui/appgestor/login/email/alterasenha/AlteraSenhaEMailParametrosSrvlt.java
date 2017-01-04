@@ -1,12 +1,13 @@
-package estiveaqui.appgestor.login.email;
+package estiveaqui.appgestor.login.email.alterasenha;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.CodigoErro;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.appgestor.servlet.ServletParametrosAppGestor;
+import estiveaqui.servlet.NomeParametroServlet;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class AlteraSenhaEMailParametrosSrvlt extends ServletParametros0
+public class AlteraSenhaEMailParametrosSrvlt extends ServletParametrosAppGestor
 {
   private String paramSenhaAntiga = "SENHAANTIGA";
   private String paramCodRecuperaSenha = "CODRECUPERASENHA";
@@ -35,31 +36,28 @@ public class AlteraSenhaEMailParametrosSrvlt extends ServletParametros0
       throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, "Use apenas um dos parâmetro ''{0}'' ou ''{1}'' em ''{2}''", 
                                             paramSenhaAntiga, paramCodRecuperaSenha, acao);
     
-    srvltInVo.setIdentificadorAppGestor(getIdentificacaoApp0(srvltInVo.getSenhaAntiga() != null));
+    srvltInVo.setIdentificadorAppGestor(getIdentificacaoAppGestor(srvltInVo.getSenhaAntiga() != null));
 
     return srvltInVo;
   }
 
   String getSenhaNova() throws ServletParametrosException
   {
-    String param = "SENHANOVA";
-    String val = getParametro(param, true, false);
+    String val = getParametro(NomeParametroServlet.SenhaNova, true, false);
 
     return val;
   }
 
   String getSenhaAntiga() throws ServletParametrosException
   {
-    String param = paramSenhaAntiga;
-    String val = getParametro(param, false, false);
+    String val = getParametro(NomeParametroServlet.Senha, false, false);
 
     return val;
   }
 
   String getCodigoRecuperaSenha() throws ServletParametrosException
   {
-    String param = paramCodRecuperaSenha;
-    String val = getParametro(param, false, false);
+    String val = getParametro(NomeParametroServlet.CodigoRecuperacaoSenha, false, false);
 
     return val;
   }

@@ -1,4 +1,4 @@
-package estiveaqui.appgestor.login.email;
+package estiveaqui.appgestor.login.email.alterasenha;
 
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -12,6 +12,7 @@ import estiveaqui.RegraDeNegocioException;
 import estiveaqui.Versao;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.RegraNegocioGestor;
+import estiveaqui.appgestor.login.email.UtilEMail;
 import estiveaqui.sql.AppGestorDB;
 import haroldo.util.sql.ConexaoDB;
 import estiveaqui.sql.mo.AppGestorMO;
@@ -39,7 +40,7 @@ public class AlteraSenhaEMail extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(alteraSenhaEMailInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(alteraSenhaEMailInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //  Verifica se a nova senha é válida.
       UtilEMail.validaRegrasParaSenha(alteraSenhaEMailInVO.getSenhaNova());

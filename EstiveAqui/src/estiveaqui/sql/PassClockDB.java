@@ -8,14 +8,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
 import estiveaqui.Util;
 import estiveaqui.sql.mo.PassClockMO;
 
 public class PassClockDB extends SqlDB
 {
   public static final String SELECT = 
-      "PACL.IdPassClock, PACL.NumPassClock, PACL.Apelido, PACL.IdAppGestor, "
-    + " PACL.TimeZone, PACL.StatusPassClock, PACL.SenhaCadastro, PACL.CodAtivacaoVirtual ";
+       "PACL.IdPassClock, PACL.NumPassClock, PACL.Apelido, PACL.IdAppGestor, "
+    + " PACL.TimeZoneCanonico, PACL.StatusPassClock, PACL.SenhaCadastro, PACL.CodAtivacaoVirtual ";
 
   public PassClockDB(ConexaoDB conn)
   {
@@ -53,8 +54,8 @@ public class PassClockDB extends SqlDB
   {
     //  Monta a query.
     String query = "INSERT INTO passclock "
-        + "(Numpassclock, Apelido, SenhaCadastro, IdAppGestor) "
-        + " VALUES (?, ?, ?, ?)";
+        + "(Numpassclock, Apelido, SenhaCadastro, IdAppGestor, TimeZoneCanonico) "
+        + " VALUES (?, ?, ?, ?, ?)";
     
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setString(1, passClockMO.getNumPassClock());
@@ -64,6 +65,7 @@ public class PassClockDB extends SqlDB
     stmt.setString(2, apelido);
     stmt.setString(3, passClockMO.getSenhaCadastro());
     stmt.setInt(4, passClockMO.getIdAppGestor());
+    stmt.setString(5, Util.formataTZCanonico(passClockMO.getTz()));
 
     //  Inclui o registro na tabela.
     stmt.executeUpdate();
@@ -80,7 +82,7 @@ public class PassClockDB extends SqlDB
    * @param idAppGestor
    * @return
    */
-  public ArrayList<PassClockMO>leRegistrosGestor(int idAppGestor) throws SQLException
+  public List<PassClockMO>leRegistrosGestor(int idAppGestor) throws SQLException
   {
     String query = "SELECT " + SELECT  
                 +   " FROM  passclock PACL "
@@ -90,7 +92,7 @@ public class PassClockDB extends SqlDB
     stmt.setInt(1, idAppGestor);
     ResultSet rs = stmt.executeQuery();
 
-    ArrayList<PassClockMO> passClocksMO = new ArrayList<PassClockMO>();
+    List<PassClockMO> passClocksMO = new ArrayList<PassClockMO>();
     while (rs.next())
       passClocksMO.add(preencheResultSet(rs));
     
@@ -357,7 +359,7 @@ public class PassClockDB extends SqlDB
     passClockMO.setStatus(rs.getInt("StatusPassClock"));
     passClockMO.setSenhaCadastro(rs.getString("SenhaCadastro"));
     passClockMO.setCodAtivacaoVirtual(rs.getString("CodAtivacaoVirtual"));
-    passClockMO.setTz(Util.parseTimeZone(rs.getString("TimeZone")));
+    passClockMO.setTz(Util.parseTimeZone(rs.getString("TimeZoneCanonico")));
 
     //
     // Retorna o PassClock lido.

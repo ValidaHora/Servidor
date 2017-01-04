@@ -4,10 +4,12 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import estiveaqui.appgestor.servlet.ServletParametrosGerencia0;
+import estiveaqui.CodigoErro;
+import estiveaqui.appgestor.servlet.ServletParametrosGerencia;
+import estiveaqui.servlet.NomeParametroServlet;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia0
+public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia
 {
   private GerenciaPassClockInVO gerenciaPassClockInVO = (GerenciaPassClockInVO)dadosInVo;
 
@@ -19,14 +21,12 @@ public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia0
   @Override
   public GerenciaPassClockInVO getParametros() throws ServletParametrosException
   {
-    gerenciaPassClockInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
-    gerenciaPassClockInVO.setTz(getTimeZone(false));
-//    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock(getAcao().equals("DIS") || getAcao().equals("UPD")));
-    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock0( !getAcao().equals("CAV")));
+    gerenciaPassClockInVO.setIdentificadorAppGestor(getIdentificacaoAppGestor(true));
+    gerenciaPassClockInVO.setNumPassClock(getNumeroPassClock( !getAcao().equals("CAV")));
     gerenciaPassClockInVO.setApelido(getApelido(getAcao().equals("UPD") || getAcao().equals("CAV")));
     gerenciaPassClockInVO.setCodPassClock(getCodigoPassClock(getAcao().equals("CAD")));
-//    gerenciaPassClockInVO.setHoraCalculada(getHoraCalculada(getAcao().equals("CAD"), gerenciaPassClockInVO.getTz()));
-    gerenciaPassClockInVO.setHoraEnviada(getHoraEnviada(getAcao().equals("CAD"), gerenciaPassClockInVO.getTz()));
+    gerenciaPassClockInVO.setHoraEnviada(getHoraEnviada(getAcao().equals("CAD")));
+    gerenciaPassClockInVO.setTz(getTimeZoneName(true));
     
     return gerenciaPassClockInVO;
   }
@@ -40,11 +40,28 @@ public class GerenciaPassClockParametrosSrvlt extends ServletParametrosGerencia0
    */
   private String getApelido(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("APELIDO", obrigatorio, true);
+    return getParametro(NomeParametroServlet.ApelidoPassClock, obrigatorio, true);
   }
 
-  private DateTime getHoraEnviada(boolean obrigatorio, DateTimeZone tz) throws ServletParametrosException
+  private DateTime getHoraEnviada(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametroHoraSegundos("HORAENVIADA", obrigatorio, tz);
+    return getParametroHoraSegundos(NomeParametroServlet.HoraEnviada, obrigatorio);
+  }
+  
+  private DateTimeZone getTimeZoneName(boolean obrigatorio) throws ServletParametrosException
+  {
+    NomeParametroServlet param = NomeParametroServlet.TimeZoneName;
+    String val = getParametro(param, obrigatorio, true);
+    if (val == null)
+      return null;
+
+    try
+    {
+      return DateTimeZone.forID(val);
+    }
+    catch (UnsupportedOperationException | IllegalArgumentException e)
+    {
+      throw new ServletParametrosException(CodigoErro.ERRO_INTERNO, "Parâmetro ''{0}'' com formato inválido em ''{1}''. Valor passado ''{2}''", param, acao, val);
+    }
   }
 }

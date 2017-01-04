@@ -2,10 +2,10 @@ package estiveaqui.appgestor;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.appgestor.servlet.ServletParametrosAppGestor;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class AppGestorParametrosSrvlt extends ServletParametros0
+public class AppGestorParametrosSrvlt extends ServletParametrosAppGestor
 {
   private DadosAppGestorInVO dadosAppGestorInVo;
   
@@ -24,7 +24,7 @@ public class AppGestorParametrosSrvlt extends ServletParametros0
   @Override
   public DadosAppGestorInVO getParametros() throws ServletParametrosException  
   {
-    dadosAppGestorInVo.setIdentificadorAppGestor(getIdentificacaoApp0(true));
+    dadosAppGestorInVo.setIdentificadorAppGestor(getIdentificacaoAppGestor(true));
 
     return dadosAppGestorInVo;
   }

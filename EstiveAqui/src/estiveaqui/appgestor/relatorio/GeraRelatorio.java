@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -52,7 +53,7 @@ public class GeraRelatorio extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(geraRelatorioInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(geraRelatorioInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.
@@ -64,10 +65,10 @@ public class GeraRelatorio extends RegraNegocioGestor
 
       //  Obtém todos os relatórios do AppGestor.
       RelatorioDB relatorioDb = new RelatorioDB(connDB);
-      ArrayList<RelatorioMO> todosRelatoriosMO = relatorioDb.leRelatoriosGestor(appGestorMO.getIdAppGestor());
+      List<RelatorioMO> todosRelatoriosMO = relatorioDb.leRelatoriosGestor(appGestorMO.getIdAppGestor());
 
       //  Filtra apenas os relatórios que tem que ser recriados.
-      ArrayList<RelatorioMO> relatoriosMO = new ArrayList<RelatorioMO>();
+      List<RelatorioMO> relatoriosMO = new ArrayList<RelatorioMO>();
       for (RelatorioMO relatorioMO : todosRelatoriosMO)
       {
         if (relatorioMO.getRecriarRelatorio() == RelatorioMO.RECRIAR_RELATORIO_SIM)
@@ -82,7 +83,7 @@ public class GeraRelatorio extends RegraNegocioGestor
 
         //  Obtém todos os lançamentos do mês de um gestor.
         LancamentoDB lancamentoDb = new LancamentoDB(connDB);
-        ArrayList<LancamentoMO> lancamentosMesMO = lancamentoDb.leLancamentosGestorPeriodo(appGestorMO.getIdAppGestor(), dtMes, dtMes.plusMonths(1));
+        List<LancamentoMO> lancamentosMesMO = lancamentoDb.leLancamentosGestorMes(appGestorMO.getIdAppGestor(), dtMes);
 
         //  Monta os lançamentos do mês.
         LancamentosMesVO lancamentosMesVo = new LancamentosMesVO(dtMes);

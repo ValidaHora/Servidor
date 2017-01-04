@@ -2,7 +2,6 @@ package estiveaqui.appusuario.lancahora;
 
 import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
@@ -114,6 +113,7 @@ public class LancaHora extends RegraNegocioAppUsuario
       lancamentoMO.setIpDispositivo(lancaHoraInVO.getIdDispositivo());
       lancamentoMO.setLatitude(lancaHoraInVO.getLatitude());
       lancamentoMO.setLongitude(lancaHoraInVO.getLongitude());
+      lancamentoMO.setTzPassClock(passClockMO.getTz());
 
       //  Insere o lançamento no BD.
       LancamentoDB lancamentoDb = new LancamentoDB(connDB);
@@ -183,7 +183,7 @@ public class LancaHora extends RegraNegocioAppUsuario
 
     //  Busca os lançamentos no BD.
     LancamentoDB lancamentoDb = new LancamentoDB(connDB);
-    ArrayList<LancamentoMO> lancamentosMO = lancamentoDb.leLancamentosUsuarioHoje(appUsuarioMO.getIdAppUsuario(), appUsuarioMO.getTz());
+    List<LancamentoMO> lancamentosMO = lancamentoDb.leLancamentosUsuarioHoje(appUsuarioMO.getIdAppUsuario(), appUsuarioMO.getTz());
 
     //  Já atingiu o limite de lançamentos no dia?
     int qtd = appUsuarioMO.getMaxLancamentosPorDia();

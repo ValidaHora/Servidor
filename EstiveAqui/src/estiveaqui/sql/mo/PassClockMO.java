@@ -12,7 +12,7 @@ public class PassClockMO implements MO
   private int    status             = STATUS_HABILITADO;
   private DateTimeZone  tz          = null;
   private String senhaCadastro      = "";
-  private String codAtivacaoVirtual = "";
+  private String codAtivacaoVirtual = null;
 
   public static final int STATUS_HABILITADO = 0;
   public static final int STATUS_DESABILITADO = 1;

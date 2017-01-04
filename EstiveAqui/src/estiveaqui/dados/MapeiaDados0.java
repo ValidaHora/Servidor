@@ -2,6 +2,7 @@ package estiveaqui.dados;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.joda.time.DateTimeZone;
 import estiveaqui.Util;
@@ -45,7 +46,7 @@ public class MapeiaDados0
    * @return
    */
   @Deprecated
-  public static ArrayList<Map<String, String>> mapeiaUsuarios(ArrayList<AppUsuarioMO> appUsuariosMO)
+  public static List<Map<String, String>> mapeiaUsuarios(List<AppUsuarioMO> appUsuariosMO)
   {
     if (appUsuariosMO == null)
       return null;
@@ -84,7 +85,7 @@ public class MapeiaDados0
    * @return
    */
   @Deprecated
-  public static ArrayList<Map<String, String>> mapeiaLancamentos(ArrayList<LancamentoMO> lancamentosMO)
+  public static List<Map<String, String>> mapeiaLancamentos(List<LancamentoMO> lancamentosMO)
   {
     if (lancamentosMO == null)
       return null;
@@ -114,9 +115,10 @@ public class MapeiaDados0
     dado.put("HL", "" + Util.formataDataTransmissaoSemSegundos(lancamentoMO.getHrLancamento()));
     dado.put("HD", "" + Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrDigitacao()));
     dado.put("HE", "" + Util.formataDataTransmissaoComSegundos(lancamentoMO.getHrEnvio()));
-    dado.put("TZ", Util.toStringTimeZone(lancamentoMO.getTzPassClock()));
+    dado.put("TZ", Util.formataTZ(lancamentoMO.getTzPassClock()));
     dado.put("PC", "" + lancamentoMO.getNumPassClock());
 //    dado.put("HC", lancamentoMO.getHashCode());
+    dado.put("NT", lancamentoMO.getNota());
     dado.put("AP", lancamentoMO.getApelidoPassClock());
     dado.put("AU", lancamentoMO.getAppUsuarioMO().getApelido());
     dado.put("IU", "" + lancamentoMO.getAppUsuarioMO().getIdAppUsuario());
@@ -141,7 +143,7 @@ public class MapeiaDados0
    * @return
    */
   @Deprecated
-  public static ArrayList<Map<String, String>> mapeiaPassClocks(ArrayList<PassClockMO> passClocksMO)
+  public static List<Map<String, String>> mapeiaPassClocks(List<PassClockMO> passClocksMO)
   {
 
     ArrayList<Map<String, String>> appPassClockGestorLista = new ArrayList<Map<String, String>>();
@@ -177,7 +179,7 @@ public class MapeiaDados0
    * @return
    */
   @Deprecated
-  public static ArrayList<Map<String, String>> mapeiaRelatorios(ArrayList<RelatorioMO> relatoriosMO)
+  public static List<Map<String, String>> mapeiaRelatorios(List<RelatorioMO> relatoriosMO)
   {
     if (relatoriosMO == null)
       return null;

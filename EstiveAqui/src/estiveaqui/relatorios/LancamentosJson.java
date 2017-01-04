@@ -3,7 +3,7 @@ package estiveaqui.relatorios;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
@@ -23,7 +23,7 @@ public class LancamentosJson implements Lancamentos
     jsonLancamentos.put("Gestor", idAppGestor);
     jsonLancamentos.put("Mes", Util.formataDataMesAno(mes));
     JSONObject jsonObj = new JSONObject();
-    jsonObj.put("Data Geração Relatório", Util.formataDataComTZ(DateTime.now()));
+    jsonObj.put("Data Geração Relatório", Util.formataDataComTZ(DateTime.now(), mes.getZone()));
   }
   
   /**
@@ -32,7 +32,7 @@ public class LancamentosJson implements Lancamentos
    * @param lancamentosMO
    * @return
    */
-  public JSONArray montaLancamentosMes(ArrayList<LancamentoMO> lancamentosMO)
+  public JSONArray montaLancamentosMes(List<LancamentoMO> lancamentosMO)
   {
     log.debug("Montando lançamentos em JSON.");
 
@@ -64,7 +64,7 @@ public class LancamentosJson implements Lancamentos
       lancamento = new JSONObject();
       lancamentos.put(lancamento);
       
-      lancamento.put("Hora Lancamento", Util.formataDataComTZ(lancamentoMO.getHrLancamento()));
+      lancamento.put("Hora Lancamento", Util.formataDataComTZ(lancamentoMO.getHrLancamento(), lancamentoMO.getTzPassClock()));
       lancamento.put("ChaveJSON PassClock", lancamentoMO.getCodPassClock());
       lancamento.put("Status", lancamentoMO.getStatus());
       lancamento.put("Apelido PassClock", lancamentoMO.getApelidoPassClock());

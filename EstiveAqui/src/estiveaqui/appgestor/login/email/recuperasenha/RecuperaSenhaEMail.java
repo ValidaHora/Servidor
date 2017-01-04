@@ -1,4 +1,4 @@
-package estiveaqui.appgestor.login.email;
+package estiveaqui.appgestor.login.email.recuperasenha;
 
 import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
@@ -12,6 +12,7 @@ import estiveaqui.Versao;
 import estiveaqui.appgestor.EMail;
 import estiveaqui.appgestor.EMailException;
 import estiveaqui.appgestor.RegraNegocioGestor;
+import estiveaqui.appgestor.login.email.LoginEMailInVO;
 import estiveaqui.servidor.util.GeraChaves;
 import estiveaqui.sql.AppGestorDB;
 import estiveaqui.sql.mo.AppGestorMO;
@@ -33,7 +34,7 @@ public class RecuperaSenhaEMail extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(esquecisSenhaEMailInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(esquecisSenhaEMailInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.
@@ -45,7 +46,7 @@ public class RecuperaSenhaEMail extends RegraNegocioGestor
 
       //  AppGestor encontrado?
       if (appGestorMO == null)
-        throw new RegraDeNegocioException(CodigoErro.APPGESTOR_NAO_HABILITADO);
+        throw new RegraDeNegocioException(CodigoErro.EMAIL_NAO_CADASTRADO);
 
       //  Inclui um novo código para recuperação de senha.
       appGestorMO.setCodRecuperaSenha(GeraChaves.codigoRecuperacaoSenhaEMail());

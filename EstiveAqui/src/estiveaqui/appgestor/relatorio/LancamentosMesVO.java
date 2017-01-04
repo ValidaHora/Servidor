@@ -1,6 +1,7 @@
 package estiveaqui.appgestor.relatorio;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.joda.time.DateTime;
 import estiveaqui.sql.mo.LancamentoMO;
 
@@ -34,7 +35,7 @@ class LancamentosMesVO
     this.mes = mes;
   }
 
-  public ArrayList<LancamentoMO> getLancamentos()
+  public List<LancamentoMO> getLancamentos()
   {
     return lancamentos;
   }

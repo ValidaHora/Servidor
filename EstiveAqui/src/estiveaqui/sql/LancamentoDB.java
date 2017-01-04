@@ -4,7 +4,6 @@ import haroldo.util.sql.ConexaoDB;
 import haroldo.util.sql.SqlDB;
 import haroldo.util.sql.SqlUtil;
 import haroldo.util.sql.SqlUtilMySql;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,7 +80,7 @@ public class LancamentoDB extends SqlDB
     stmt.setString(4, lancamentoMO.getCodPassClock());
     stmt.setString(5, lancamentoMO.getHashCode());
     stmt.setString(6, lancamentoMO.getNota());
-    stmt.setString(7, Util.toStringTimeZone(lancamentoMO.getTzPassClock()));
+    stmt.setString(7, Util.formataTZ(lancamentoMO.getTzPassClock(), lancamentoMO.getHrLancamento()));
     stmt.setTimestamp(8, SqlUtil.toSqlTimestamp(lancamentoMO.getHrLancamento()));
     stmt.setTimestamp(9, SqlUtil.toSqlTimestamp(lancamentoMO.getHrPassClock()));
     stmt.setTimestamp(10, SqlUtil.toSqlTimestamp(lancamentoMO.getHrServidor()));
@@ -101,6 +100,12 @@ public class LancamentoDB extends SqlDB
     return lancamentoMO;
   }
 
+  /**
+   * Insere vários lançamentos no BD.
+   * 
+   * @param lancamentosMO
+   * @return
+   */
   public List<LancamentoMO> insereLancamentos(List<LancamentoMO> lancamentosMO) //throws SQLException
   {
     List<LancamentoMO> lancamentosRetornoMO = new ArrayList<LancamentoMO>();
@@ -119,51 +124,51 @@ public class LancamentoDB extends SqlDB
     return lancamentosRetornoMO;
   }
 
-  /**
-   * Retorna os códigos de um usuário foram lançados no dia definido por <b>dia</b>.
-   * 
-   * @param idAppGestor - Identificacador do gestor.
-   * @param numPassClock - Número de identificação do PassClock.
-   * @param dia - Dia em que os códigos foram lançados.
-   * @return ArrayList<String> Lista de códigos lançados no dia.
-   * @throws SQLException
-   */
-  @Deprecated
-  public ArrayList<String> codigosLancados(int idAppGestor, String numPassClock, DateTime dia) throws SQLException
-  {
-    String query = "SELECT " + SELECT + ", " + SELECT_USR
-        + " LANC.CodPassClock "
-        + " FROM lancamento LANC, appusuario APUS "
-        + " WHERE APUS.IdAppGestor = ? "
-        + "   AND LANC.NumPassClock = ? "
-        + "   AND (LANC.HrLancamento >= ? AND LANC.HrLancamento < ?) "
-        + "   AND APUS.IdAppUsuario = LANC.IdAppUsuario ";
-    PreparedStatement stmt = connDB.getConn().prepareStatement(query);
-    stmt.setInt(1, idAppGestor);
-    stmt.setString(2, numPassClock);
-    DateTime diaIni = dia.dayOfMonth().roundFloorCopy();
-    DateTime diaFim = dia.dayOfMonth().roundCeilingCopy();
-    stmt.setDate(3, new java.sql.Date(diaIni.getMillis()));
-    stmt.setDate(4, new java.sql.Date(diaFim.getMillis()));
-
-    ResultSet rs = stmt.executeQuery();
-
-    /*
-     * Le os registros e guarda no ArrayList.
-     */
-    ArrayList<String> codigos = new ArrayList<String>();
-    while (rs.next())
-    {
-      // Preenche o objeto codigos com as informações da tabela.
-      codigos.add(rs.getString("CodPassClock"));
-    }
-
-    //
-    // Retorna o PassClock lido.
-    return codigos;
-  }
-
-
+//  /**
+//   * Retorna os códigos de um usuário foram lançados no dia definido por <b>dia</b>.
+//   * 
+//   * @param idAppGestor - Identificacador do gestor.
+//   * @param numPassClock - Número de identificação do PassClock.
+//   * @param dia - Dia em que os códigos foram lançados.
+//   * @return ArrayList<String> Lista de códigos lançados no dia.
+//   * @throws SQLException
+//   */
+//  @Deprecated
+//  public List<String> codigosLancados(int idAppGestor, String numPassClock, DateTime dia) throws SQLException
+//  {
+//    String query = "SELECT " + SELECT + ", " + SELECT_USR
+//        + " LANC.CodPassClock "
+//        + " FROM lancamento LANC, appusuario APUS "
+//        + " WHERE APUS.IdAppGestor = ? "
+//        + "   AND LANC.NumPassClock = ? "
+//        + "   AND (LANC.HrLancamento >= ? AND LANC.HrLancamento < ?) "
+//        + "   AND APUS.IdAppUsuario = LANC.IdAppUsuario ";
+//    PreparedStatement stmt = connDB.getConn().prepareStatement(query);
+//    stmt.setInt(1, idAppGestor);
+//    stmt.setString(2, numPassClock);
+//    DateTime diaIni = dia.dayOfMonth().roundFloorCopy();
+//    DateTime diaFim = dia.dayOfMonth().roundCeilingCopy();
+//    stmt.setDate(3, new java.sql.Date(diaIni.getMillis()));
+//    stmt.setDate(4, new java.sql.Date(diaFim.getMillis()));
+//
+//    ResultSet rs = stmt.executeQuery();
+//
+//    /*
+//     * Le os registros e guarda no ArrayList.
+//     */
+//    ArrayList<String> codigos = new ArrayList<String>();
+//    while (rs.next())
+//    {
+//      // Preenche o objeto codigos com as informações da tabela.
+//      codigos.add(rs.getString("CodPassClock"));
+//    }
+//
+//    //
+//    // Retorna o PassClock lido.
+//    return codigos;
+//  }
+//
+//
 
   /**
    * Lê os N lançamentos dos usuários de um gestor desde o lançamento de idLancamento maior que idLancamentoMaisAntigo
@@ -176,20 +181,20 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosGestorDesdeAte(int idAppGestor, long idLancamentoMaisAntigo, DateTime dataFinal) throws SQLException
+  public List<LancamentoMO> leLancamentosGestorDesdeAte(int idAppGestor, long idLancamentoMaisAntigo) throws SQLException
   {
     String query = "SELECT " + SELECT + ", " + SELECT_USR 
         + " FROM lancamento LANC, appusuario APUS "
         + " WHERE APUS.IdAppGestor = ? "
         + "   AND LANC.IdLancamento > ? "
-        + "   AND LANC.HrLancamento < ? "
+//        + "   AND LANC.HrLancamento < ? "
         + "   AND LANC.IdAppUsuario = APUS.IdAppUsuario "
         + " ORDER BY LANC.HrLancamento ";
     
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setInt(1, idAppGestor);
     stmt.setLong(2, idLancamentoMaisAntigo);
-    stmt.setDate(3, new Date(dataFinal.plusDays(1).getMillis()));
+//    stmt.setDate(3, new Date(dataFinal.plusDays(1).getMillis()));
     
     ResultSet rs = stmt.executeQuery();
 
@@ -224,35 +229,35 @@ public class LancamentoDB extends SqlDB
     return this.leResultSet(rs);
   }
 
-  /**
-   * Lê os últimos lançamentos dos usuários de um gestor desde o lançamento de idLancamento maior que idUltLancamento,
-   * limitado aos 2 últimos meses.
-   * 
-   * @param idAppGestor
-   * @param idUltLancamento
-   * @return
-   * @throws SQLException
-   */
-  public ArrayList<LancamentoMO> leUltimosLancamentoGestor2Meses(int idAppGestor, long idUltLancamento) throws SQLException
-  {
-    String query = "SELECT " + SELECT + ", " + SELECT_USR
-        + " FROM lancamento LANC, appusuario APUS "
-        + " WHERE APUS.IdAppGestor = ? "
-        + "   AND LANC.IdLancamento > ? "
-        + "   AND LANC.HrLancamento >= ? "
-        + "   AND LANC.IdAppUsuario = APUS.IdAppUsuario "
-        + " ORDER BY LANC.HrLancamento ";
-
-    PreparedStatement stmt = connDB.getConn().prepareStatement(query);
-    stmt.setInt(1, idAppGestor);
-    stmt.setLong(2, idUltLancamento);
-    stmt.setDate(3, new Date(DateTime.now().minusMonths(1).monthOfYear().roundFloorCopy().getMillis()));  //  Primeiro dia do mês anterior.
-    
-    ResultSet rs = stmt.executeQuery();
-    
-    return leResultsSet(rs);
-  }
-
+//  /**
+//   * Lê os últimos lançamentos dos usuários de um gestor desde o lançamento de idLancamento maior que idUltLancamento,
+//   * limitado aos 2 últimos meses.
+//   * 
+//   * @param idAppGestor
+//   * @param idUltLancamento
+//   * @return
+//   * @throws SQLException
+//   */
+//  public List<LancamentoMO> leUltimosLancamentoGestor2Meses(int idAppGestor, long idUltLancamento) throws SQLException
+//  {
+//    String query = "SELECT " + SELECT + ", " + SELECT_USR
+//        + " FROM lancamento LANC, appusuario APUS "
+//        + " WHERE APUS.IdAppGestor = ? "
+//        + "   AND LANC.IdLancamento > ? "
+//        + "   AND LANC.HrLancamento >= ? "
+//        + "   AND LANC.IdAppUsuario = APUS.IdAppUsuario "
+//        + " ORDER BY LANC.HrLancamento ";
+//
+//    PreparedStatement stmt = connDB.getConn().prepareStatement(query);
+//    stmt.setInt(1, idAppGestor);
+//    stmt.setLong(2, idUltLancamento);
+//    stmt.setDate(3, new Date(DateTime.now().minusMonths(1).monthOfYear().roundFloorCopy().getMillis()));  //  Primeiro dia do mês anterior.
+//    
+//    ResultSet rs = stmt.executeQuery();
+//    
+//    return leResultsSet(rs);
+//  }
+//
   /**
    * Lê os lançamentos de um usuário para o dia de hoje.<BR>
    * O dia de hoje começa Ã s 00:00 do fuso horário passado em tz.
@@ -262,11 +267,11 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosUsuarioHoje(int idAppUsuario, DateTimeZone tz)
+  public List<LancamentoMO> leLancamentosUsuarioHoje(int idAppUsuario, DateTimeZone tz)
       throws SQLException
   {
     DateTime dtHoje = DateTime.now().withZone(tz);
-    return leLancamentosUsuarioPeriodo(idAppUsuario, dtHoje, dtHoje);
+    return leLancamentosUsuarioPeriodo(idAppUsuario, dtHoje, dtHoje, tz);
   }
   
   /**
@@ -278,7 +283,7 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosGestorPeriodo(int idAppGestor, DateTime diaIni, DateTime diaFim)
+  public List<LancamentoMO> leLancamentosGestorPeriodo(int idAppGestor, DateTime diaIni, DateTime diaFim, DateTimeZone tz)
       throws SQLException
   {
     String query = "SELECT " + SELECT + ", " + SELECT_USR
@@ -290,14 +295,58 @@ public class LancamentoDB extends SqlDB
 
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setInt(1, idAppGestor);
-    stmt.setTimestamp(2, SqlUtil.toSqlTimestamp(diaIni.dayOfMonth().roundFloorCopy()));
-    stmt.setTimestamp(3, SqlUtil.toSqlTimestamp(diaFim.plusDays(1).dayOfMonth().roundFloorCopy()));
+    stmt.setTimestamp(2, SqlUtil.toSqlTimestamp(diaIni.withZone(tz).dayOfMonth().roundFloorCopy()));
+    stmt.setTimestamp(3, SqlUtil.toSqlTimestamp(diaFim.withZone(tz).plusDays(1).dayOfMonth().roundFloorCopy()));
     
     ResultSet rs = stmt.executeQuery();
 
     return leResultsSet(rs);
   }
 
+  /**
+   * Lê todos os lançamentos do mês para o gestor.
+   * 
+   * @param idAppGestor
+   * @param mes
+   * @return
+   * @throws SQLException
+   */
+  public List<LancamentoMO> leLancamentosGestorMes(int idAppGestor, DateTime mes)
+      throws SQLException
+  {
+    String query = "SELECT " + SELECT + ", " + SELECT_USR
+        + " FROM lancamento LANC, appusuario APUS "
+        + " WHERE LANC.IdAppUsuario = APUS.IdAppUsuario "
+        + "   AND APUS.IdAppGestor = ? "
+        + "   AND LANC.HrLancamento >= ? AND LANC.HrLancamento < ? "
+        ;
+
+    DateTime diaIni = mes.dayOfMonth().roundFloorCopy().minusDays(1);
+    DateTime diaFim = mes.dayOfMonth().roundCeilingCopy().plusDays(1);
+    
+    PreparedStatement stmt = connDB.getConn().prepareStatement(query);
+    stmt.setInt(1, idAppGestor);
+    stmt.setTimestamp(2, SqlUtil.toSqlTimestamp(diaIni));
+    stmt.setTimestamp(3, SqlUtil.toSqlTimestamp(diaFim));
+    
+    ResultSet rs = stmt.executeQuery();
+
+    List<LancamentoMO> lancamentosMO = leResultsSet(rs);
+    for (LancamentoMO lancamentoMO : lancamentosMO)
+    {
+      //  Remove datas de mês diferente por causa do fuso horário.
+      if (lancamentoMO.getHrLancamento().withZone(lancamentoMO.getTzPassClock()).getMonthOfYear() != mes.getMonthOfYear())
+        lancamentosMO.remove(lancamentoMO);
+    }
+
+    return lancamentosMO;
+  }
+
+  public List<LancamentoMO> leLancamentosGestor2UltimosMeses(int idAppGestor)
+  {
+    return null;
+  }
+  
   /**
    * Lê os lançamentos de um PassClock próximo a hora passada.
    * 
@@ -306,7 +355,7 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosPassClockEm(String numPassClock, DateTime hora) throws SQLException
+  public List<LancamentoMO> leLancamentosPassClockEm(String numPassClock, DateTime hora) throws SQLException
   {
     String query = "SELECT " + SELECT + ", " + SELECT_USR
         + " FROM lancamento LANC, appusuario APUS "
@@ -337,7 +386,7 @@ public class LancamentoDB extends SqlDB
   public List<LancamentoMO> leLancamentosGestorHoje(int idAppGestor, DateTimeZone tz) throws SQLException
   {
     DateTime dtHoje = DateTime.now().withZone(tz);
-    return leLancamentosGestorPeriodo(idAppGestor, dtHoje, dtHoje);
+    return leLancamentosGestorPeriodo(idAppGestor, dtHoje, dtHoje, tz);
   }
 
   /**
@@ -349,7 +398,7 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<LancamentoMO> leLancamentosUsuarioPeriodo(int idAppUsuario, DateTime diaIni, DateTime diaFim)
+  public List<LancamentoMO> leLancamentosUsuarioPeriodo(int idAppUsuario, DateTime diaIni, DateTime diaFim, DateTimeZone tz)
       throws SQLException
   {
     String query = "SELECT " + SELECT + ", " + SELECT_USR
@@ -361,8 +410,8 @@ public class LancamentoDB extends SqlDB
 
     PreparedStatement stmt = connDB.getConn().prepareStatement(query);
     stmt.setInt(1, idAppUsuario);
-    stmt.setTimestamp(2, SqlUtil.toSqlTimestamp(diaIni.dayOfMonth().roundFloorCopy()));
-    stmt.setTimestamp(3, SqlUtil.toSqlTimestamp(diaFim.plusDays(1).dayOfMonth().roundFloorCopy()));
+    stmt.setTimestamp(2, SqlUtil.toSqlTimestamp(diaIni.withZone(tz).dayOfMonth().roundFloorCopy()));
+    stmt.setTimestamp(3, SqlUtil.toSqlTimestamp(diaFim.withZone(tz).plusDays(1).dayOfMonth().roundFloorCopy()));
     
     ResultSet rs = stmt.executeQuery();
 
@@ -402,7 +451,7 @@ public class LancamentoDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  private ArrayList<LancamentoMO> leResultsSet(ResultSet rs) throws SQLException
+  private List<LancamentoMO> leResultsSet(ResultSet rs) throws SQLException
   {
     /*
      * Le os registros e guarda no ArrayList.

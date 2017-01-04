@@ -44,10 +44,12 @@ public enum CodigoErro
 
   
   PASSCLOCK_JA_EXISTE(134, "PassClock já existe"),
-  ;
+
+  LANCAMENTO_NAO_EXISTE(135, "Lançamento não existe"),
+;
 
   
-  private int codigoErro;
+  private int     codigoErro;
   private String  descricao;
   
   CodigoErro(int codigoErro, String descricao)

@@ -2,10 +2,11 @@ package estiveaqui.appgestor.login.email;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.NomeParametroServlet;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class EMailParametrosSrvlt extends ServletParametros0
+public class EMailParametrosSrvlt extends ServletParametros
 {
   private LoginEMailInVO srvltInVo = (LoginEMailInVO)dadosInVo;
 
@@ -25,16 +26,14 @@ public class EMailParametrosSrvlt extends ServletParametros0
 
   String getEMail() throws ServletParametrosException
   {
-    String param = "EMAIL";
-    String val = getParametro(param, true, true);
+    String val = getParametro(NomeParametroServlet.Email, true, true);
 
     return val;
   }
 
   String getSenha() throws ServletParametrosException
   {
-    String param = "SENHA";
-    String val = getParametro(param, true, false);
+    String val = getParametro(NomeParametroServlet.Senha, true, false);
 
     return val;
   }

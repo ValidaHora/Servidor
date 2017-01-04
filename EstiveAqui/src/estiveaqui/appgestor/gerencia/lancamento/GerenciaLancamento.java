@@ -13,6 +13,7 @@ import estiveaqui.Versao;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.DadosGerenciaisInVO;
 import estiveaqui.appgestor.RegraNegocioGestor;
+import estiveaqui.appgestor.gerencia.passclock.GerenciaPassClock;
 import estiveaqui.sql.AppUsuarioDB;
 import estiveaqui.sql.RelatorioDB;
 import haroldo.util.sql.ConexaoDB;
@@ -20,6 +21,7 @@ import estiveaqui.sql.LancamentoDB;
 import estiveaqui.sql.mo.AppGestorMO;
 import estiveaqui.sql.mo.AppUsuarioMO;
 import estiveaqui.sql.mo.LancamentoMO;
+import estiveaqui.sql.mo.PassClockMO;
 import estiveaqui.vo.DadosInVO;
 
 public class GerenciaLancamento extends RegraNegocioGestor
@@ -41,7 +43,7 @@ public class GerenciaLancamento extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(gerenciaLancamentoInVo, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(gerenciaLancamentoInVo, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.
@@ -120,6 +122,9 @@ public class GerenciaLancamento extends RegraNegocioGestor
     if (lancamentoDb.horaLancada(appUsuarioMO.getIdAppUsuario(), gerenciaLancamentoInVo.getHoraManual()))
       throw new RegraDeNegocioException(CodigoErro.CODIGO_JA_LANCADO, "Hora já lançada");
     
+    //  Valida o PassClock.
+    PassClockMO passClockMO = GerenciaPassClock.gerenciaPassClock(connDB, appGestorMO.getIdAppGestor(), gerenciaLancamentoInVo.getNumeroPassClock());
+    
     //  Prepara o lançamento manual.
     LancamentoMO lancamentoMO = new LancamentoMO();
     lancamentoMO.setStatus(LancamentoMO.STATUS_HABILITADO);
@@ -127,6 +132,7 @@ public class GerenciaLancamento extends RegraNegocioGestor
     DateTime agora = DateTime.now();
     lancamentoMO.setHrDigitacao(agora);
     lancamentoMO.setHrEnvio(agora);
+    lancamentoMO.setTzPassClock(passClockMO.getTz());
     lancamentoMO.getAppUsuarioMO().setIdAppUsuario(gerenciaLancamentoInVo.getIdAppUsuario());
     lancamentoMO.setNumPassClock("MANUAL");
     lancamentoMO.setApelidoPassClock("Manual");
@@ -200,7 +206,7 @@ public class GerenciaLancamento extends RegraNegocioGestor
     
     //  Lancamento existe?
     if (lancamentoMO == null)
-      throw new RegraDeNegocioException(CodigoErro.PASSCLOCK_NAO_EXISTE, "Lancamento não encontrado");
+      throw new RegraDeNegocioException(CodigoErro.LANCAMENTO_NAO_EXISTE, "Lancamento não encontrado");
 
     //  Altera o status do lançamento.
     lancamentoMO = lancamentoDb.defineStatus(lancamentoMO.getIdLancamento(), status);

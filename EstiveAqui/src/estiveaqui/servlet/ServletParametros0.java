@@ -237,24 +237,9 @@ public abstract class ServletParametros0
    * @throws ServletParametrosException
    */
   @Deprecated
-  protected String getIdentificacaoApp0(boolean obrigatorio) throws ServletParametrosException
-  {
-    return getParametro("IDAPP", obrigatorio, false);
-  }
-
-  /**
-   * Busca e retorna o parâmetro do número de identificação do app.
-   * 
-   * ID=<IdentificacaoApp> - Número de identificação do app.
-   * 
-   * @param obrigatorio
-   * @return
-   * @throws ServletParametrosException
-   */
-  @Deprecated
   protected String getIdentificacaoApp(boolean obrigatorio) throws ServletParametrosException
   {
-    return getParametro("ID", obrigatorio, false);
+    return getParametro("IDAPP", obrigatorio, false);
   }
 
   /**

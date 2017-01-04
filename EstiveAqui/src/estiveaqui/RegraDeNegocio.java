@@ -3,7 +3,7 @@ package estiveaqui;
 import haroldo.util.seguranca.SegUtil;
 import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import org.joda.time.DateTime;
 import estiveaqui.sql.LancamentoDB;
 import estiveaqui.sql.mo.LancamentoMO;
@@ -30,7 +30,7 @@ public class RegraDeNegocio
     //  Verifica se o código já foi lançado.
     LancamentoDB lancamentoDb = new LancamentoDB(connDB);
 
-    ArrayList<LancamentoMO> lancamentosDiaMO = lancamentoDb.leLancamentosPassClockEm(numPassClock, hora);
+    List<LancamentoMO> lancamentosDiaMO = lancamentoDb.leLancamentosPassClockEm(numPassClock, hora);
     for (LancamentoMO lancamentoDiaMO : lancamentosDiaMO)
     {
       if (lancamentoDiaMO.getNumPassClock().equals(numPassClock))

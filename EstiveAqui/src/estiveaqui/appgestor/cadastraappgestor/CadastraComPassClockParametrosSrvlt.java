@@ -2,10 +2,11 @@ package estiveaqui.appgestor.cadastraappgestor;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.appgestor.servlet.ServletParametrosAppGestor;
+import estiveaqui.servlet.NomeParametroServlet;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class CadastraComPassClockParametrosSrvlt extends ServletParametros0
+public class CadastraComPassClockParametrosSrvlt extends ServletParametrosAppGestor
 {
   private CadastraComPassClockInVO cadastraComPassClockInVO = (CadastraComPassClockInVO)dadosInVo;
 
@@ -16,11 +17,10 @@ public class CadastraComPassClockParametrosSrvlt extends ServletParametros0
 
   public CadastraComPassClockInVO getParametros() throws ServletParametrosException
   {
-    cadastraComPassClockInVO.setTz(getTimeZone(true));
-    cadastraComPassClockInVO.setNumeroPassClock(getNumeroPassClock0(true));
+    cadastraComPassClockInVO.setNumeroPassClock(getNumeroPassClock(true));
     cadastraComPassClockInVO.setCodPassCLock(getCodigoPassClock(true));
     cadastraComPassClockInVO.setSenhaCadastro(getSenhaCadastro(true));
-    cadastraComPassClockInVO.setHashCode(getHashCode(true));
+//    getTimeZonePassClock(obrigatorio)
 
     return cadastraComPassClockInVO;
   }
@@ -34,8 +34,7 @@ public class CadastraComPassClockParametrosSrvlt extends ServletParametros0
    */
   private String getSenhaCadastro(boolean obrigatorio) throws ServletParametrosException
   {
-    String param = "SENHACADASTRO";
-    String val = getParametro(param, obrigatorio, false);
+    String val = getParametro(NomeParametroServlet.Senha, obrigatorio, false);
 
     return val;
   }

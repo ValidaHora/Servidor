@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import estiveaqui.Util;
@@ -19,14 +20,14 @@ public class LancamentosCSV implements Lancamentos
 {
   private static final Logger log = LogManager.getLogger();
 
-  private ArrayList<String>lancamentos = new ArrayList<String>();
+  private List<String>lancamentos = new ArrayList<String>();
   
   /**
-   * Gera lançamentos em CSV. Cada Map representa um usuário. Cada String do ArrayList representa mu lançamento.
+   * Gera lançamentos em CSV. Cada Map representa um usuário. Cada String do List representa mu lançamento.
    * 
    * @param lancamentosMO
    */
-  public LancamentosCSV(ArrayList<LancamentoMO> lancamentosMO)
+  public LancamentosCSV(List<LancamentoMO> lancamentosMO)
   {
     log.debug("Montando lançamentos em CSV.");
     for (LancamentoMO lancamentoMO : lancamentosMO)
@@ -35,7 +36,7 @@ public class LancamentosCSV implements Lancamentos
       StringBuffer lancamento = new StringBuffer();
       lancamento.append(lancamentoMO.getAppUsuarioMO().getApelido());
       lancamento.append(",");
-      lancamento.append(Util.formataDataComTZ(lancamentoMO.getHrLancamento()));
+      lancamento.append(Util.formataDataComTZ(lancamentoMO.getHrLancamento(), lancamentoMO.getTzPassClock()));
       lancamento.append(",");
       lancamento.append(lancamentoMO.getStatus());
       lancamento.append(",");
@@ -57,11 +58,11 @@ public class LancamentosCSV implements Lancamentos
   }
 
   /**
-   * Retorna o relatório no formato ArrayList<String>, onde cada elemento do ArrayList é um registro de lançamento de hora.
+   * Retorna o relatório no formato List<String>, onde cada elemento do List é um registro de lançamento de hora.
    * 
    * @return
    */
-  public ArrayList<String> relatorioArrayList()
+  public List<String> relatorioArrayList()
   {
     return lancamentos;
   }

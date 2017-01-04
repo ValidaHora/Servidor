@@ -26,4 +26,5 @@ public class LoginEMailInVO extends DadosInVO
   {
     this.senha = senha;
   }
+
 }

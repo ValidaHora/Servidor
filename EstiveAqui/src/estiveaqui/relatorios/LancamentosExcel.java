@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -144,7 +144,7 @@ public class LancamentosExcel implements Lancamentos
    * @param lancamentosPorUsuarioMO - Lançamentos ordenados por usuário.
    * @return
    */
-  public Workbook montaLancamentosMes(ArrayList<LancamentoMO> lancamentosPorUsuarioMO)
+  public Workbook montaLancamentosMes(List<LancamentoMO> lancamentosPorUsuarioMO)
   {
     log.debug("Ini - Montando lançamentos em Excel.");
     Sheet sheetMes = null;

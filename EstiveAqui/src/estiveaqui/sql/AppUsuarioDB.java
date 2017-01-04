@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import estiveaqui.Util;
 import estiveaqui.sql.mo.AppUsuarioMO;
 
@@ -52,7 +53,7 @@ public class AppUsuarioDB extends SqlDB
    * @return
    * @throws SQLException
    */
-  public ArrayList<AppUsuarioMO> leRegistrosGestor(int idAppGestor) throws SQLException
+  public List<AppUsuarioMO> leRegistrosGestor(int idAppGestor) throws SQLException
   {
     String query = "SELECT " + SELECT 
                     + "FROM appusuario APUS "
@@ -65,7 +66,7 @@ public class AppUsuarioDB extends SqlDB
     ResultSet rs = stmt.executeQuery();
 
     //  Lê os resultados.
-    ArrayList<AppUsuarioMO> appUsuariosMO = new ArrayList<AppUsuarioMO>();
+    List<AppUsuarioMO> appUsuariosMO = new ArrayList<AppUsuarioMO>();
     while (rs.next())
     {
       appUsuariosMO.add(preencheResultSet(rs));

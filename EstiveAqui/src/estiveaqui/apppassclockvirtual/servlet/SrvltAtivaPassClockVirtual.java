@@ -56,18 +56,18 @@ public class SrvltAtivaPassClockVirtual extends ServletEstiveAqui implements Ser
     }
     catch (ServletParametrosException e)
     {
-      jsonMsg.addMsgErro(CodigoErro.ERRO_INTERNO, e);
+      jsonMsg.putMsgErro(CodigoErro.ERRO_INTERNO, e);
       log.error(e.getMessage());
       e.printStackTrace();
     }
     catch (RegraDeNegocioException e)
     {
-      jsonMsg.addMsgErro(CodigoErro.ERRO_INTERNO, e);
+      jsonMsg.putMsgErro(CodigoErro.ERRO_INTERNO, e);
       log.error(e.getMessage());
     }
     catch (Throwable t)
     {
-      jsonMsg.addMsgErro(CodigoErro.ERRO_INTERNO, t);
+      jsonMsg.putMsgErro(CodigoErro.ERRO_INTERNO, t);
       log.fatal(t.getMessage());
       t.printStackTrace();
     }

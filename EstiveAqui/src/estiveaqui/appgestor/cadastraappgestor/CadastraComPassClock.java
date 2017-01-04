@@ -1,10 +1,10 @@
 package estiveaqui.appgestor.cadastraappgestor;
 
+import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
 import estiveaqui.CodigoErro;
 import estiveaqui.EstiveAquiException;
 import estiveaqui.RegraDeNegocioException;
@@ -14,7 +14,6 @@ import estiveaqui.appgestor.RegraNegocioGestor;
 import estiveaqui.servidor.util.GeraChaves;
 import estiveaqui.sql.AppGestorDB;
 import estiveaqui.sql.AppUsuarioDB;
-import haroldo.util.sql.ConexaoDB;
 import estiveaqui.sql.LancamentoDB;
 import estiveaqui.sql.PassClockDB;
 import estiveaqui.sql.mo.AppGestorMO;
@@ -113,11 +112,7 @@ public class CadastraComPassClock extends RegraNegocioGestor
 
       //  Busca todos os lançamentos desde o mês passado.
       LancamentoDB lancamentoDB = new LancamentoDB(connDB);
-      DateTime hoje = DateTime.now().withZone(cadastraComPassClockInVO.getTz());
-      DateTime.now().monthOfYear().roundFloorCopy();
-      cadastraComPassClockOutVO.setLancamentosMO(
-          lancamentoDB.leLancamentosGestorPeriodo(appGestorMO.getIdAppGestor(), hoje.minusMonths(1).monthOfYear().roundFloorCopy(), hoje));
-      
+      cadastraComPassClockOutVO.setLancamentosMO(lancamentoDB.leLancamentosGestor2UltimosMeses(appGestorMO.getIdAppGestor()));
     }
     catch (SQLException e)
     {

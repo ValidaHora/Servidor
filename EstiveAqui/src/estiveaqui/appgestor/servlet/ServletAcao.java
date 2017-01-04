@@ -18,7 +18,7 @@ import estiveaqui.relatorios.LancamentosExcel;
 import estiveaqui.relatorios.Persiste;
 import estiveaqui.servlet.ServletEstiveAqui;
 import estiveaqui.servlet.ServletHelperFactoryException;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 import estiveaqui.vo.DadosInVO;
 import estiveaqui.vo.DadosOutVO;
@@ -26,11 +26,11 @@ import estiveaqui.vo.DadosOutVO;
 /**
  * Implementa de forma padronizada as ações do AppGestor.
  */
-@WebServlet(urlPatterns = { "/AppGestor/LeDados", "/AppGestor/LeLancamentosPeriodo",
-                            "/AppGestor/CadastraComPassClock", "/AppGestor/GeraRelatorio", "/AppGestor/LeAppUsuario",
-                            "/AppGestor/CadastraComEMail", "/AppGestor/LoginComEMail", "/AppGestor/AlteraSenhaEMail",
-                            "/AppGestor/EnviaConfirmaEMail", "/AppGestor/RecuperaSenha",
-                            "/AppGestor/Gerencia/PassClock", "/AppGestor/Gerencia/Lancamento", "/AppGestor/Gerencia/AppUsuario"})
+@WebServlet(urlPatterns = { "/AppGestor/LeDados1", "/AppGestor/LeLancamentosPeriodo1",
+                            "/AppGestor/CadastraComPassClock1", "/AppGestor/GeraRelatorio1", "/AppGestor/LeAppUsuario1",
+                            "/AppGestor/CadastraComEMail1", "/AppGestor/LoginComEMail1", "/AppGestor/AlteraSenhaEMail1",
+                            "/AppGestor/EnviaConfirmaEMail1", "/AppGestor/RecuperaSenha1",
+                            "/AppGestor/Gerencia/PassClock1", "/AppGestor/Gerencia/Lancamento1", "/AppGestor/Gerencia/AppUsuario1"})
 public class ServletAcao extends ServletEstiveAqui
 {
   private static final long   serialVersionUID = -7607404647184462037L;
@@ -56,7 +56,7 @@ public class ServletAcao extends ServletEstiveAqui
       
       //  Interpreta parâmetros.
       log.debug("ServletAcao({}): Lendo parâmetros.", contador);
-      ServletParametros0 servletParametros = hf.getInstanceServletParametros();
+      ServletParametros servletParametros = hf.getInstanceServletParametros();
       DadosInVO dadosInVO =  servletParametros.getParametros();
       
       //  Executa as regras de negócio.

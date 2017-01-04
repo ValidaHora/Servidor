@@ -26,7 +26,7 @@ public class LancaHoraJson0 extends JsonResposta0
     jsonMsg.put(ChaveJSON.CD0, lancaHoraInVO.getCodigo());
     jsonMsg.put(ChaveJSON.LN0, MapeiaDados0.mapeiaLancamento(lancaHoraOutVO.getLancamentoMO())); 
     jsonMsg.put(ChaveJSON.HL0, lancaHoraOutVO.getLancamentoMO().getHrLancamento());
-    jsonMsg.put(ChaveJSON.TZ0, Util.toStringTimeZone(lancaHoraOutVO.getLancamentoMO().getTzPassClock()));
+    jsonMsg.put(ChaveJSON.TZ0, Util.formataTZ(lancaHoraOutVO.getLancamentoMO().getTzPassClock()));
 
     return jsonMsg;
   }

@@ -14,7 +14,7 @@ public class UtilEMail
    * @param senha
    * @throws RegraDeNegocioException
    */
-  protected static void validaRegrasParaSenha(String senha) throws RegraDeNegocioException
+  public static void validaRegrasParaSenha(String senha) throws RegraDeNegocioException
   {
     int tamMin = 6;
     int tamMax = 44;
@@ -32,7 +32,7 @@ public class UtilEMail
    * @param appGestorMO
    * @param senhaAberta
    */
-  protected static void setSenhaCriptografada(AppGestorMO appGestorMO, String senhaAberta) throws CriptografaException
+  public static void setSenhaCriptografada(AppGestorMO appGestorMO, String senhaAberta) throws CriptografaException
   {
     if (senhaAberta == null || senhaAberta.isEmpty() || appGestorMO.getIdAppGestor() == 0)
       appGestorMO.setSenha(null);

@@ -10,7 +10,9 @@ public class CadastraComPassClockInVO extends DadosInVO
   private String       numeroPassClock = "";
   private String       codPassCLock    = "";
   private String       senhaCadastro   = "";
+  @Deprecated
   private DateTimeZone tz              = null;
+  @Deprecated
   private String       hashCode        = "";
 
   public String getNumeroPassClock()
@@ -43,21 +45,25 @@ public class CadastraComPassClockInVO extends DadosInVO
     this.senhaCadastro = senhaCadastro;
   }
 
+  @Deprecated
   public DateTimeZone getTz()
   {
     return tz;
   }
 
+  @Deprecated
   public void setTz(DateTimeZone tz)
   {
     this.tz = tz;
   }
 
+  @Deprecated
   public String getHashCode()
   {
     return hashCode;
   }
 
+  @Deprecated
   public void setHashCode(String hashCode)
   {
     this.hashCode = hashCode;

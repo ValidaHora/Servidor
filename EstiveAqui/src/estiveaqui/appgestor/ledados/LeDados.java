@@ -1,10 +1,10 @@
 package estiveaqui.appgestor.ledados;
 
+import haroldo.util.sql.ConexaoDB;
 import java.sql.SQLException;
 import javax.naming.NamingException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.joda.time.DateTime;
 import estiveaqui.CodigoErro;
 import estiveaqui.EstiveAquiException;
 import estiveaqui.RegraDeNegocioException;
@@ -12,7 +12,6 @@ import estiveaqui.Versao;
 import estiveaqui.appgestor.DadosAppGestorInVO;
 import estiveaqui.appgestor.RegraNegocioGestor;
 import estiveaqui.sql.AppUsuarioDB;
-import haroldo.util.sql.ConexaoDB;
 import estiveaqui.sql.LancamentoDB;
 import estiveaqui.sql.PassClockDB;
 import estiveaqui.sql.mo.AppGestorMO;
@@ -48,7 +47,7 @@ public class LeDados extends RegraNegocioGestor
     try
     {
       //  Valida a versão do app.
-      Versao.validaVersao(leDadosInVO, new Versao(1, 0, 0), new Versao(1, 0, 0));
+      Versao.validaVersao(leDadosInVO, new Versao(1, 0, 0), new Versao(1, 1, 0));
 
       //
       //  Validações com acesso ao BD.
@@ -69,7 +68,7 @@ public class LeDados extends RegraNegocioGestor
 
       //  Busca todos os lançamentos do deste gestor a partir do IdUltimoLancamento.
       LancamentoDB lancamentoDB = new LancamentoDB(connDB);
-      leDadosOutVO.setLancamentosMO(lancamentoDB.leLancamentosGestorDesdeAte(appGestorMO.getIdAppGestor(), leDadosInVO.getIdUltimoLancamento(), DateTime.now()));
+      leDadosOutVO.setLancamentosMO(lancamentoDB.leLancamentosGestorDesdeAte(appGestorMO.getIdAppGestor(), leDadosInVO.getIdUltimoLancamento()));//, DateTime.now()));
     }
     catch (SQLException e)
     {

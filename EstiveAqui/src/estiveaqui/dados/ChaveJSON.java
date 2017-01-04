@@ -121,7 +121,7 @@ public enum ChaveJSON
   PC("PC"),
   /** Status */
   ST("ST"),
-  /** Time Zone do cliente */
+  /** Time Zone do passclock */
   TZ("TZ"),
   /** URL dos Relatórios */
   UR("UR"),
@@ -161,6 +161,8 @@ public enum ChaveJSON
   VE("VE"),
   /** Id do último lançamento - Não usado como chave JSON! Apenas como parâmetro de servlet */
   UL("UL"),
+  /** Nome do Time Zone. Ex: 'Americas/Sao_Paulo' */
+  ZZ("ZZ"),
   
   /** Ação de uma servlet gerencial - Não usado como chave JSON! Apenas como parâmetro de servlet */
   ACAO("ACAO"),

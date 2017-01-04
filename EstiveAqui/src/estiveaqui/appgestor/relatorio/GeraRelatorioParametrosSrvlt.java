@@ -2,10 +2,10 @@ package estiveaqui.appgestor.relatorio;
 
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.appgestor.servlet.ServletParametrosAppGestor;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class GeraRelatorioParametrosSrvlt extends ServletParametros0
+public class GeraRelatorioParametrosSrvlt extends ServletParametrosAppGestor
 {
   private GeraRelatorioInVO geraRelatorioInVO = (GeraRelatorioInVO)dadosInVo;
 
@@ -17,7 +17,7 @@ public class GeraRelatorioParametrosSrvlt extends ServletParametros0
   @Override
   public GeraRelatorioInVO getParametros() throws ServletParametrosException
   {
-    geraRelatorioInVO.setIdentificadorAppGestor(getIdentificacaoApp0(true));
+    geraRelatorioInVO.setIdentificadorAppGestor(getIdentificacaoAppGestor(true));
 
     return geraRelatorioInVO;
   }
