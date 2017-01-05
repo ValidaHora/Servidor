@@ -1,18 +1,49 @@
 package estiveaqui.apppassclockvirtual;
 
-import estiveaqui.sql.mo.PassClockMO;
-
 public class AtivaPassClockVirtualOutVO
 {
-  private PassClockMO  passClockMO  = new PassClockMO();
+  private String numeroPassClock;
+  private String apelidoPassClock;
+  private String sementeToken;
+  private int    codAlgoritmo;
 
-  public PassClockMO getPassClockMO()
+  public String getNumeroPassClock()
   {
-    return passClockMO;
+    return numeroPassClock;
   }
 
-  public void setPassClockMO(PassClockMO passClockMO)
+  public void setNumeroPassClock(String numeroPassClock)
   {
-    this.passClockMO = passClockMO;
+    this.numeroPassClock = numeroPassClock;
+  }
+
+  public String getApelidoPassClock()
+  {
+    return apelidoPassClock;
+  }
+
+  public void setApelidoPassClock(String apelidoPassClock)
+  {
+    this.apelidoPassClock = apelidoPassClock;
+  }
+
+  public String getSementeToken()
+  {
+    return sementeToken;
+  }
+
+  public void setSementeToken(String sementeToken)
+  {
+    this.sementeToken = sementeToken;
+  }
+
+  public int getCodAlgoritmo()
+  {
+    return codAlgoritmo;
+  }
+
+  public void setCodAlgoritmo(int codAlgoritmo)
+  {
+    this.codAlgoritmo = codAlgoritmo;
   }
 }

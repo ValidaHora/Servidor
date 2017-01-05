@@ -3,10 +3,10 @@ package estiveaqui.apppassclockvirtual.servlet;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import estiveaqui.apppassclockvirtual.AtivaPassClockVirtualInVO;
-import estiveaqui.servlet.ServletParametros0;
+import estiveaqui.servlet.ServletParametros;
 import estiveaqui.servlet.ServletParametrosException;
 
-public class SrvltAtivaPassClockVirtualParametros extends ServletParametros0
+public class SrvltAtivaPassClockVirtualParametros extends ServletParametros
 {
   private AtivaPassClockVirtualInVO ativaPassClockVirtualInVO = (AtivaPassClockVirtualInVO)dadosInVo;
   

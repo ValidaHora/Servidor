@@ -12,6 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import estiveaqui.CodigoErro;
@@ -204,7 +205,77 @@ public class HTTPValidaHora
     return lancaValidaHorasServidorOutVO;
   }
 
+  /**
+   * Valida o código do para o PassClock no momento atual (Hora de Envio).
+   * 
+   * @param gerenciaPassClockInVO
+   * @return
+   * @throws HTTPValidaHoraException
+   */
+  public static LancamentoMO validaCodigo(GerenciaPassClockInVO gerenciaPassClockInVO) throws HTTPValidaHoraException
+  {
+    //  Monta a string dos parâmetros.
+    String params = "?V=1.0.0&CLI=EstiveAqui&SEN=" + SENHA + 
+        "&TOK=" + gerenciaPassClockInVO.getNumPassClock() + "&COD=" + gerenciaPassClockInVO.getCodPassClock() +
+        "&HEN=" + Util.formataDataTransmissaoComSegundos(DateTime.now());
+    
+    //  Busca as sementes no site ValidaHora.
+    JSONObject jsonGetHoraCalculada = sendGet("ValidaCodigo" + params);
+    
+    //  Houve erro?
+    if ( !jsonGetHoraCalculada.getBoolean("ValidadoOk"))
+    {
+      int codigoErro = jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getInt("Codigo");
+
+      if (codigoErro == 102)  //  Código já lançado.
+        throw new HTTPValidaHoraException(CodigoErro.CODIGO_INVALIDO);
+      if (codigoErro == 101)  //  Código inválido.
+        throw new HTTPValidaHoraException(CodigoErro.CODIGO_INVALIDO);
+      if (codigoErro == 106)  //  Maximo de lançamentos alcançado
+        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, "Máximo de lançamentos alcançados pelo EstiveAqui.");
+      if (codigoErro == 104)  //  Token não existe.
+        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
+      if (codigoErro == 103)  //  Token inválido, não habilitado.
+        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
+
+      throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
+    }
+
+    //  Retorna a hora calculada e o hashcode.
+    LancamentoMO lancamentoMO = new LancamentoMO();
+    lancamentoMO.setHashCode(jsonGetHoraCalculada.getString("HashCode"));
+    
+    return lancamentoMO;
+  }
   
+  /**
+   * Chama via HTTP o servidor ValidaHora para ativar Token Virtual.
+   * 
+   * @param numeroToken
+   * @return
+   * @throws HTTPValidaHoraException
+   * @throws JSONException
+   */
+  public static TokenMO ativaTokenVirtual(String numeroToken) throws HTTPValidaHoraException, JSONException
+  {
+    //  Monta a string dos parâmetros.
+    String params = "?V=1.0.0&CLI=EstiveAqui&SEN=" + SENHA;
+    params += "&TOK=" + numeroToken;
+    
+    //  Busca as sementes no site ValidaHora.
+    JSONObject jsonAtivaTokenVirtual = sendGet("AtivaTokenVirtual" + params);
+    
+    //  Se erro.
+    if ( !jsonAtivaTokenVirtual.getBoolean("ValidadoOk"))
+      throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonAtivaTokenVirtual.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
+    
+    TokenMO tokenMO = new TokenMO();
+    tokenMO.setNumeroToken(numeroToken);
+    tokenMO.setSemente(jsonAtivaTokenVirtual.getString("SMNT"));
+    tokenMO.setCodigoAlgoritmo(jsonAtivaTokenVirtual.getInt("CODSNH"));
+
+    return tokenMO;
+  }
   
   /**
    * Chama o servidor ValidaHora e solicita a execução de uma ação.
@@ -272,49 +343,6 @@ public class HTTPValidaHora
     }
   }
 
-  /**
-   * Valida o código do para o PassClock no momento atual (Hora de Envio).
-   * 
-   * @param gerenciaPassClockInVO
-   * @return
-   * @throws HTTPValidaHoraException
-   */
-  public static LancamentoMO validaCodigo(GerenciaPassClockInVO gerenciaPassClockInVO) throws HTTPValidaHoraException
-  {
-    //  Monta a string dos parâmetros.
-    String params = "?V=1.0.0&CLI=EstiveAqui&SEN=" + SENHA + 
-        "&TOK=" + gerenciaPassClockInVO.getNumPassClock() + "&COD=" + gerenciaPassClockInVO.getCodPassClock() +
-        "&HEN=" + Util.formataDataTransmissaoComSegundos(DateTime.now());
-    
-    //  Busca as sementes no site ValidaHora.
-    JSONObject jsonGetHoraCalculada = sendGet("ValidaCodigo" + params);
-    
-    //  Houve erro?
-    if ( !jsonGetHoraCalculada.getBoolean("ValidadoOk"))
-    {
-      int codigoErro = jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getInt("Codigo");
-
-      if (codigoErro == 102)  //  Código já lançado.
-        throw new HTTPValidaHoraException(CodigoErro.CODIGO_INVALIDO);
-      if (codigoErro == 101)  //  Código inválido.
-        throw new HTTPValidaHoraException(CodigoErro.CODIGO_INVALIDO);
-      if (codigoErro == 106)  //  Maximo de lançamentos alcançado
-        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, "Máximo de lançamentos alcançados pelo EstiveAqui.");
-      if (codigoErro == 104)  //  Token não existe.
-        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
-      if (codigoErro == 103)  //  Token inválido, não habilitado.
-        throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
-
-      throw new HTTPValidaHoraException(CodigoErro.ERRO_INTERNO, jsonGetHoraCalculada.getJSONArray("Mensagens").getJSONObject(0).getString("Log"));
-    }
-
-    //  Retorna a hora calculada e o hashcode.
-    LancamentoMO lancamentoMO = new LancamentoMO();
-    lancamentoMO.setHashCode(jsonGetHoraCalculada.getString("HashCode"));
-    
-    return lancamentoMO;
-  }
-  
 //  public static void main(String[] args) throws Exception
 //  {
 ////    JSONObject json = sendGet("ValidaHora/GetSementes?V=1.0.0&CLI=EstiveAqui&SEN=Teste&TOKS=Apple-01&TOKS=Apple-02");

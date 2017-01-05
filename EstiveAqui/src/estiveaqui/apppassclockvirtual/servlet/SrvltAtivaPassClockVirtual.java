@@ -51,8 +51,9 @@ public class SrvltAtivaPassClockVirtual extends ServletEstiveAqui implements Ser
      
       //
       //  Monta a mensagem de resposta
-      jsonMsg.put(ChaveJSON.AP, ativaPassClockVirtualOutVO.getPassClockMO().getApelido());
-      jsonMsg.put(ChaveJSON.PC, "" + ativaPassClockVirtualOutVO.getPassClockMO().getNumPassClock());
+      jsonMsg.put(ChaveJSON.AP, ativaPassClockVirtualOutVO.getApelidoPassClock());
+      jsonMsg.put(ChaveJSON.PC, "" + ativaPassClockVirtualOutVO.getNumeroPassClock());
+      jsonMsg.put(ChaveJSON.SM, "" + ativaPassClockVirtualOutVO.getSementeToken());
     }
     catch (ServletParametrosException e)
     {
@@ -74,6 +75,7 @@ public class SrvltAtivaPassClockVirtual extends ServletEstiveAqui implements Ser
 
     //  Retorna a mensagem de resposta.
     log.debug("Retornando mensagem de resposta...");
+    response.setHeader("Access-Control-Allow-Origin", "*");
     response.getWriter().println(jsonMsg.getJsonMsg());
   }
 }
